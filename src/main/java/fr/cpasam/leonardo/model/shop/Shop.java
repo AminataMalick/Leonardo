@@ -21,6 +21,7 @@ public class Shop {
 	
 	@Id
 	@GeneratedValue
+	@Column(name = "SHOP_ID")
 	private long id;
 	
 	
