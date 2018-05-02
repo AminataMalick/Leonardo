@@ -1,4 +1,4 @@
-package model.product;
+package fr.cpasam.leonardo.model.product;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

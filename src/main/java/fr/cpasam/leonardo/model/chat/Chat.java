@@ -1,7 +1,10 @@
-package model.chat;
+package fr.cpasam.leonardo.model.chat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import java.util.List;
+
 import javax.persistence.Column;
 
 
@@ -14,8 +17,9 @@ import javax.persistence.Column;
 	long id ;
 	
 	@Column (name = "USERS")
-	List<Member> users ;
-
+	List<Member> users;
+	
+	
 	@Column (name = "MESSAGES")
 	List<Message> messages ;
 	
