@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
+import fr.cpasam.leonardo.model.recommandation.Recommandation;
 import fr.cpasam.leonardo.model.shop.Shop;
 
 @Entity
@@ -25,6 +26,10 @@ public class Member extends User{
 	
 	@Column (name = "SHOPS")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "retailpoint")
-	List<Shop> shops ;
+	private List<Shop> shops ;
+	
+	@Column(name="RECOMMANDATION_ID")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "recommandations")
+	private List<Recommandation> recommandations;
 	
 }
