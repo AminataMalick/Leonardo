@@ -49,4 +49,6 @@ public class Member extends User{
 		this.shops = shops;
 		this.recommandations = recommandations;
 	}
+
+	public Member() {}
 }
