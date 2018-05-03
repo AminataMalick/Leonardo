@@ -17,7 +17,8 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name="admins")
-public class Admin extends User{
+public class Admin extends User {
+
 	/*private static int level=1;
 	
 	public boolean deleteUser (long id) {
