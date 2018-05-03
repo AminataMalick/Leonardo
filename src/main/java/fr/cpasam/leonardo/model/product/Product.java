@@ -1,7 +1,10 @@
 package fr.cpasam.leonardo.model.product;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 
@@ -24,5 +27,9 @@ import javax.persistence.Column;
 	
 	@Column (name = "UNITYPRICE")
 	float unityPrice ;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="SHOP_ID")
+	private Shop shop;
 	
 	}

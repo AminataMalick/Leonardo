@@ -1,5 +1,7 @@
 package fr.cpasam.leonardo.model.shop;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,14 +31,19 @@ public class RetailPoint {
 	@Length(min=3)
 	protected String name;
 
-	/*
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="GEOLOC_ID")
-	@Column(name = "GEOLOCALISATION")
-	protected Geoloc geolocation;
-	*/
+	private Geoloc geoloc;
 	
+		
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="SHOP_ID")
 	protected Shop shop;
+	
+	@Column (name = "SHOPS")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "retailpoint")
+	List<Shop> shops ;
+	
+	
 }
