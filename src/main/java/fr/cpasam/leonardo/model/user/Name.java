@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.name;
+package fr.cpasam.leonardo.model.user;
 
 import javax.persistence.Embeddable;
 
