@@ -3,13 +3,15 @@ package fr.cpasam.leonardo.model.chat;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import fr.cpasam.leonardo.model.member.Member;
+
 import java.util.List;
 
 import javax.persistence.Column;
 
 
 
-	@Entity (name = "chat")
+	@Entity (name = "chats")
 	public class Chat {
 	
 	@Id
@@ -23,13 +25,13 @@ import javax.persistence.Column;
 	@Column (name = "MESSAGES")
 	List<Message> messages ;
 	
-	@Column (name = "STATUT")
+	/*@Column (name = "STATUT")
 	Statut statut ;
-	
+	*/
 	}
 
-
+/*
 	public boolean sendMessage(Message m) {return true;}
 	public boolean sendNotification() {return true;}
-	
+	*/
 

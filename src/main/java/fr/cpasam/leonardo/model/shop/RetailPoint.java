@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import fr.cpasam.leonardo.model.geoloc.Geoloc;
+
 @Entity
 @Table(name="retailpoints")
 public class RetailPoint {
