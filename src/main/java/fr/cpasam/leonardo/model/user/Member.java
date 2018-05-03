@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,6 +18,16 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
 import fr.cpasam.leonardo.model.shop.Shop;
 
+@NamedQueries({
+	@NamedQuery(
+	name = "findMemberById",
+	query = "from Member m where m.USER_ID = :memberId"
+	),
+	@NamedQuery(
+	name = "findAllMembers",
+	query = "from Member"
+	)
+})
 @Entity
 @Table(name="members")
 public class Member extends User{
@@ -31,5 +43,10 @@ public class Member extends User{
 	@Column(name="RECOMMANDATION_ID")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "recommandations")
 	private List<Recommandation> recommandations;
-	
+
+	public Member(Geoloc geoloc, List<Shop> shops, List<Recommandation> recommandations) {
+		this.geoloc = geoloc;
+		this.shops = shops;
+		this.recommandations = recommandations;
+	}
 }
