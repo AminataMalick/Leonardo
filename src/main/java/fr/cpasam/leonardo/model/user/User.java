@@ -16,13 +16,14 @@ public abstract class User {
 	@Id
 	@GeneratedValue
 	@Column (name="USER_ID")
-	private long id;
+	protected long id;
 	@Column (name="USER_NAME")
-	private Name name;
+	protected Name name;
 	@Column (name="USER_EMAIL")
-	private String email;
+	protected String email;
 	@Column (name="USER_PWD")
-	private String pwd;
+	protected String pwd;
+	
 	
 	//TODO
 	/*

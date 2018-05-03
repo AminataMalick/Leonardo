@@ -1,12 +1,20 @@
 package fr.cpasam.leonardo.model.user;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
-
-
-
+@NamedQueries({
+	@NamedQuery(
+	name = "findAdminById",
+	query = "from Admin a where a.USER_ID = :adminId"
+	),
+	@NamedQuery(
+	name = "findAllAdmins",
+	query = "from Admin"
+	)
+})
 @Entity
 @Table(name="admins")
 public class Admin extends User{
