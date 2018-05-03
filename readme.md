@@ -40,7 +40,7 @@ git commit -m "Type de modification, méthode modifié, classe modifiée"
 
 ```bash
 
-git flow feature stop <nomDeLaFonctionnalite>
+git flow feature finish <nomDeLaFonctionnalite>
 
 ```
 
