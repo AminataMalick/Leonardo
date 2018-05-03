@@ -26,11 +26,13 @@ public class RetailPoint {
 	@Column(name = "NAME")
 	@Length(min=3)
 	protected String name;
-	
+
+	/*
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="GEOLOC_ID")
 	@Column(name = "GEOLOCALISATION")
 	protected Geoloc geolocation;
+	*/
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="SHOP_ID")

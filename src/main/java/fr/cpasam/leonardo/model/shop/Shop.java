@@ -26,7 +26,7 @@ public class Shop {
 	
 	
 	@NotNull
-	@Column(name = "NAME")
+	@Column(name = "SHOP_NAME")
 	@Length(min=3)
 	protected String name;
 	

@@ -2,6 +2,9 @@ package fr.cpasam.leonardo.model.product;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import fr.cpasam.leonardo.model.shop.Shop;
+
 import javax.persistence.Column;
 
 
@@ -10,10 +13,10 @@ import javax.persistence.Column;
 	public class Product {
 	
 	@Id
-	@Column (name ="ID")
+	@Column (name ="PRODUCT_ID")
 	int id;
 	
-	@Column (name = "NAME")
+	@Column (name = "PRODUCT_NAME")
 	String name ;
 
 	@Column (name = "PROVENANCE")
