@@ -1,16 +1,14 @@
-package fr.cpasam.leonardo.model.admin;
+package fr.cpasam.leonardo.model.user;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import fr.cpasam.leonardo.model.user.User;
 
 
 
 
 
 @Entity
-@Table(name="Admin")
+@Table(name="admins")
 public class Admin extends User{
 	/*private static int level=1;
 	

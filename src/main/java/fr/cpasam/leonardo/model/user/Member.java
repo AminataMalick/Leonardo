@@ -1,11 +1,9 @@
-package fr.cpasam.leonardo.model.member;
+package fr.cpasam.leonardo.model.user;
 
 
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import fr.cpasam.leonardo.model.user.User;
 
 @Entity
 @Table(name="members")

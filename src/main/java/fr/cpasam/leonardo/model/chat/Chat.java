@@ -1,10 +1,12 @@
 package fr.cpasam.leonardo.model.chat;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import fr.cpasam.leonardo.model.member.Member;
-import fr.cpasam.leonardo.model.message.Message;
+import fr.cpasam.leonardo.model.user.Member;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import javax.persistence.Column;
 	public class Chat {
 	
 	@Id
+	@GeneratedValue
 	@Column (name ="CHAT_ID")
 	private long id ;
 	
@@ -22,6 +25,7 @@ import javax.persistence.Column;
 	
 	
 	@Column (name = "MESSAGES")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "chat")
 	List<Message> messages ;
 	
 //	@Column (name = "STATUT")
