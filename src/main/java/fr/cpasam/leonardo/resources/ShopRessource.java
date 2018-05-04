@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,26 +25,20 @@ public class ShopRessource {
     	
     	List<Shop> shops = new ArrayList<>();
     	
-    	// construction d'un entity manager
-    	EntityManager em =  ;
+    	EntityManagerFactory factory = Persistence.createEntityManagerFactory();
+    	EntityManager em = factory.createEntityManager();
 
-    	 // récupération d'une requête nommée par interrogation 
-    	 // de l'entity manager
-    	Query marinByName = em.createNamedQuery("Marin.findByName") ;
-
-    	 // paramétrage de la requête
-    	marinByName.setParameter("name",  "Surcouf") ;
+    	Query shopsAll = em.createNamedQuery("Shop.findAllShops");
 
     	 // exécution de la requête
-    	List<Marin> marins = marinByName.getResultList() ;
+    	shops = shopsAll.getResultList() ;
     	
-    	//
     	
-    	shops.add(shop);
-
         return shops;
     }
     
+    
+    /*
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,4 +49,5 @@ public class ShopRessource {
 
         return shop;
     }
+    */
 }
