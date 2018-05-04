@@ -3,24 +3,27 @@
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
+	<session-factory>
 
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/pierre</property>
-        <property name="hibernate.connection.username">Ysee</property>
-        <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://167.99.40.140:3306/leonardo_pie?useSSL=false</property>
+		<property name="connection.username">pierre</property>
+		<property name="connection.password">opopop45200</property>
 
-        <property name="show_sql">true</property>
+		
+			<!-- Select our SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		
+		<property name="show_sql">true</property>
 
-        <property name="format_sql">true</property>
-        <property name="hbm2ddl.auto">create</property>
+		<property name="format_sql">true</property>
+		<property name="hbm2ddl.auto">create</property>
 
-        <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
-        <property name="current_session_context_class">thread</property>
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">1</property>
+		<property name="current_session_context_class">thread</property>
 
-        <mapping class="fr.cpasam.leonardo.model.Prout" />
+		<mapping class="fr.cpasam.leonardo.model.Prout" />
 
-    </session-factory>
+	</session-factory>
 </hibernate-configuration>
