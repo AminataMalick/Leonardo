@@ -21,5 +21,5 @@ public abstract class Tag {
 	@Column(name="KEYWORD")
 	protected String keyword;
 	
-	
+	public Tag() {}
 }

@@ -11,7 +11,7 @@ import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 
 
-public abstract class MemberDAO <T> implements CRUD_Service <Member> {
+public class MemberDAO implements CRUD_Service <Member> {
 
 	public List<Member> getAllMembers() {
 
@@ -21,9 +21,33 @@ public abstract class MemberDAO <T> implements CRUD_Service <Member> {
    
     List<Member> myList = new ArrayList<Member>();
     Query query = session.getNamedQuery("findAllMembers");
-    myList = query.list();
+    myList = query.getResultList();
    
     session.getTransaction().commit();  
  return myList ;   
+	}
+
+	@Override
+	public void Create(Member entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Member Read() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void Update(Member entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Delete(Member entity) {
+		// TODO Auto-generated method stub
+		
 	}
 }
