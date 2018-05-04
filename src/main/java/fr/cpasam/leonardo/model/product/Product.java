@@ -19,18 +19,31 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 
 	@NamedQueries({
 		@NamedQuery(
-		name = "findProductsById",
-		query = "from Product p where p.PRODUCT_ID = :productId"
+		name = Product.FIND_PRODUCT_BY_ID,
+		query = "from Product p where p.id = :productId"
 		),
 		@NamedQuery(
-		name = "findAllProducts",
+		name = Product.FIND_ALL_PRODUCTS,
 		query = "from Product"
+		),
+		@NamedQuery(
+		name = Product.FIND_PRODUCT_BY_TAG,
+		query = "from Product p join p.tags where p.tags.keyword = :kw" //CETTE REQUETE EST FAUSSE
+		),
+		@NamedQuery(
+		name = Product.DELETE_PRODUCT,
+		query = "delete from Product p where p.id = :productId"
 		)
 	})
 	@Entity 
 	@Table(name = "products")
 	public class Product {
 	
+	public static final String FIND_PRODUCT_BY_ID = "findProductById";
+	public static final String FIND_ALL_PRODUCTS = "findAllProducts";
+	public static final String FIND_PRODUCT_BY_TAG = "findProductByTag";
+	public static final String DELETE_PRODUCT = "deleteProduct";
+		
 	@Id
 	@Column (name ="PRODUCT_ID")
 	int id;
@@ -54,7 +67,8 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "product")
 	protected ArrayList<ProductTag> tags;
 
-
+	public Product() {}
+	
 	public Product(String name, Shop provenance, float unityPrice, Shop shop, ArrayList<ProductTag> tags) {
 		this.name = name;
 		this.provenance = provenance;

@@ -15,17 +15,25 @@ import fr.cpasam.leonardo.model.user.Member;
 
 @NamedQueries({
 	@NamedQuery(
-	name = "findRecommandationById",
-	query = "from Recommandation r where r.RECOMMANDATION_ID = :recommandationId"
+	name = Recommandation.FIND_RECOMMANDATION_BY_ID,
+	query = "from Recommandation r where r.id = :recommandationId"
 	),
 	@NamedQuery(
-	name = "findAllRecommandations",
+	name = Recommandation.FIND_ALL_RECOMMANDATIONS,
 	query = "from Recommandation"
+	),
+	@NamedQuery(
+	name = Recommandation.DELETE_RECOMMANDATION,
+	query = "delete from Recommandation r where r.id = :recommandationId"
 	)
 })
 @Entity
 @Table(name = "recommandations")
 public class Recommandation {
+	
+	public final static String FIND_RECOMMANDATION_BY_ID = "findRecommandationById";
+	public final static String FIND_ALL_RECOMMANDATIONS = "findAllRecommandations";
+	public final static String DELETE_RECOMMANDATION = "deleteRecommandation";
 	
 	@Id
 	@GeneratedValue
@@ -42,6 +50,8 @@ public class Recommandation {
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 
+	public Recommandation() {}
+	
 	public Recommandation(int grade, String comment, Member member) {
 		this.grade = grade;
 		this.comment = comment;
