@@ -14,10 +14,6 @@ import javax.persistence.Table;
 	@NamedQuery(
 	name = Admin.FIND_ALL_ADMINS,
 	query = "from Admin"
-	),
-	@NamedQuery(
-	name = Admin.DELETE_ADMIN,
-	query = "delete from Admin a where a.id = :adminId"
 	)
 })
 @Entity
@@ -27,7 +23,6 @@ public class Admin extends User {
 
 	public final static String FIND_ADMIN_BY_ID = "findAdminById";
 	public final static String FIND_ALL_ADMINS = "findAllAdmins";
-	public final static String DELETE_ADMIN = "deleteAdmin";
 	
 	public Admin() {}
 	

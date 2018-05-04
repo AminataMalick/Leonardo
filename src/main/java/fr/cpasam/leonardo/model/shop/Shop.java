@@ -29,10 +29,6 @@ import fr.cpasam.leonardo.model.user.Member;
 	@NamedQuery(
 	name = Shop.FIND_ALL_SHOPS,
 	query = "from Shop"
-	),
-	@NamedQuery(
-	name = Shop.DELETE_SHOP,
-	query = "delete from Shop s where s.id = :shopId"
 	)
 })
 @Entity
@@ -41,7 +37,6 @@ public class Shop {
 	
 	public final static String FIND_SHOP_BY_ID = "findShopById";
 	public final static String FIND_ALL_SHOPS = "findAllShops";
-	public final static String DELETE_SHOP = "deleteShop";
 	
 	@Id
 	@GeneratedValue

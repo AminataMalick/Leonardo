@@ -27,10 +27,6 @@ import fr.cpasam.leonardo.model.shop.Shop;
 	@NamedQuery(
 	name = Member.FIND_ALL_MEMBERS,
 	query = "from Member"
-	),
-	@NamedQuery(
-	name = Member.DELETE_MEMBER,
-	query = "delete from Member m where m.id = :memberId"
 	)
 })
 @Entity
@@ -40,7 +36,6 @@ public class Member extends User{
 
 	public final static String FIND_MEMBER_BY_ID = "findMemberById";
 	public final static String FIND_ALL_MEMBERS = "findAllMembers";
-	public final static String DELETE_MEMBER = "deleteMember";
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="GEOLOC_ID")

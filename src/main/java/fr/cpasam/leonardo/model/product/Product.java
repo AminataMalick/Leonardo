@@ -29,10 +29,6 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 		@NamedQuery(
 		name = Product.FIND_PRODUCT_BY_TAG,
 		query = "from Product p join p.tags where p.tags.keyword = :kw" //CETTE REQUETE EST FAUSSE
-		),
-		@NamedQuery(
-		name = Product.DELETE_PRODUCT,
-		query = "delete from Product p where p.id = :productId"
 		)
 	})
 	@Entity 
@@ -42,7 +38,6 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 	public static final String FIND_PRODUCT_BY_ID = "findProductById";
 	public static final String FIND_ALL_PRODUCTS = "findAllProducts";
 	public static final String FIND_PRODUCT_BY_TAG = "findProductByTag";
-	public static final String DELETE_PRODUCT = "deleteProduct";
 		
 	@Id
 	@Column (name ="PRODUCT_ID")

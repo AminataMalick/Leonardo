@@ -24,10 +24,6 @@ import fr.cpasam.leonardo.model.user.Member;
 	@NamedQuery(
 	name = Geoloc.FIND_ALL_GEOLOC,
 	query = "from Geoloc"
-	),
-	@NamedQuery(
-	name = Geoloc.DELETE_GEOLOC,
-	query = "delete from Geoloc g where g.id = :geolocId"
 	)
 })
 @Entity
@@ -36,7 +32,6 @@ public class Geoloc {
 
 	public final static String FIND_GEOLOC_BY_ID = "findGeolocById";
 	public final static String FIND_ALL_GEOLOC = "findAllGeolocs";
-	public final static String DELETE_GEOLOC = "deleteGeoloc";
 	
 	@Id
 	@GeneratedValue
