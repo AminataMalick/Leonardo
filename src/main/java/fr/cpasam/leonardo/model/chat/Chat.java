@@ -17,7 +17,7 @@ import fr.cpasam.leonardo.model.user.Member;
 	@NamedQueries({
 		@NamedQuery(
 		name = Chat.FIND_CHAT_BY_ID,
-		query = "from Chat c where c.CHAT_ID = :chatId"
+		query = "from Chat c where c.id = :chatId"
 		),
 		@NamedQuery(
 		name = Chat.FIND_ALL_CHATS,

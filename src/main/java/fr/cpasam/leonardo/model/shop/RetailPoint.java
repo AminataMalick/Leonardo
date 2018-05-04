@@ -22,11 +22,15 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 @NamedQueries({
 	@NamedQuery(
 	name = RetailPoint.FIND_RETAIL_POINT_BY_ID,
-	query = "from RetailPoint rp where rp.RETAILPOINT_ID = :retailPointId"
+	query = "from RetailPoint rp where rp.id = :retailPointId"
 	),
 	@NamedQuery(
 	name = RetailPoint.FIND_ALL_RETAIL_POINTS,
 	query = "from RetailPoint"
+	),
+	@NamedQuery(
+	name = RetailPoint.DELETE_RETAIL_POINT,
+	query = "delete from RetailPoint rp where rp.id = :retailPointId"
 	)
 })
 @Entity
@@ -35,6 +39,7 @@ public class RetailPoint {
 
 	public final static String FIND_RETAIL_POINT_BY_ID = "findRetailPointById";
 	public final static String FIND_ALL_RETAIL_POINTS = "findAllRetailPoints";
+	public final static String DELETE_RETAIL_POINT = "deleteRetailPoint";
 	
 	@Id
 	@GeneratedValue

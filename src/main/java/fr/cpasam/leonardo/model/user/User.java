@@ -31,6 +31,15 @@ public abstract class User {
 
 	public User() {  }
 
+	public User(String firstName, String lastName, String email, String pwd) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.pwd = pwd;
+	}
+	
+	
+
 	//TODO
 	/*
 	public boolean singhIn(String mail, String pwd) return true;

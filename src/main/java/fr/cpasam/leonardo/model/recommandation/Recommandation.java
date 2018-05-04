@@ -16,11 +16,15 @@ import fr.cpasam.leonardo.model.user.Member;
 @NamedQueries({
 	@NamedQuery(
 	name = Recommandation.FIND_RECOMMANDATION_BY_ID,
-	query = "from Recommandation r where r.RECOMMANDATION_ID = :recommandationId"
+	query = "from Recommandation r where r.id = :recommandationId"
 	),
 	@NamedQuery(
 	name = Recommandation.FIND_ALL_RECOMMANDATIONS,
 	query = "from Recommandation"
+	),
+	@NamedQuery(
+	name = Recommandation.DELETE_RECOMMANDATION,
+	query = "delete from Recommandation r where r.id = :recommandationId"
 	)
 })
 @Entity
@@ -29,6 +33,7 @@ public class Recommandation {
 	
 	public final static String FIND_RECOMMANDATION_BY_ID = "findRecommandationById";
 	public final static String FIND_ALL_RECOMMANDATIONS = "findAllRecommandations";
+	public final static String DELETE_RECOMMANDATION = "deleteRecommandation";
 	
 	@Id
 	@GeneratedValue

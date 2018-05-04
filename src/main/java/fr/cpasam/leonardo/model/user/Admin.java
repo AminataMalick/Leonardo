@@ -8,12 +8,16 @@ import javax.persistence.Table;
 
 @NamedQueries({
 	@NamedQuery(
-	name = Admin.FIND_ALL_ADMINS,
-	query = "from Admin a where a.USER_ID = :adminId"
+	name = Admin.FIND_ADMIN_BY_ID,
+	query = "from Admin a where a.id = :adminId"
 	),
 	@NamedQuery(
-	name = Admin.FIND_ADMIN_BY_ID,
+	name = Admin.FIND_ALL_ADMINS,
 	query = "from Admin"
+	),
+	@NamedQuery(
+	name = Admin.DELETE_ADMIN,
+	query = "delete from Admin a where a.id = :adminId"
 	)
 })
 @Entity
@@ -23,6 +27,7 @@ public class Admin extends User {
 
 	public final static String FIND_ADMIN_BY_ID = "findAdminById";
 	public final static String FIND_ALL_ADMINS = "findAllAdmins";
+	public final static String DELETE_ADMIN = "deleteAdmin";
 	
 	public Admin() {}
 	

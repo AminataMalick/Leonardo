@@ -22,11 +22,15 @@ import fr.cpasam.leonardo.model.shop.Shop;
 @NamedQueries({
 	@NamedQuery(
 	name = Member.FIND_MEMBER_BY_ID,
-	query = "from Member m where m.USER_ID = :memberId"
+	query = "from Member m where m.id = :memberId"
 	),
 	@NamedQuery(
 	name = Member.FIND_ALL_MEMBERS,
 	query = "from Member"
+	),
+	@NamedQuery(
+	name = Member.DELETE_MEMBER,
+	query = "delete from Member m where m.id = :memberId"
 	)
 })
 @Entity
@@ -36,6 +40,7 @@ public class Member extends User{
 
 	public final static String FIND_MEMBER_BY_ID = "findMemberById";
 	public final static String FIND_ALL_MEMBERS = "findAllMembers";
+	public final static String DELETE_MEMBER = "deleteMember";
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="GEOLOC_ID")
@@ -49,11 +54,12 @@ public class Member extends User{
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "recommandations")
 	private List<Recommandation> recommandations;
 
+	public Member() {}
+
 	public Member(Geoloc geoloc, List<Shop> shops, List<Recommandation> recommandations) {
+		super();
 		this.geoloc = geoloc;
 		this.shops = shops;
 		this.recommandations = recommandations;
 	}
-
-	public Member() {}
 }
