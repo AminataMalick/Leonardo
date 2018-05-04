@@ -23,8 +23,9 @@ public abstract class User {
 	protected String email;
 	@Column (name="USER_PWD")
 	protected String pwd;
-	
-	
+
+	public User() {  }
+
 	//TODO
 	/*
 	public boolean singhIn(String mail, String pwd) return true;

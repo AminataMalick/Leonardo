@@ -42,8 +42,8 @@
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.2.13.Final</version>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.2.1.Final</version>
 		</dependency>
 
 
@@ -54,44 +54,17 @@
 			<version>6.0.9.Final</version>
 		</dependency>
 
-		<!-- Hibernate library dependecy start -->
-		<!--_dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2</version>
-		</dependency-->
-
-		<!-- Hibernate library dependecy end -->
-
-		<!-- JSON Library alternative => Jackson or Gson -->
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId> 
-		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901-1.jdbc4</version>
 		</dependency>
 	</dependencies>
 
@@ -117,7 +90,7 @@
 					<finalName>simple-service-${project.version}</finalName>
 					<archive>
 						<manifest>
-							<mainClass>fr.cpasam.leonardo.leonardo.App</mainClass>
+							<mainClass>fr.cpasam.leonardo.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -157,7 +130,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>fr.cpasam.leonardo.leonardo.App</mainClass>
+					<mainClass>fr.cpasam.leonardo.App</mainClass>
 				</configuration>
 			</plugin>
 
