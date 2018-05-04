@@ -6,9 +6,9 @@
 	<session-factory>
 
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://167.99.40.140:3306/leonardo_pie?useSSL=false</property>
-		<property name="connection.username">pierre</property>
-		<property name="connection.password">opopop45200</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/leonardo</property>
+		<property name="connection.username">mel</property>
+		<property name="connection.password"></property>
 
 		
 			<!-- Select our SQL dialect -->
