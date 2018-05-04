@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
@@ -20,18 +21,22 @@ import fr.cpasam.leonardo.model.shop.Shop;
 
 @NamedQueries({
 	@NamedQuery(
-	name = "findMemberById",
+	name = Member.FIND_MEMBER_BY_ID,
 	query = "from Member m where m.USER_ID = :memberId"
 	),
 	@NamedQuery(
-	name = "findAllMembers",
+	name = Member.FIND_ALL_MEMBERS,
 	query = "from Member"
 	)
 })
 @Entity
 @Table(name="members")
+@PrimaryKeyJoinColumn(name="USER_ID")
 public class Member extends User{
 
+	public final static String FIND_MEMBER_BY_ID = "findMemberById";
+	public final static String FIND_ALL_MEMBERS = "findAllMembers";
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="GEOLOC_ID")
 	private Geoloc geoloc;

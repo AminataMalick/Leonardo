@@ -19,11 +19,11 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 
 	@NamedQueries({
 		@NamedQuery(
-		name = "findProductsById",
+		name = Product.FIND_PRODUCT_BY_ID,
 		query = "from Product p where p.PRODUCT_ID = :productId"
 		),
 		@NamedQuery(
-		name = "findAllProducts",
+		name = Product.FIND_ALL_PRODUCTS,
 		query = "from Product"
 		)
 	})
@@ -31,6 +31,9 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 	@Table(name = "products")
 	public class Product {
 	
+	public static final String FIND_PRODUCT_BY_ID = "findProductById";
+	public static final String FIND_ALL_PRODUCTS = "findAllProducts";
+		
 	@Id
 	@Column (name ="PRODUCT_ID")
 	int id;
@@ -54,7 +57,8 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "product")
 	protected ArrayList<ProductTag> tags;
 
-
+	public Product() {}
+	
 	public Product(String name, Shop provenance, float unityPrice, Shop shop, ArrayList<ProductTag> tags) {
 		this.name = name;
 		this.provenance = provenance;

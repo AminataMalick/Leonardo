@@ -21,11 +21,11 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 
 @NamedQueries({
 	@NamedQuery(
-	name = "findRetailPointById",
+	name = RetailPoint.FIND_RETAIL_POINT_BY_ID,
 	query = "from RetailPoint rp where rp.RETAILPOINT_ID = :retailPointId"
 	),
 	@NamedQuery(
-	name = "findAllRetailPoints",
+	name = RetailPoint.FIND_ALL_RETAIL_POINTS,
 	query = "from RetailPoint"
 	)
 })
@@ -33,6 +33,9 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 @Table(name="retail_points")
 public class RetailPoint {
 
+	public final static String FIND_RETAIL_POINT_BY_ID = "findRetailPointById";
+	public final static String FIND_ALL_RETAIL_POINTS = "findAllRetailPoints";
+	
 	@Id
 	@GeneratedValue
 	@Column(name="RETAILPOINT_ID")
@@ -57,6 +60,8 @@ public class RetailPoint {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "retailpoint")
 	List<Shop> shops ;
 
+	public RetailPoint() {}
+	
 	public RetailPoint(@NotNull @Length(min = 3) String name, Geoloc geoloc, Shop shop, List<Shop> shops) {
 		this.name = name;
 		this.geoloc = geoloc;

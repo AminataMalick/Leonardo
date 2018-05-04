@@ -13,14 +13,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.cpasam.leonardo.model.user.Member;
-
+	
 	@NamedQueries({
 		@NamedQuery(
-		name = "findChatById",
+		name = Chat.FIND_CHAT_BY_ID,
 		query = "from Chat c where c.CHAT_ID = :chatId"
 		),
 		@NamedQuery(
-		name = "findAllChats",
+		name = Chat.FIND_ALL_CHATS,
 		query = "from Chat"
 		)
 	})
@@ -28,6 +28,9 @@ import fr.cpasam.leonardo.model.user.Member;
 	@Table(name = "chats")
 	public class Chat{
 	
+	public static final String FIND_CHAT_BY_ID = "findChatById";
+	public static final String FIND_ALL_CHATS = "findAllChats";
+		
 	@Id
 	@GeneratedValue
 	@Column (name ="CHAT_ID")
@@ -41,7 +44,8 @@ import fr.cpasam.leonardo.model.user.Member;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "chat")
 	List<Message> messages ;
 
-
+	public Chat() {}
+	
 	public Chat(List<Member> users, List<Message> messages) {
 		this.users = users;
 		this.messages = messages;

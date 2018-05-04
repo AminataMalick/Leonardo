@@ -13,11 +13,11 @@ import fr.cpasam.leonardo.model.product.Product;
 
 @NamedQueries({
 	@NamedQuery(
-	name = ProductTag.FIND_TAG_BY_ID,
+	name = ProductTag.FIND_PRODUCT_TAG_BY_ID,
 	query = "from ProductTag pt where pt.TAG_ID = :tagId"
 	),
 	@NamedQuery(
-	name = "findAllTags",
+	name = ProductTag.FIND_ALL_PRODUCT_TAGS,
 	query = "from ProductTag"
 	)
 })
@@ -25,12 +25,16 @@ import fr.cpasam.leonardo.model.product.Product;
 @Table(name="product_tags")
 @PrimaryKeyJoinColumn(name="TAG_ID")
 public class ProductTag extends Tag{
-	public final static String FIND_TAG_BY_ID = "findTagById";
+	public final static String FIND_PRODUCT_TAG_BY_ID = "findProductTagById";
+	public final static String FIND_ALL_PRODUCT_TAGS = "findAllProductTags";
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="PRODUCT_ID")
 	protected Product product;
 
+	public ProductTag() {}
+
 	public ProductTag(Product product) {
 		this.product = product;
 	}
+	
 }
