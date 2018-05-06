@@ -6,10 +6,9 @@
 	<session-factory>
 
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/leonardo</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/Leonardo</property>
 		<property name="connection.username">mel</property>
 		<property name="connection.password"></property>
-
 
 		
 			<!-- Select our SQL dialect -->
