@@ -1,61 +1,122 @@
 package fr.cpasam.leonardo.model.user;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.mindrot.jbcrypt.BCrypt;
 
-import fr.cpasam.leonardo.model.Prout;
-import fr.cpasam.leonardo.utilities.CRUD_Service;
 import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 
 
-public class MemberDAO implements CRUD_Service <Member> {
+public class MemberDAO {
 
+	// Affichage de tous les membres de la BD
 	public List<Member> getAllMembers() {
 
-    Session session = HibernateUtil.getSessionFactory().openSession();
-    session.beginTransaction();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-   
-    List<Member> myList = new ArrayList<Member>();
-    Query query = session.getNamedQuery("findAllMembers");
-    myList = query.getResultList();
-   
-    session.getTransaction().commit();  
- return myList ;   
+
+		List<Member> myList = new ArrayList<Member>();
+		Query query = session.getNamedQuery("findAllMembers");
+		myList = query.getResultList();
+
+		session.getTransaction().commit();  
+		session.close();
+		return myList ;   
 	}
 
-	@Override
-	public void Create(Member entity) {
-		  Session session = HibernateUtil.getSessionFactory().openSession();
-		  session.beginTransaction();
+	// Hashage du mot de passe
+	private String hashPassword(String plainTextPassword){
 
-		  Member member = new Member();
-		//	member.id 
-		    
-        //member. = "WOW!";
-       // session.save(member);
-        session.getTransaction().commit();
+		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+
 	}
 
-	@Override
-	public Member Read() {
-		// TODO Auto-generated method stub
-		return null;
+	// Verification du hashage de mot de passe ==> non utilisee
+	/* private void checkPass(String plainPassword, String hashedPassword) {
+
+		if (BCrypt.checkpw(plainPassword, hashedPassword))
+
+		System.out.println("The password matches.");
+
+		else
+
+		System.out.println("The password does not match.");
+
+		}
+	 */
+
+	// Creation d'un membre avec recuperation des donnees du formulaire 
+	public void CreateMember(long id, String firstName, String lastName, String email, String pwd ) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Member member = new Member();
+
+		member.id = id;
+		member.firstName = firstName ;
+		member.lastName = lastName ;
+		member.email = email ;
+		member.pwd = hashPassword(pwd) ;
+
+		session.save(member);
+		session.getTransaction().commit();
+		session.close();
 	}
 
-	@Override
-	public void Update(Member entity) {
-		// TODO Auto-generated method stub
-		
+
+	// Recherche d'un membre a partir de son id
+	public Member GetMemberID(long id) {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Member member = new Member() ;
+		member.id = id ;
+		Query query = session.getNamedQuery("findMemberById");
+		member = (Member)query;
+
+		session.getTransaction().commit();
+		session.close();
+		return member;
 	}
 
-	@Override
-	public void Delete(Member entity) {
-		// TODO Auto-generated method stub
-		
+	// Mise a jour des informations d'un membre
+	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Member member = new Member();
+
+		member.id = id;
+		member.firstName = firstName ;
+		member.lastName = lastName ;
+		member.email = email ;
+		member.pwd = hashPassword(pwd) ;
+
+		session.save(member);
+		session.getTransaction().commit();
+		session.close();
+	}
+
+
+	// Supprime un membre a l'aide de son id et d'une requete nommee
+	public void DeleteMember(long id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		Member member = new Member() ;
+		member.id = id ;
+		Query query = session.getNamedQuery("findMemberById");
+
+		session.delete(query);
+		session.save(query);
+		session.getTransaction().commit();
+		session.close();	
+
 	}
 }
