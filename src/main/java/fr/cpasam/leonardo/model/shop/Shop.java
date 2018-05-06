@@ -23,11 +23,11 @@ import fr.cpasam.leonardo.model.user.Member;
 
 @NamedQueries({
 	@NamedQuery(
-	name = "findShopByChatId",
-	query = "from Shop s where s.SHOP_ID = :shopId"
+	name = Shop.FIND_SHOP_BY_ID,
+	query = "from Shop s where s.id = :shopId"
 	),
 	@NamedQuery(
-	name = "findAllShops",
+	name = Shop.FIND_ALL_SHOPS,
 	query = "from Shop"
 	)
 })
@@ -35,6 +35,8 @@ import fr.cpasam.leonardo.model.user.Member;
 @Table(name = "shops")
 public class Shop {
 	
+	public final static String FIND_SHOP_BY_ID = "findShopById";
+	public final static String FIND_ALL_SHOPS = "findAllShops";
 	
 	@Id
 	@GeneratedValue
@@ -67,6 +69,8 @@ public class Shop {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "shop")
 	List<Product> products ;
 
+	public Shop() {}
+	
 	public Shop(@NotNull @Length(min = 3) String name, String description, List<RetailPoint> retailPoints,
 			RetailPoint retailPoint, Member member, List<Product> products) {
 		this.name = name;

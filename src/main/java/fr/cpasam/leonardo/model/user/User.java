@@ -5,26 +5,40 @@ import java.util.jar.Attributes.Name;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 
 
 @Entity
 @Table(name="users")
+@Inheritance(strategy= InheritanceType.JOINED)
 public abstract class User {
 	
 	@Id
 	@GeneratedValue
 	@Column (name="USER_ID")
 	protected long id;
-	@Column (name="USER_NAME")
-	protected Name name;
+	@Column (name="FIRST_NAME")
+	protected String firstName;
+	@Column (name="LAST_NAME")
+	protected String lastName;
 	@Column (name="USER_EMAIL")
 	protected String email;
 	@Column (name="USER_PWD")
 	protected String pwd;
 
 	public User() {  }
+
+	public User(String firstName, String lastName, String email, String pwd) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.pwd = pwd;
+	}
+
+	
 
 	//TODO
 	/*

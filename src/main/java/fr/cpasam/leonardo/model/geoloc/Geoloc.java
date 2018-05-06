@@ -12,16 +12,17 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.shop.RetailPoint;
 import fr.cpasam.leonardo.model.user.Member;
 
 @NamedQueries({
 	@NamedQuery(
-	name = "findGeolocById",
-	query = "from Geoloc g where g.GEOLOC_ID = :geolocId"
+	name = Geoloc.FIND_GEOLOC_BY_ID,
+	query = "from Geoloc g where g.id = :geolocId"
 	),
 	@NamedQuery(
-	name = "findAllGeolocs",
+	name = Geoloc.FIND_ALL_GEOLOC,
 	query = "from Geoloc"
 	)
 })
@@ -29,6 +30,8 @@ import fr.cpasam.leonardo.model.user.Member;
 @Table(name="geolocalisations")
 public class Geoloc {
 
+	public final static String FIND_GEOLOC_BY_ID = "findGeolocById";
+	public final static String FIND_ALL_GEOLOC = "findAllGeolocs";
 	
 	@Id
 	@GeneratedValue
@@ -49,6 +52,8 @@ public class Geoloc {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy= "geoloc")
 	List<RetailPoint> retailpoints ;
 
+	public Geoloc() {}
+	
 	public Geoloc(long lat, long longit, List<Member> members, List<RetailPoint> retailpoints) {
 		this.lat = lat;
 		this.longit = longit;
