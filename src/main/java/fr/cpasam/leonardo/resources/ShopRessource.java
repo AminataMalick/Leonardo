@@ -18,10 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.shop.RetailPoint;
-import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.user.Member;
 
 @Path("shop/")
 public class ShopRessource {
@@ -31,18 +27,20 @@ public class ShopRessource {
 	@Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
 	public Response resGetAllShops() {
-	    return Response
+		return Response
 	    		.status(Status.OK)
 	    		.entity(ShopDAO.getAllShops())
 	    		.build();
 	}
 	*/
+	
     
 	
 	/*
 	@GET
 	@Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
     public Response resGetShopID(@PathParam("id") long id) {
 
 		 return Response
@@ -53,25 +51,15 @@ public class ShopRessource {
     */
     
 	/* Version 1 :
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response resCreateShop(Shop shop) {
-		Shop result = ShopDAO.createShop(shop);
-		return Response
-          .status(Status.CREATED)
-          .entity(result.getShopID())
-          .build();
-	}
-	*/
-	
+	@Path("/{id}/{name}/{description}/{retailPoint}/{member}/{products}")
 	
     /* Version 2 :
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response resCreateShop(@QueryParam("SHOP_ID") long id, @QueryParam("SHOP_NAME") String name, 
-    		@QueryParam("DESCRIPTION") String description, @QueryParam("RETAILPOINT_ID") RetailPoint retailPoint, 
-    		@QueryParam("MEMBER_ID") Member member, @QueryParam("PRODUCTS") List<Product> products ) {  
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response resCreateShop(@PathParam("SHOP_ID") long id, @PathParam("SHOP_NAME") String name, 
+    		@PathParam("DESCRIPTION") String description, @PathParam("RETAILPOINT_ID") RetailPoint retailPoint, 
+    		@PathParam("MEMBER_ID") Member member, @PathParam("PRODUCTS") List<Product> products ) {  
         
     	ShopDAO.createShop(id, name, description, retailPoint, member, products) ;
 
@@ -102,6 +90,7 @@ public class ShopRessource {
     @PUT
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response resUpdateShop(Shop s){
      
      Shop shop = ShopDAO.getShopID(id) ;
@@ -122,6 +111,8 @@ public class ShopRessource {
 	/*
     @DELETE
     @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response resDeleteShop(@PathParam("SHOP_ID") long id) {
     	ShopDAO.deleteShop(id) ;
 
