@@ -8,9 +8,9 @@ public class TestJDBC {
 
 
 	public static void main(String[] args) {
-		String jdbcUrl = "jdbc:mysql://167.99.40.140:3306/leonardo?useSSL=false";
-		String user = "root";
-		String pswd = "9mars45200";
+		String jdbcUrl = "jdbc:mysql://localhost/leonardo?useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		String user = "antoine";
+		String pswd = "";
 		System.out.println("Connecting to database ...");
 
 		try {
