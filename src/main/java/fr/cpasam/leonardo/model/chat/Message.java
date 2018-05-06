@@ -39,6 +39,8 @@ public abstract class Message {
 	@JoinColumn(name="CHAT_ID")
 	private Chat chat;
 
+	public Message() {}
+	
 }
 
 /*
