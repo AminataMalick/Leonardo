@@ -41,7 +41,7 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 		
 	@Id
 	@Column (name ="PRODUCT_ID")
-	int id;
+	long id;
 	
 	@Column (name = "PRODUCT_NAME")
 	String name ;
@@ -55,7 +55,7 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="SHOP_ID")
-	private Shop shop;
+	protected Shop shop;
 
 	
 	@Column (name = "TAGS" )

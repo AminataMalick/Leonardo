@@ -1,5 +1,7 @@
 package fr.cpasam.leonardo.model.user;
 
+import java.util.jar.Attributes.Name;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,7 +37,7 @@ public abstract class User {
 		this.email = email;
 		this.pwd = pwd;
 	}
-	
+
 	
 
 	//TODO
