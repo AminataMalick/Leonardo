@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 
-public abstract class Message {
+public abstract class Message<T> {
 
 	private long id ;
-	List<Member> transmitter;
+
+	private T emiter;
+	
 	private java.util.Date date;
 	private String content ;
 	private Chat chat;
