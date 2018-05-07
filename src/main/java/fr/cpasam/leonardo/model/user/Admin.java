@@ -20,4 +20,5 @@ public class Admin extends User {
 		List<Product> res = query.list();
 		return res.get(0).deleteAccount();
 	}*/
+
 }

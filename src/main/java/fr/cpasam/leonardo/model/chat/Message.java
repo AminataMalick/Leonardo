@@ -1,28 +1,84 @@
 package fr.cpasam.leonardo.model.chat;
 
-import fr.cpasam.leonardo.model.user.Member;
-
-import java.util.List;
-
-import javax.persistence.Column;
+import java.util.Date;
 
 
-public abstract class Message {
+public abstract class Message<T> {
 
 	private long id ;
-	
-	List<Member> transmitter;
-	
+	private T emiter;
 	private java.util.Date date;
-	
 	private String content ;
-	
 	private Chat chat;
 
 	public Message() {}
 	
+	public Message(long id, T emiter, java.util.Date date,String content,Chat chat){
+		this.id=id;
+		this.emiter=emiter;
+		this.date=date;
+		this.content=content;
+		this.chat=chat;
+	}
+	/**
+	 * Retourne l'id d'un message
+	 * @return id
+	 */
+	public long GetMessageId() {return id;}
+	/**
+	 * Retourne l'emetteur d'un message
+	 * @return emiter
+	 */
+	public T GetMessageEmiter() {return emiter;}
+	/**
+	 * Retourne la date d'un message
+	 * @return date
+	 */
+	public java.util.Date GetMessageDate() {return date;}
+	/**
+	 * Retourne le contenu d'un message
+	 * @return content
+	 */
+	public String GetMessageContent() {return content;}
+	/**
+	 * Retourne le chat d'un message
+	 * @return chat
+	 */
+	public Chat GetMessageChat() {return chat;}
+
+	
+	/**
+	 * Met à jour l'id d'un message
+	 * @param id
+	 */
+	public void SetMessageId(long id) {this.id=id;}
+	/**
+	 * Met à jour l'emetteur d'un message
+	 * @param emiter
+	 */
+	public void SetMessageEmitter (T emiter) {this.emiter=emiter;}
+	/**
+	 * Met à jour la date d'un message
+	 * @param date
+	 */
+	public void SetMessageDate(Date date) {this.date=date;}
+	/**
+	 * Met à jour le contenu d'un message
+	 * @param content
+	 */
+	public void SetMessageContent(String content) {this.content=content;}
+	/**
+	 * Met à jour le chat d'un message
+	 * @param chat
+	 */
+	public void SetMessageChat(Chat chat) {this.chat=chat;}
+	
+
+
+
 }
 
+	
 /*
 public boolean sendMessage(Message m) {return true;}
 public boolean sendNotification() {return true;}
