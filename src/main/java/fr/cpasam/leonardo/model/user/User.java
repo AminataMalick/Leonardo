@@ -1,7 +1,5 @@
 package fr.cpasam.leonardo.model.user;
 
-import java.util.jar.Attributes.Name;
-
 public abstract class User {
 	
 	protected long id;
@@ -19,8 +17,20 @@ public abstract class User {
 		this.pwd = pwd;
 	}
 
-	
+	public long GetUserId() {return id;}
+	public String GetUserFistName() {return firstName;}
+	public String GetUserLastName() {return lastName ;}
+	public String GetUserEmail() {return email;}
+	public String GetUserPwd() {return pwd;}
+		
 
+	public void SetUserId(long id) {this.id=id;}
+	public void SetUserFistName(String firstname) {this.firstName=firstname;}
+	public void SetUserLastName(String lastname) {this.lastName=lastname;}
+	public void SetUserEmail(String email) {this.email=email;}
+	public void SetUserPwd(String pwd) {this.pwd=pwd;}
+	
+	
 	//TODO
 	/*
 	public boolean singhIn(String mail, String pwd) return true;

@@ -11,4 +11,6 @@ public class ProductTag extends Tag{
 		this.product = product;
 	}
 	
+	public Product GetProductTagProduct() {return product;}
+	public void SetProductTagProduct(Product product) {this.product = product;}
 }

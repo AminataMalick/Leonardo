@@ -11,20 +11,11 @@ import fr.cpasam.leonardo.model.user.Member;
 public class Shop {
 	
 	private long id;
-	
-	
 	protected String name;
-	
-	
 	protected String description;
-
-
 	protected List<RetailPoint> retailPoints = new ArrayList<>();
-	
 	private RetailPoint retailPoint;
-	
 	private Member member;
-	
 	List<Product> products ;
 
 	public Shop() {}
