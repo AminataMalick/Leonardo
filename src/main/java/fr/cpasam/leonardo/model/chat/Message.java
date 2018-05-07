@@ -7,11 +7,11 @@ import java.util.List;
 import javax.persistence.Column;
 
 
-public abstract class Message {
+public abstract class Message<T> {
 
 	private long id ;
 	
-	List<Member> transmitter;
+	private T emiter;
 	
 	private java.util.Date date;
 	

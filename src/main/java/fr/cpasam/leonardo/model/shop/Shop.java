@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
+import fr.cpasam.leonardo.model.chat.Chat;
+import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.user.Member;
 
@@ -19,24 +21,44 @@ public class Shop {
 	protected String description;
 
 
-	protected List<RetailPoint> retailPoints = new ArrayList<>();
-	
-	private RetailPoint retailPoint;
+	protected List<RetailPoint> retailPoints;
 	
 	private Member member;
 	
-	List<Product> products ;
+	private List<Product> products ;
+	
+	protected List<Chat> chats;
 
 	public Shop() {}
 	
-	public Shop(String name, String description, List<RetailPoint> retailPoints,
-			RetailPoint retailPoint, Member member, List<Product> products) {
+	public Shop(String name, String description, List<RetailPoint> retailPoints, Member member) {
 		this.name = name;
 		this.description = description;
-		this.retailPoints = retailPoints;
-		this.retailPoint = retailPoint;
+		this.retailPoints = new ArrayList<RetailPoint>();
 		this.member = member;
-		this.products = products;
+		this.products = new ArrayList<Product>();
+		this.chats = new ArrayList<Chat>();
+	}
+
+	/*
+	 * To Do
+	 */
+	public static Shop get(Long shopId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addChat(Chat nwChat) {
+		
+		if(!this.chats.contains(nwChat)) {
+			this.chats.add(nwChat);
+		}
+		
+	}
+
+	public long id() {
+		
+		return this.id;
 	}
 	
 }
