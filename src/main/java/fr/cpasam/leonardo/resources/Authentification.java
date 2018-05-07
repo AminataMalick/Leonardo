@@ -1,18 +1,19 @@
-package fr.cpasam.leonardo.utilities.auth;
+package fr.cpasam.leonardo.resources;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
-public class Connection {
+public class Authentification {
 	@Context private HttpServletRequest request;
 
 	@POST
-	@Path("/authenticate")
-	public void authenticate(@FormParam("email") String mail, 
-	        @FormParam("password") String password) {
+	@Path("/login")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void login(Json json) {
 
 	    // Implementation of your authentication logic
 	    /*if (authenticate(username, password)) {
