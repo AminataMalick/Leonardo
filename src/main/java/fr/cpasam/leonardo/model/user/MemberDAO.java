@@ -13,7 +13,11 @@ import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 public class MemberDAO {
 
-	// Affichage de tous les membres de la BD
+	
+	/**
+	 * Retourne les membres de la BD 
+	 * @return myList
+	 */
 	public List<Member> getAllMembers() {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -29,7 +33,12 @@ public class MemberDAO {
 		return myList ;   
 	}
 
-	// Hashage du mot de passe
+	
+	/**
+	 *  Hash le mot de passe
+	 * @param plainTextPassword
+	 * @return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt())
+	 */
 	private String hashPassword(String plainTextPassword){
 
 		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
@@ -50,7 +59,15 @@ public class MemberDAO {
 		}
 	 */
 
-	// Creation d'un membre avec recuperation des donnees du formulaire 
+	 
+	/**
+	 *  Créé un membre avec la recuperation des donnees du formulaire
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param pwd
+	 */
 	public void CreateMember(long id, String firstName, String lastName, String email, String pwd ) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -69,7 +86,12 @@ public class MemberDAO {
 	}
 
 
-	// Recherche d'un membre a partir de son id
+	
+	/**
+	 * Recherche un membre à partir de son id 
+	 * @param id
+	 * @return member
+	 */
 	public Member GetMemberID(long id) {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -85,7 +107,15 @@ public class MemberDAO {
 		return member;
 	}
 
-	// Mise a jour des informations d'un membre
+	
+	/**
+	 * Met à jour les informations d'un membre
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param pwd
+	 */
 	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -104,7 +134,11 @@ public class MemberDAO {
 	}
 
 
-	// Supprime un membre a l'aide de son id et d'une requete nommee
+	
+	/**
+	 *Supprime un membre à partir de son id et d'une requête nommée 
+	 * @param id
+	 */
 	public void DeleteMember(long id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();

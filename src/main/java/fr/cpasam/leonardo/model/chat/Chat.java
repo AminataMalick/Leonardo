@@ -11,14 +11,11 @@ public abstract class Chat<T,U>{
 
 	
 	protected long id ;
-
 	protected T entity1;
-	
 	protected U entity2;
-
-
 	private List<Message> messages ;
 
+	
 	public Chat(T entity1, U entity2) {
 		this.entity1 = entity1;
 		this.entity2 = entity2;
