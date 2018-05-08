@@ -2,11 +2,13 @@ package fr.cpasam.leonardo.utilities;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import fr.cpasam.leonardo.errors.MemberCreationError;
 import fr.cpasam.leonardo.exceptions.BadPasswordException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
-import fr.cpasam.leonardo.model.user.UserDAO;
 
 
 public class Authentication {
@@ -43,6 +45,21 @@ public class Authentication {
 	 */
 	public static void saveToken(User user) {
 		updateUser(user.GetUserId(), user.GetUserFistName(), user.GetUserLastName(), user.GetUserEmail(), user.GetUserPwd(), user.getToken());
+	}
+	
+	/**
+	 * Enregistre un nouveau membre dans la base de données à partir des informations transmises
+	 * @param firstName le prénom du membre à enregistrer
+	 * @param lastName le nom du membre à enregistrer
+	 * @param mail l'e-mail du membre à enregistrer
+	 * @param pwd le mot de passe du membre à enregistrer
+	 * @throws IncompleteDataException dans le cas où des données nécessaires à la création d'un membre sont manquantes
+	 * @throws MemberCreationError dans le cas où un problème est survenu lors de la transaction avec la base de données
+	 */
+	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationError {
+		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
+		String newPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+		if(MemberDAO.CreateMember(firstName, lastName, mail, newPwd) == null) throw new MemberCreationError();
 	}
 	
 }
