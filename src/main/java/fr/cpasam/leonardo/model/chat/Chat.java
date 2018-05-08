@@ -23,25 +23,17 @@ public abstract class Chat<T,U>{
 		this.entity2 = entity2;
 		this.messages = new ArrayList<Message>();
 	}
-
-	public boolean sendMessage(Message m) {return true;}
-	public boolean sendNotification() {return true;}
-
 	
-	//TODO BDD Resquest
-	public static Chat get(long id2, long id3) {
-		// récupérer dans la BDD le chat avec les id2 et id3 correspondant
+	protected void addMessages(Message m) {
 		
-		return null;
-	}
-	
-	protected int addMessages() {
-	
-		return 0;
-	}
+		this.messages.add(m);
+		this.cnt++;
 
+	}
 	
-	
+	protected int getNbMessage() {
+		return this.cnt;
+	}
 	
 
 }
