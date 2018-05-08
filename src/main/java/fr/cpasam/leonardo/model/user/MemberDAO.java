@@ -1,59 +1,63 @@
 package fr.cpasam.leonardo.model.user;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.mindrot.jbcrypt.BCrypt;
 
-import fr.cpasam.leonardo.utilities.HibernateUtil;
+import fr.cpasam.leonardo.utilities.DAOManager;
 
 
 
-public class MemberDAO {
 
+public class MemberDAO extends DAOManager {
+
+	
 	// Affichage de tous les membres de la BD
-	public List<Member> getAllMembers() {
+	public static List<Member> All() {
+		List<Member> members = new ArrayList<Member>();
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+			ResultSet rset = stmt.executeQuery("QUERY_FIND_MEMBERS");
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+			while (rset.next()) {
+				Member member = new Member(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+				members.add(member);
+			}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 
-		List<Member> myList = new ArrayList<Member>();
-		Query query = session.getNamedQuery("findAllMembers");
-		myList = query.getResultList();
+			if (stmt != null) {
+				try {
+					// Le stmt.close ferme automatiquement le rset.
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 
-		session.getTransaction().commit();  
-		session.close();
-		return myList ;   
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}   
+
+		return members ;   
 	}
 
-	// Hashage du mot de passe
-	private String hashPassword(String plainTextPassword){
 
-		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
 
-	}
-
-	// Verification du hashage de mot de passe ==> non utilisee
-	/* private void checkPass(String plainPassword, String hashedPassword) {
-
-		if (BCrypt.checkpw(plainPassword, hashedPassword))
-
-		System.out.println("The password matches.");
-
-		else
-
-		System.out.println("The password does not match.");
-
-		}
-	 */
 
 	// Creation d'un membre avec recuperation des donnees du formulaire 
 	public void CreateMember(long id, String firstName, String lastName, String email, String pwd ) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 
 		Member member = new Member();
 
@@ -61,16 +65,13 @@ public class MemberDAO {
 		member.firstName = firstName ;
 		member.lastName = lastName ;
 		member.email = email ;
-		member.pwd = hashPassword(pwd) ;
+		member.pwd = pwd ;
 
-		session.save(member);
-		session.getTransaction().commit();
-		session.close();
 	}
-
+}
 
 	// Recherche d'un membre a partir de son id
-	public Member GetMemberID(long id) {
+	/*	public Member GetMemberID(long id) {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -83,10 +84,10 @@ public class MemberDAO {
 		session.getTransaction().commit();
 		session.close();
 		return member;
-	}
+	}*/
 
 	// Mise a jour des informations d'un membre
-	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
+	/*	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
@@ -101,11 +102,11 @@ public class MemberDAO {
 		session.save(member);
 		session.getTransaction().commit();
 		session.close();
-	}
+	}*/
 
 
 	// Supprime un membre a l'aide de son id et d'une requete nommee
-	public void DeleteMember(long id) {
+	/*public void DeleteMember(long id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
@@ -118,5 +119,6 @@ public class MemberDAO {
 		session.getTransaction().commit();
 		session.close();	
 
-	}
-}
+	}*/
+
+
