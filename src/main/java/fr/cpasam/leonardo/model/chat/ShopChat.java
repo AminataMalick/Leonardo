@@ -3,7 +3,9 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 
 import fr.cpasam.leonardo.model.shop.Shop;
+import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
 
 public class ShopChat extends Chat<Member, Shop> {
@@ -15,11 +17,18 @@ public class ShopChat extends Chat<Member, Shop> {
 	public static Chat getChatByUsers(Long memberID, Long shopId) {
 		
 		
-		// Faire une requête pour rechercher si un chat existe entre l' et le user2
-		 
+		// Faire une requête pour rechercher si un chat existe entre user1 et le user2
+		ChatDAO cd = new ChatDAO();
+		Chat c = cd.getByMemberAndShop(memberID, shopId);
+		
 		// Si le chat n'existe pas, le créer
-		Member m = Member.get(memberID);
-		Shop s = Shop.get(shopId);
+		
+		MemberDAO md = new MemberDAO();
+		Member m = md.get(memberID);
+		
+		ShopDAO sd = new ShopDAO();  
+		Shop s = sd.get(shopId);
+		
 		ShopChat nwChat = new ShopChat(m ,s );
 				
 		// Ajouter le chat au membre et à la boutique
