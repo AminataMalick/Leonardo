@@ -12,7 +12,10 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 
 
+
 public class MemberDAO extends DAOManager {
+
+	
 
 	
 	// Affichage de tous les membres de la BD
@@ -56,69 +59,25 @@ public class MemberDAO extends DAOManager {
 
 
 
-	// Creation d'un membre avec recuperation des donnees du formulaire 
-	public void CreateMember(long id, String firstName, String lastName, String email, String pwd ) {
+	 
+	/**
+	 *  Créé un membre avec la recuperation des donnees du formulaire
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param pwd
+	 */
+	public void CreateMember(String firstName, String lastName, String email, String pwd ) {
 
-		Member member = new Member();
+		Member member = new Member(firstName, lastName, email, pwd);
+	
+}
+	
 
-		member.id = id;
-		member.firstName = firstName ;
-		member.lastName = lastName ;
-		member.email = email ;
-		member.pwd = pwd ;
 
+	public Member get(Long memberID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
-
-	// Recherche d'un membre a partir de son id
-	/*	public Member GetMemberID(long id) {
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member() ;
-		member.id = id ;
-		Query query = session.getNamedQuery("findMemberById");
-		member = (Member)query;
-
-		session.getTransaction().commit();
-		session.close();
-		return member;
-	}*/
-
-	// Mise a jour des informations d'un membre
-	/*	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member();
-
-		member.id = id;
-		member.firstName = firstName ;
-		member.lastName = lastName ;
-		member.email = email ;
-		member.pwd = hashPassword(pwd) ;
-
-		session.save(member);
-		session.getTransaction().commit();
-		session.close();
-	}*/
-
-
-	// Supprime un membre a l'aide de son id et d'une requete nommee
-	/*public void DeleteMember(long id) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member() ;
-		member.id = id ;
-		Query query = session.getNamedQuery("findMemberById");
-
-		session.delete(query);
-		session.save(query);
-		session.getTransaction().commit();
-		session.close();	
-
-	}*/
-
-

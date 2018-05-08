@@ -10,5 +10,15 @@ public class ProductTag extends Tag{
 	public ProductTag(Product product) {
 		this.product = product;
 	}
+	/**
+	 * Retourne le produit d'un mot clé de produit
+	 * @return produit
+	 */
+	public Product getProduct() {return product;}
 	
+	/**
+	 * Met à jour le produit d'un mot clé de produit
+	 * @param product
+	 */
+	public void setProduct(Product product) {this.product = product;}
 }

@@ -1,29 +1,50 @@
 package fr.cpasam.leonardo.model.chat;
 
-import fr.cpasam.leonardo.model.user.Member;
-
-import java.util.List;
-
-import javax.persistence.Column;
+import java.util.Date;
 
 
-public abstract class Message {
+public abstract class Message<T> {
 
-	private long id ;
 	
-	List<Member> transmitter;
+	protected long id ;
+	protected T emiter;
+	protected java.util.Date date;
+	protected Chat chat;
 	
-	private java.util.Date date;
 	
-	private String content ;
-	
-	private Chat chat;
+	public Message(Chat chat, T emiter){
+		
+		this.id = chat.getNbMessage()+1;
+		this.emiter=emiter;
+		this.date=new Date();
+		this.chat=chat;
 
-	public Message() {}
+	}
 	
+	
+	
+	/**
+	 * Retourne l'id d'un message
+	 * @return id
+	 */
+	public long getId() {return this.id;}
+
+	/**
+	 * Retourne l'emetteur d'un message
+	 * @return emiter
+	 */
+	public T getEmiter() {return emiter;}
+	/**
+	 * Retourne la date d'un message
+	 * @return date
+	 */
+	public Date getDate() {return date;}
+	
+	/**
+	 * Retourne le chat d'un message
+	 * @return chat
+	 */
+	
+	public Chat getChat() {return chat;}	
+
 }
-
-/*
-public boolean sendMessage(Message m) {return true;}
-public boolean sendNotification() {return true;}
-*/
