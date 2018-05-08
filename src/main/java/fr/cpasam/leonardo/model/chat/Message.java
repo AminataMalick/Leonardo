@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 
-public abstract class Message<T> {
+public abstract class Message<T,U> {
 
+	
 	private long id ;
 
 	private T emiter;
@@ -18,9 +19,9 @@ public abstract class Message<T> {
 
 	public Message() {}
 	
-	public Message(long id, List<Member> transmitter, java.util.Date date,String content,Chat chat){
+	public Message(U content,Chat chat){
 		this.id=id;
-		this.transmitter=transmitter;
+		this.emitter=emiter;
 		this.date=date;
 		this.content=content;
 		this.chat=chat;

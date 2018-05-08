@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.jar.Attributes.Name;
 
 import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ShopChat;
 
 public abstract class User {
 

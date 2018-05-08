@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.user.Member;
 
