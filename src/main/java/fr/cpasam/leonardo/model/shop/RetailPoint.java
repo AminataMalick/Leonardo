@@ -25,9 +25,25 @@ public class RetailPoint {
 	 * @return id
 	 */
 	public long GetRetailPointId() {return id;}
+	/**
+	 *  Retourne le nom d'un point de vente
+	 * @return name
+	 */
 	public String GetRetailPointName() {return name;}
+	/**
+	 *  Retourne la géolocalisation d'un point de vente
+	 * @return geoloc
+	 */
 	public Geoloc GetRetailPointGeoloc() {return geoloc;}
+	/**
+	 *  Retourne la boutique d'un point de vente
+	 * @return shop
+	 */
 	public Shop GetRetailPointShop() {return shop;}
+	/**
+	 *  Retourne les boutiques d'un point de vente
+	 * @return shops
+	 */
 	public List<Shop> GetRetailPointShops() {return shops;}
 	
 	
