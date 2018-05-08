@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import fr.cpasam.leonardo.utilities.Authentication;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -30,7 +32,7 @@ public class Authentification {
 			if(mail == null || pwd == null)
 				return Response.status(Response.Status.NO_CONTENT).build();
 			
-			connection(mail, pwd);
+			boolean cx = Authentication.connection(mail, pwd);
 			
 			String token = generateToken(mail);
 			if(token != null)

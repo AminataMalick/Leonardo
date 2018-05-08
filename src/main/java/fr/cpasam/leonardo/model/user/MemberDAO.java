@@ -153,4 +153,10 @@ public class MemberDAO {
 		session.close();	
 
 	}
+
+
+	public Member get(Long memberID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
