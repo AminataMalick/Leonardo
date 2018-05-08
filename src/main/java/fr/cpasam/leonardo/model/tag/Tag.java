@@ -16,24 +16,24 @@ public abstract class Tag {
 	 * Retourne l'id d'un mot clé
 	 * @return id
 	 */
-	public long getTagId() {return id;}
+	public long getId() {return id;}
 	/**
 	 * Retourne le contenu d'un mot clé
 	 * @return keyword
 	 */
-	public String getTagKeyword () {return keyword;}
+	public String getKeyword () {return keyword;}
 	
 	
 	/**
 	 * Met à jour l'id d'un mot clé
 	 * @param id
 	 */
-	public void setTagId(long id) {this.id=id;}
+	public void setId(long id) {this.id=id;}
 	/**
 	 * Met à jour le contenu d'un mot clé
 	 * @param keyword
 	 */
-	public void setTagKeyword(String keyword) {this.keyword=keyword;}
+	public void setKeyword(String keyword) {this.keyword=keyword;}
 	
 	
 }
