@@ -48,33 +48,33 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * Retourne la geolocalisation d'un membre
 	 * @return geoloc
 	 */
-	public Geoloc GetMemberGeoloc() {return geoloc;}
+	public Geoloc getMemberGeoloc() {return geoloc;}
 	/**
 	 * Retourne les boutiques d'un membre
 	 * @return shops
 	 */
-	public List<Shop> GetMemberShops() {return shops;}
+	public List<Shop> getMemberShops() {return shops;}
 	/**
 	 * Retourne les recommendations laissées par un membre
 	 * @return recommandations
 	 */
-	public List<Recommandation> GetMemberRecommandations() {return recommandations;}
+	public List<Recommandation> getMemberRecommandations() {return recommandations;}
 	
 	
 	/**
 	 * Met à jour la geolocalisation d'un membre
 	 * @param geoloc
 	 */
-	public void SetMemberGeoloc(Geoloc geoloc) {this.geoloc = geoloc;}
+	public void setMemberGeoloc(Geoloc geoloc) {this.geoloc = geoloc;}
 	/**
 	 * Met à jour les boutiques d'un membre
 	 * @param shops
 	 */
-	public void SetMemberShops(List<Shop> shops) {this.shops = shops;}
+	public void setMemberShops(List<Shop> shops) {this.shops = shops;}
 	/**
 	 * Met à jour les recommendations laissées par un membre
 	 * @param recommandations
 	 */
-	public void SetMemberRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
+	public void setMemberRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 	
 }

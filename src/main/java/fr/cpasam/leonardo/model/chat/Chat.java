@@ -9,6 +9,7 @@ import fr.cpasam.leonardo.model.user.User;
 
 public abstract class Chat<T,U>{
 
+	protected int cnt;
 	
 	protected long id ;
 	protected T entity1;
@@ -17,6 +18,7 @@ public abstract class Chat<T,U>{
 
 	
 	public Chat(T entity1, U entity2) {
+		this.cnt = 0;
 		this.entity1 = entity1;
 		this.entity2 = entity2;
 		this.messages = new ArrayList<Message>();
@@ -31,6 +33,11 @@ public abstract class Chat<T,U>{
 		// récupérer dans la BDD le chat avec les id2 et id3 correspondant
 		
 		return null;
+	}
+	
+	protected int addMessages() {
+	
+		return 0;
 	}
 
 	
