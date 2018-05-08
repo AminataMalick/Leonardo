@@ -9,54 +9,70 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.cpasam.leonardo.utilities.Authentication;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+
 import com.google.gson.JsonObject;
 
-public class Authentification {
+import fr.cpasam.leonardo.errors.TextError;
+import fr.cpasam.leonardo.exceptions.BadPasswordException;
+import fr.cpasam.leonardo.exceptions.IncompleteDataException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.model.user.User;
+import fr.cpasam.leonardo.utilities.Authentication;
 
-	private String secret = "monSecret";
+public class Authentification {
 	
+	/**
+	 * Effectue la connexion d'un utilisateur
+	 * @param json la requête envoyée par le client, demandant la connexion d'un utilisateur
+	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
+	 */
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(JsonObject json) {
+		String mail = json.get("email").getAsString();
+		String pwd = json.get("password").getAsString();
+		User user = null;
+		
 		try {
-			String mail = json.get("email").getAsString();
-			String pwd = json.get("password").getAsString();
-			
-			if(mail == null || pwd == null)
-				return Response.status(Response.Status.NO_CONTENT).build();
-			
-			boolean cx = Authentication.connection(mail, pwd);
-			
-			String token = generateToken(mail);
-			if(token != null)
-				return Response.ok(token).build();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+			user = Authentication.connection(mail, pwd);
+		} catch (UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
+		} catch (BadPasswordException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Bad password.").message()).build();
+		} catch (IncompleteDataException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
+		}
+		
+		String token = generateToken(user);
+		if(token == null) return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the token.")).build();
+		
+		user.setToken(token);
+		
+		Authentication.saveToken(user);
+		
+		return Response.ok(token).build();
 	}
-	private String generateToken(String mail) {
+	
+	/**
+	 * Génère un token lié à la session de l'utilisateur lors de la connexion de ce-dernier
+	 * @param user l'utilisateur qui souhaite se connecter
+	 * @return le token généré à partir de l'e-mail et de l'id de l'utilisateur ou null si une erreur est survenue
+	 */
+	private String generateToken(User user) {
 		try {
 		    Algorithm algorithm = Algorithm.HMAC256("secret");
 		    String token = JWT.create()
 		        .withIssuer("leonardo")
-		        .withClaim("mail", mail)
+		        .withArrayClaim("mail", new String[] {user.GetUserEmail(), Long.toString(user.GetUserId())})
 		        .sign(algorithm);
 		    return token;
 		} catch (UnsupportedEncodingException exception){
-		    //UTF-8 encoding not supported
-			exception.printStackTrace();
 		} catch (JWTCreationException exception){
-		    //Invalid Signing configuration / Couldn't convert Claims";
-			exception.printStackTrace();
 		}
 		return null;
 	}
