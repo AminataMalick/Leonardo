@@ -26,52 +26,52 @@ public class Geoloc {
 	 * Retourne l'id d'une geolocalisation
 	 * @return id
 	 */
-	public long GetGeolocId () {return id;}
+	public long getGeolocId () {return id;}
 	/**
 	 * Retourne la latitude d'une geolocalisation
 	 * @return lat
 	 */
-	public long GetGeolocLat () {return lat;}
+	public long getGeolocLat () {return lat;}
 	/**
 	 * Retourne la longitude d'une geolocalisation
 	 * @return longit
 	 */
-	public long GetGeolocLongit () {return longit;}
+	public long getGeolocLongit () {return longit;}
 	/**
 	 * Retourne la liste des membres d'une geolocalisation
 	 * @return members
 	 */
-	public List<Member> GetGeolocMembers () {return members;}
+	public List<Member> getGeolocMembers () {return members;}
 	/**
 	 * Retourne la liste des points de vente d'une geolocalisation
 	 * @return retailpoints
 	 */
-	public List<RetailPoint> GetGeolocRetailpoints () {return retailpoints;}
+	public List<RetailPoint> getGeolocRetailpoints () {return retailpoints;}
 	
 	
 	/**
 	 * Met à jour l'id d'une geolocalisation
 	 * @param id
 	 */
-	public void SetGeolocId (long id) {this.id=id;}
+	public void setGeolocId (long id) {this.id=id;}
 	/**
 	 * Met à jour la latitude d'une geolocalisation
 	 * @param lat
 	 */
-	public void SetGeolocLat (long lat) {this.lat=lat;}
+	public void setGeolocLat (long lat) {this.lat=lat;}
 	/**
 	 * Met à jour la longitude d'une geolocalisation
 	 * @param longit
 	 */
-	public void SetGeolocLongit (long longit) {this.longit= longit;}
+	public void setGeolocLongit (long longit) {this.longit= longit;}
 	/**
 	 * Met à jour la liste des membres d'une geolocalisation
 	 * @param members
 	 */
-	public void SetGeolocMembers (List<Member> members) {this.members= members;}
+	public void setGeolocMembers (List<Member> members) {this.members= members;}
 	/**
 	 * Met à jour la liste des points de vente d'une geolocalisation
 	 * @param retailpoints
 	 */
-	public void SetGeolocRetailPoints(List<RetailPoint> retailpoints) {this.retailpoints=retailpoints;}
+	public void setGeolocRetailPoints(List<RetailPoint> retailpoints) {this.retailpoints=retailpoints;}
 }

@@ -23,53 +23,53 @@ public abstract class User {
 	 * Retourne l'id d'un utilisateur
 	 * @return id
 	 */
-	public long GetUserId() {return id;}
+	public long getUserId() {return id;}
 	/**
 	 * Retourne le prénom d'un utilisateur
 	 * @return fistName
 	 */
-	public String GetUserFistName() {return firstName;}
+	public String getUserFistName() {return firstName;}
 	/**
 	 * Retourne le nom d'un utilisateur
 	 * @return lastName
 	 */
-	public String GetUserLastName() {return lastName ;}
+	public String getUserLastName() {return lastName ;}
 	/**
 	 * Retourne l'email d'un utilisateur
 	 * @return email
 	 */
-	public String GetUserEmail() {return email;}
+	public String getUserEmail() {return email;}
 	/**
 	 * Retourne le mot de passe d'un utilisateur
 	 * @return pwd
 	 */
-	public String GetUserPwd() {return pwd;}
+	public String getUserPwd() {return pwd;}
 		
 	/**
 	 * Met à jour l'id d'un utilisateur
 	 * @param id
 	 */
-	public void SetUserId(long id) {this.id=id;}
+	public void setUserId(long id) {this.id=id;}
 	/**
 	 * Met à jour le prenom d'un utilisateur
 	 * @param firstname
 	 */
-	public void SetUserFistName(String firstname) {this.firstName=firstname;}
+	public void setUserFistName(String firstname) {this.firstName=firstname;}
 	/**
 	 * Met à jour le nom d'un utilisateur
 	 * @param lastname
 	 */
-	public void SetUserLastName(String lastname) {this.lastName=lastname;}
+	public void setUserLastName(String lastname) {this.lastName=lastname;}
 	/**
 	 * Met à jour l'email d'un utilisateur
 	 * @param email
 	 */
-	public void SetUserEmail(String email) {this.email=email;}
+	public void setUserEmail(String email) {this.email=email;}
 	/**
 	 * Met à jour le mot de passe d'un utilisateur
 	 * @param pwd
 	 */
-	public void SetUserPwd(String pwd) {this.pwd=pwd;}
+	public void setUserPwd(String pwd) {this.pwd=pwd;}
 	
 	
 	public void addChat(Chat nwChat) {

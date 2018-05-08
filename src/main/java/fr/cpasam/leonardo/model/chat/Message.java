@@ -25,54 +25,54 @@ public abstract class Message<T,U> {
 	 * Retourne l'id d'un message
 	 * @return id
 	 */
-	public long GetMessageId() {return id;}
+	public long getMessageId() {return id;}
 	/**
 	 * Retourne l'emetteur d'un message
 	 * @return emiter
 	 */
-	public T GetMessageEmiter() {return emiter;}
+	public T getMessageEmiter() {return emiter;}
 	/**
 	 * Retourne la date d'un message
 	 * @return date
 	 */
-	public java.util.Date GetMessageDate() {return date;}
+	public java.util.Date getMessageDate() {return date;}
 	/**
 	 * Retourne le contenu d'un message
 	 * @return content
 	 */
-	public String GetMessageContent() {return content;}
+	public String getMessageContent() {return content;}
 	/**
 	 * Retourne le chat d'un message
 	 * @return chat
 	 */
-	public Chat GetMessageChat() {return chat;}
+	public Chat getMessageChat() {return chat;}
 
 	
 	/**
 	 * Met à jour l'id d'un message
 	 * @param id
 	 */
-	public void SetMessageId(long id) {this.id=id;}
+	public void setMessageId(long id) {this.id=id;}
 	/**
 	 * Met à jour l'emetteur d'un message
 	 * @param emiter
 	 */
-	public void SetMessageEmitter (T emiter) {this.emiter=emiter;}
+	public void setMessageEmitter (T emiter) {this.emiter=emiter;}
 	/**
 	 * Met à jour la date d'un message
 	 * @param date
 	 */
-	public void SetMessageDate(Date date) {this.date=date;}
+	public void setMessageDate(Date date) {this.date=date;}
 	/**
 	 * Met à jour le contenu d'un message
 	 * @param content
 	 */
-	public void SetMessageContent(U content) {this.content=content;}
+	public void setMessageContent(U content) {this.content=content;}
 	/**
 	 * Met à jour le chat d'un message
 	 * @param chat
 	 */
-	public void SetMessageChat(Chat chat) {this.chat=chat;}
+	public void setMessageChat(Chat chat) {this.chat=chat;}
 	
 
 

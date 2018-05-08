@@ -22,44 +22,44 @@ public class Recommandation {
 	 * Retourne l'id d'une recommandation
 	 * @return id
 	 */
-	public long GetRecommandationId() {return id;}
+	public long getRecommandationId() {return id;}
 	/**
 	 * Retourne la note d'une recommandation
 	 * @return grade
 	 */
-	public int GetRecommandationGrade() {return grade;}
+	public int getRecommandationGrade() {return grade;}
 	/**
 	 * Retourne le commentaire d'une recommandation
 	 * @return comment
 	 */
-	public String GetRecommandationComment() {return comment;}
+	public String getRecommandationComment() {return comment;}
 	/**
 	 * Retourne l'auteur d'une recommandation
 	 * @return member
 	 */
-	public Member GetRecommandationMember() {return member;}
+	public Member getRecommandationMember() {return member;}
 	
 	
 	/**
 	 * Met à jour l'id d'une recommandation
 	 * @param id
 	 */
-	public void SetRecommandationId(long id) {this.id=id;}
+	public void setRecommandationId(long id) {this.id=id;}
 	/**
 	 * Met à jour la note d'une recommandation
 	 * @param grade
 	 */
-	public void SetRecommandationGrade(int grade) {this.grade = grade;}
+	public void setRecommandationGrade(int grade) {this.grade = grade;}
 	/**
 	 * Met à jour le commentaire d'une recommandation
 	 * @param comment
 	 */
-	public void SetRecommandationComment(String comment) {this.comment = comment;}
+	public void setRecommandationComment(String comment) {this.comment = comment;}
 	/**
 	 * Met à jour l'auteur d'une recommandation
 	 * @param member
 	 */
-	public void SetRecommandationMember(Member member) {this.member = member;}
+	public void setRecommandationMember(Member member) {this.member = member;}
 
 }
 
