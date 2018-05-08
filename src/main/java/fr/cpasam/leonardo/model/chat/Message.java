@@ -28,8 +28,7 @@ public abstract class Message<T> {
 	 * @return id
 	 */
 	public long getId() {return this.id;}
-	
-	
+
 	/**
 	 * Retourne l'emetteur d'un message
 	 * @return emiter
@@ -48,7 +47,7 @@ public abstract class Message<T> {
 	 * Retourne le chat d'un message
 	 * @return chat
 	 */
-	public Chat GetChat() {return chat;}
 	
+	public Chat getChat() {return chat;}	
 
 }

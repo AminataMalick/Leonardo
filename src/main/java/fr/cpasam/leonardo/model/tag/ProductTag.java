@@ -14,11 +14,11 @@ public class ProductTag extends Tag{
 	 * Retourne le produit d'un mot clé de produit
 	 * @return produit
 	 */
-	public Product GetProductTagProduct() {return product;}
+	public Product getProductTagProduct() {return product;}
 	
 	/**
 	 * Met à jour le produit d'un mot clé de produit
 	 * @param product
 	 */
-	public void SetProductTagProduct(Product product) {this.product = product;}
+	public void setProductTagProduct(Product product) {this.product = product;}
 }
