@@ -5,15 +5,16 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.mindrot.jbcrypt.BCrypt;
-
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.ProductTag;
 import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 public class ProductDAO {
 
-	// Affichage de tous les produits de la BD
+	/**
+	 * Retourne la liste de tous les produits de la BD
+	 * @return myList
+	 */
 	public List<Product> getAllProducts() {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -29,7 +30,16 @@ public class ProductDAO {
 		return myList ;   
 	}
 
-	// Creation d'un produit avec recuperation des donnees du formulaire 
+	
+	/**
+	 * Creation d'un produit avec récuperation des donnees du formulaire 
+	 * @param id
+	 * @param name
+	 * @param provenance
+	 * @param unityPrice
+	 * @param shop
+	 * @param tags
+	 */
 	public void CreateProduct(long id, String name, Shop provenance, float unityPrice, Shop shop, ArrayList<ProductTag> tags ) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -40,7 +50,6 @@ public class ProductDAO {
 		product.name = name ;
 		product.provenance = provenance ;
 		product.unityPrice = unityPrice ;
-		product.shop = shop ;
 		product.tags = tags ;
 
 
@@ -50,7 +59,12 @@ public class ProductDAO {
 	}
 
 
-	// Recherche d'un produit a partir de son id
+	
+	/**
+	 * Recherche d'un produit à partir de son id
+	 * @param id
+	 * @return product
+	 */
 	public Product GetProductID(long id) {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -66,7 +80,16 @@ public class ProductDAO {
 		return product;
 	}
 
-	// Mise a jour des informations d'un produit
+	 
+	/**
+	 * Met à jour les informations d'un produit
+	 * @param id
+	 * @param name
+	 * @param provenance
+	 * @param unityPrice
+	 * @param shop
+	 * @param tags
+	 */
 	public void UpdateProduct(long id, String name, Shop provenance, float unityPrice, Shop shop, ArrayList<ProductTag> tags) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
@@ -77,7 +100,6 @@ public class ProductDAO {
 		product.name = name ;
 		product.provenance = provenance ;
 		product.unityPrice = unityPrice ;
-		product.shop = shop ;
 		product.tags = tags ;
 
 
@@ -87,7 +109,11 @@ public class ProductDAO {
 	}
 
 
-	// Supprime un produit a l'aide de son id et d'une requete nommee
+	
+	/**
+	 * Supprime un produit à l'aide de son id et d'une requete nommee
+	 * @param id
+	 */
 	public void DeleteProduct(long id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();

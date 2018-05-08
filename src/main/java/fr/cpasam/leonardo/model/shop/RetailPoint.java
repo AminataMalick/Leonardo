@@ -20,18 +20,57 @@ public class RetailPoint {
 		this.shop = shop;
 		this.shops = shops;
 	}
-	
+	/**
+	 * Retourne l'id d'un point de vente
+	 * @return id
+	 */
 	public long GetRetailPointId() {return id;}
+	/**
+	 *  Retourne le nom d'un point de vente
+	 * @return name
+	 */
 	public String GetRetailPointName() {return name;}
+	/**
+	 *  Retourne la géolocalisation d'un point de vente
+	 * @return geoloc
+	 */
 	public Geoloc GetRetailPointGeoloc() {return geoloc;}
+	/**
+	 *  Retourne la boutique d'un point de vente
+	 * @return shop
+	 */
 	public Shop GetRetailPointShop() {return shop;}
+	/**
+	 *  Retourne les boutiques d'un point de vente
+	 * @return shops
+	 */
 	public List<Shop> GetRetailPointShops() {return shops;}
 	
 	
+	/**
+	 * Met à jour l'id d'un point de vente
+	 * @param id
+	 */
 	public void SetRetailPointId(long id) {this.id=id;}
+	/**
+	 * Met à jour le nom d'un point de vente
+	 * @param name
+	 */
 	public void SetRetailPointName(String name) {this.name= name;}
+	/**
+	 * Met à jour la geolocalisation d'un point de vente
+	 * @param geoloc
+	 */
 	public void SetRetailPointGeoloc(Geoloc geoloc) {this.geoloc=geoloc;}
+	/**
+	 * Met à jour la boutique d'un point de vente
+	 * @param shop
+	 */
 	public void SetRetailPointShop(Shop shop) {this.shop= shop;}
+	/**
+	 * Met à jour les boutiques d'un point de vente
+	 * @param shops
+	 */
 	public void SetRetailPointShops(List<Shop> shops) {this.shops=shops;}
 	
 	

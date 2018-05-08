@@ -12,14 +12,11 @@ public abstract class Chat<T,U>{
 	protected int cnt;
 	
 	protected long id ;
-
 	protected T entity1;
-	
 	protected U entity2;
-
-
 	private List<Message> messages ;
 
+	
 	public Chat(T entity1, U entity2) {
 		this.cnt = 0;
 		this.entity1 = entity1;
@@ -39,7 +36,8 @@ public abstract class Chat<T,U>{
 	}
 	
 	protected int addMessages() {
-		
+	
+		return 0;
 	}
 
 	

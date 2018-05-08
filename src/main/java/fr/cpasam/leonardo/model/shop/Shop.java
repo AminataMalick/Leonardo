@@ -3,8 +3,6 @@ package fr.cpasam.leonardo.model.shop;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.Length;
-
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.user.Member;
@@ -14,14 +12,9 @@ public class Shop {
 	private long id;
 	protected String name;
 	protected String description;
-
-
 	protected List<RetailPoint> retailPoints;
-	
 	private Member member;
-	
 	private List<Product> products ;
-	
 	protected List<Chat> chats;
 
 	public Shop() {}
