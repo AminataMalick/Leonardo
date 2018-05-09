@@ -5,18 +5,16 @@ import java.io.UnsupportedEncodingException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 
-import fr.cpasam.leonardo.errors.MemberCreationError;
 import fr.cpasam.leonardo.exceptions.BadPasswordException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
+import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
+import fr.cpasam.leonardo.model.user.UserDAO;
 
 
 public class Authentication {
@@ -34,7 +32,7 @@ public class Authentication {
 		if(mail == null || pwd == null) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
-			if(!BCrypt.checkpw(pwd, user.GetUserPwd())) throw new BadPasswordException();				
+			if(!BCrypt.checkpw(pwd, user.getPwd())) throw new BadPasswordException();				
 		return user;
 	}
 	
@@ -44,7 +42,7 @@ public class Authentication {
 	 * @return user l'utilisateur associé à l'e-mail donné, ou null si aucun utilisateur n'y est associé
 	 */
 	private static User exists(String mail) {
-		return getUser(mail);
+		return UserDAO.mailToUser(mail);
 	}
 	
 	/**
@@ -52,7 +50,7 @@ public class Authentication {
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
 	public static void saveToken(User user) {
-		updateUser(user.GetUserId(), user.GetUserFistName(), user.GetUserLastName(), user.GetUserEmail(), user.GetUserPwd(), user.getToken());
+		updateUser(user.getId(), user.getFistName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
 	}
 	
 	/**
@@ -64,10 +62,10 @@ public class Authentication {
 	 * @throws IncompleteDataException dans le cas où des données nécessaires à la création d'un membre sont manquantes
 	 * @throws MemberCreationError dans le cas où un problème est survenu lors de la transaction avec la base de données
 	 */
-	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationError {
+	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException {
 		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
 		String newPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
-		if(MemberDAO.CreateMember(firstName, lastName, mail, newPwd) == null) throw new MemberCreationError();
+		if(MemberDAO.create(firstName, lastName, mail, newPwd) == null) throw new MemberCreationException();
 	}
 	
 	/**
@@ -80,7 +78,7 @@ public class Authentication {
 		    Algorithm algorithm = Algorithm.HMAC256("secret");
 		    String token = JWT.create()
 		        .withIssuer("leonardo")
-		        .withArrayClaim("mail", new String[] {user.GetUserEmail(), Long.toString(user.GetUserId())})
+		        .withArrayClaim("mail", new String[] {user.getEmail(), Long.toString(user.getId())})
 		        .sign(algorithm);
 		    return token;
 		} catch (UnsupportedEncodingException exception){
@@ -88,7 +86,8 @@ public class Authentication {
 		return null;
 	}
 	
-	public static void checkCSRF(long userId, String token) {
+	public static boolean checkCSRF(long userId, String token) {
+		return UserDAO.get(userId).getToken().equals(token);
 	}
 	
 }
