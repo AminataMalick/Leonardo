@@ -6,7 +6,7 @@ public class TestSendMail {
 
 
 	public static void main(String[] args) {
-		String destinataire = "melanie.chasane@gmail.com" ;
+		String destinataire = "celine.potte38@gmail.com" ;
 		String sujet = "[LEONARDO] - Coucou" ;
 		String text = "Coucou petite perruche" ;
 
