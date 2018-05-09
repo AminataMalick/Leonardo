@@ -8,6 +8,10 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 
 
 public class Product {
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
 	
 	long id;
 	String name ;
@@ -15,9 +19,9 @@ public class Product {
 	float unityPrice ;
 	protected ArrayList<ProductTag> tags;
 
-	public Product() {}
 	
-	public Product(String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags) {
+	public Product(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags) {
+		this.id = id;
 		this.name = name;
 		this.provenance = provenance;
 		this.unityPrice = unityPrice;

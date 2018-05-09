@@ -4,7 +4,6 @@ import java.util.Date;
 
 
 public abstract class Message<T> {
-
 	
 	protected long id ;
 	protected T emiter;
@@ -12,8 +11,12 @@ public abstract class Message<T> {
 	protected Chat chat;
 	
 	
+	/**
+	 * Create new entity in db
+	 * @param chat
+	 * @param emiter
+	 */
 	public Message(Chat chat, T emiter){
-		
 		this.id = chat.getNbMessage()+1;
 		this.emiter=emiter;
 		this.date=new Date();

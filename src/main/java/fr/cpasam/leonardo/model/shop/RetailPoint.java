@@ -6,15 +6,19 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 
 public class RetailPoint {
 
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
+	
 	protected long id;
 	protected String name;
 	private Geoloc geoloc;
 	protected Shop shop;
 	List<Shop> shops ;
 
-	public RetailPoint() {}
-	
-	public RetailPoint(String name, Geoloc geoloc, Shop shop, List<Shop> shops) {
+	public RetailPoint(long id, String name, Geoloc geoloc, Shop shop, List<Shop> shops) {
+		this.id = id;
 		this.name = name;
 		this.geoloc = geoloc;
 		this.shop = shop;

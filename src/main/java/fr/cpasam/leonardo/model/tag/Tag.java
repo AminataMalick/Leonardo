@@ -2,10 +2,14 @@ package fr.cpasam.leonardo.model.tag;
 
 public abstract class Tag {
 
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
+	
 	protected long id;
 	protected String keyword;
 	
-	public Tag() {}
 	
 	public Tag(long id,String keyword) {
 		this.id=id;

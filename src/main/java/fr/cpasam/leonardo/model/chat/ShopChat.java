@@ -10,8 +10,9 @@ import fr.cpasam.leonardo.model.user.User;
 
 public class ShopChat extends Chat<Member, Shop> {
 
-	public ShopChat(Member m, Shop s) {
-		super(m, s);
+	
+	public ShopChat(long id, Member m, Shop s) {
+		super(id, m, s);
 	}
 	
 	public static Chat getChatByUsers(Long memberID, Long shopId) {
@@ -28,7 +29,7 @@ public class ShopChat extends Chat<Member, Shop> {
 		
 		Shop s = ShopDAO.get(shopId);
 		
-		ShopChat nwChat = new ShopChat(m ,s );
+		ShopChat nwChat = ShopChatDAO.create(m,s);
 				
 		// Ajouter le chat au membre et à la boutique
 		
