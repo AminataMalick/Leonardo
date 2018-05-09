@@ -43,6 +43,16 @@ public class ShopChat extends Chat<Member, Shop> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Member getMember() {
+		
+		return super.getEntity1();
+	}
+	
+	public Shop getShop() {
+		
+		return super.getEntity2();
+	}
 
 
 }

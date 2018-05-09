@@ -7,4 +7,9 @@ public class ChatDAO {
 		return null;
 	}
 
+	public static Chat get(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

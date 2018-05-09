@@ -6,7 +6,7 @@ import com.mysql.cj.api.jdbc.Statement;
 
 public class ShopDAO {
 
-	public Shop get(Long shopId) {
+	public static Shop get(Long shopId) {
 		
 		try {
 			Statement statement = connexion.createStatement();
@@ -22,5 +22,10 @@ public class ShopDAO {
 		}catch (SQLException e) { e.printStackTrace();} 
 			return null;
 		}
+
+	public static void getMember(long user_id) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

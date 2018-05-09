@@ -12,6 +12,7 @@ public abstract class User {
 	protected String pwd;
 	protected List<Chat> chats;
 
+
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;
 		this.lastName = lastName;
