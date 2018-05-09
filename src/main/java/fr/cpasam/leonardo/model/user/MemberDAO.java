@@ -1,63 +1,63 @@
 package fr.cpasam.leonardo.model.user;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.mindrot.jbcrypt.BCrypt;
 
-import fr.cpasam.leonardo.utilities.HibernateUtil;
+import fr.cpasam.leonardo.utilities.DAOManager;
 
 
 
-public class MemberDAO {
-
-	
-	/**
-	 * Retourne les membres de la BD 
-	 * @return myList
-	 */
-	public List<Member> getAllMembers() {
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 
 
-		List<Member> myList = new ArrayList<Member>();
-		Query query = session.getNamedQuery("findAllMembers");
-		myList = query.getResultList();
-
-		session.getTransaction().commit();  
-		session.close();
-		return myList ;   
-	}
+public class MemberDAO extends DAOManager {
 
 	
-	/**
-	 *  Hash le mot de passe
-	 * @param plainTextPassword
-	 * @return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt())
-	 */
-	private String hashPassword(String plainTextPassword){
 
-		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+	
+	// Affichage de tous les membres de la BD
+	public static List<Member> All() {
+		List<Member> members = new ArrayList<Member>();
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+			ResultSet rset = stmt.executeQuery("QUERY_FIND_MEMBERS");
 
+			while (rset.next()) {
+				Member member = new Member(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+				members.add(member);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+
+			if (stmt != null) {
+				try {
+					// Le stmt.close ferme automatiquement le rset.
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}   
+
+		return members ;   
 	}
 
-	// Verification du hashage de mot de passe ==> non utilisee
-	/* private void checkPass(String plainPassword, String hashedPassword) {
 
-		if (BCrypt.checkpw(plainPassword, hashedPassword))
 
-		System.out.println("The password matches.");
-
-		else
-
-		System.out.println("The password does not match.");
-
-		}
-	 */
 
 	 
 	/**
@@ -68,88 +68,16 @@ public class MemberDAO {
 	 * @param email
 	 * @param pwd
 	 */
-	public static Member CreateMember(String firstName, String lastName, String email, String pwd ) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+	public void CreateMember(String firstName, String lastName, String email, String pwd ) {
 
-		Member member = new Member();
-
-		member.firstName = firstName ;
-		member.lastName = lastName ;
-		member.email = email ;
-		member.pwd = pwd ;
-
-		session.save(member);
-		session.getTransaction().commit();
-		session.close();
-	}
-
-
+		Member member = new Member(firstName, lastName, email, pwd);
 	
-	/**
-	 * Recherche un membre à partir de son id 
-	 * @param id
-	 * @return member
-	 */
-	public Member GetMemberID(long id) {
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member() ;
-		member.id = id ;
-		Query query = session.getNamedQuery("findMemberById");
-		member = (Member)query;
-
-		session.getTransaction().commit();
-		session.close();
-		return member;
-	}
-
+}
 	
-	/**
-	 * Met à jour les informations d'un membre
-	 * @param id
-	 * @param firstName
-	 * @param lastName
-	 * @param email
-	 * @param pwd
-	 */
-	public void UpdateMember(long id, String firstName, String lastName, String email, String pwd) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member();
-
-		member.id = id;
-		member.firstName = firstName ;
-		member.lastName = lastName ;
-		member.email = email ;
-		member.pwd = hashPassword(pwd) ;
-
-		session.save(member);
-		session.getTransaction().commit();
-		session.close();
-	}
 
 
-	
-	/**
-	 *Supprime un membre à partir de son id et d'une requête nommée 
-	 * @param id
-	 */
-	public void DeleteMember(long id) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Member member = new Member() ;
-		member.id = id ;
-		Query query = session.getNamedQuery("findMemberById");
-
-		session.delete(query);
-		session.save(query);
-		session.getTransaction().commit();
-		session.close();	
-
+	public Member get(Long memberID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

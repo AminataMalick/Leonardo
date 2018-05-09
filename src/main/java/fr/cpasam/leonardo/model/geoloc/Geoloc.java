@@ -26,52 +26,52 @@ public class Geoloc {
 	 * Retourne l'id d'une geolocalisation
 	 * @return id
 	 */
-	public long GetGeolocId () {return id;}
+	public long getId () {return id;}
 	/**
 	 * Retourne la latitude d'une geolocalisation
 	 * @return lat
 	 */
-	public long GetGeolocLat () {return lat;}
+	public long getLat () {return lat;}
 	/**
 	 * Retourne la longitude d'une geolocalisation
 	 * @return longit
 	 */
-	public long GetGeolocLongit () {return longit;}
+	public long getLongit () {return longit;}
 	/**
 	 * Retourne la liste des membres d'une geolocalisation
 	 * @return members
 	 */
-	public List<Member> GetGeolocMembers () {return members;}
+	public List<Member> getMembers () {return members;}
 	/**
 	 * Retourne la liste des points de vente d'une geolocalisation
 	 * @return retailpoints
 	 */
-	public List<RetailPoint> GetGeolocRetailpoints () {return retailpoints;}
+	public List<RetailPoint> getRetailpoints () {return retailpoints;}
 	
 	
 	/**
 	 * Met à jour l'id d'une geolocalisation
 	 * @param id
 	 */
-	public void SetGeolocId (long id) {this.id=id;}
+	public void setId (long id) {this.id=id;}
 	/**
 	 * Met à jour la latitude d'une geolocalisation
 	 * @param lat
 	 */
-	public void SetGeolocLat (long lat) {this.lat=lat;}
+	public void setLat (long lat) {this.lat=lat;}
 	/**
 	 * Met à jour la longitude d'une geolocalisation
 	 * @param longit
 	 */
-	public void SetGeolocLongit (long longit) {this.longit= longit;}
+	public void setLongit (long longit) {this.longit= longit;}
 	/**
 	 * Met à jour la liste des membres d'une geolocalisation
 	 * @param members
 	 */
-	public void SetGeolocMembers (List<Member> members) {this.members= members;}
+	public void setMembers (List<Member> members) {this.members= members;}
 	/**
 	 * Met à jour la liste des points de vente d'une geolocalisation
 	 * @param retailpoints
 	 */
-	public void SetGeolocRetailPoints(List<RetailPoint> retailpoints) {this.retailpoints=retailpoints;}
+	public void setRetailPoints(List<RetailPoint> retailpoints) {this.retailpoints=retailpoints;}
 }
