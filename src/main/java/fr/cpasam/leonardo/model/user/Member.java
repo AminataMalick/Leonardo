@@ -8,6 +8,7 @@ import java.util.List;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ChatDAO;
 import fr.cpasam.leonardo.model.chat.ShopChat;
+import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat._ChatManager;
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
@@ -50,10 +51,10 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	public Chat openChat(Shop shop) {
 
 		
-		Chat nwChat = ChatDAO.getByMemberAndShop(this.id,shop.id());
+		Chat nwChat = ShopChatDAO.getByMemberAndShop(this.id,shop.id());
 
 		if( nwChat == null) {
-			nwChat = new ShopChat(this, shop);
+			nwChat = ShopChatDAO.create(this, shop);
 		}
 		this.addChat(nwChat);
 		shop.addChat(nwChat);

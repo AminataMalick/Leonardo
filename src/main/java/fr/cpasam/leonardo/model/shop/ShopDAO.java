@@ -24,7 +24,7 @@ public class ShopDAO extends DAOManager {
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
 				//int idShop= resultat.getInt(1);
-				shop= new Shop(resultat.getString(2),resultat.getString(3),null,shop.getMember());
+				shop= new Shop(resultat.getLong(1),resultat.getString(2),resultat.getString(3),null,shop.getMember());
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
 		return shop;
@@ -40,7 +40,7 @@ public class ShopDAO extends DAOManager {
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
 				//int idShop= resultat.getInt(1);
-				shop= new Shop(resultat.getString(2),resultat.getString(3),null,shop.getMember());
+				shop= new Shop(resultat.getLong(1),resultat.getString(2),resultat.getString(3),null,shop.getMember());
 				shops.add(shop);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 

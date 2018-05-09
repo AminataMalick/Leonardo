@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.notifications;
+package fr.cpasam.leonardo.utilities;
 
 import java.util.Date;
 import java.util.Properties;
@@ -13,7 +13,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class NotificationsMail extends Notifications {
+public class NotificationsMail {
 	
 	/**
 	 * Méthode permettant l'envoi de mail à un destinataire donné

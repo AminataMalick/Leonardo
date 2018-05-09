@@ -4,15 +4,19 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Recommandation {
 
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
+	
 	private long id;
 	private int grade;
 	private String comment;
 	private Member member;
 
 	
-	public Recommandation() {}
-	
-	public Recommandation(int grade, String comment, Member member) {
+	public Recommandation(long id, int grade, String comment, Member member) {
+		this.id = id;
 		this.grade = grade;
 		this.comment = comment;
 		this.member = member;

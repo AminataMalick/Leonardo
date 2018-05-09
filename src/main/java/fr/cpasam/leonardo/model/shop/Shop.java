@@ -9,6 +9,11 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Shop {
 	
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
+	
 	private long id;
 	protected String name;
 	protected String description;
@@ -17,9 +22,8 @@ public class Shop {
 	private List<Product> products ;
 	protected List<Chat> chats;
 
-	public Shop() {}
-	
-	public Shop(String name, String description, List<RetailPoint> retailPoints, Member member) {
+	public Shop(long id, String name, String description, List<RetailPoint> retailPoints, Member member) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.retailPoints = new ArrayList<RetailPoint>();
