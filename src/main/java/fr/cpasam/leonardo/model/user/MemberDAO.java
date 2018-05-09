@@ -76,7 +76,7 @@ public class MemberDAO extends DAOManager {
 	
 
 
-	public Member get(Long memberID) {
+	public static Member get(Long memberID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

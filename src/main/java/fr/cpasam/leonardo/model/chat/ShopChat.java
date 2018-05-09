@@ -18,16 +18,15 @@ public class ShopChat extends Chat<Member, Shop> {
 		
 		
 		// Faire une requête pour rechercher si un chat existe entre user1 et le user2
-		ChatDAO cd = new ChatDAO();
-		Chat c = cd.getByMemberAndShop(memberID, shopId);
+		
+		Chat c = ChatDAO.getByMemberAndShop(memberID, shopId);
 		
 		// Si le chat n'existe pas, le créer
 		
-		MemberDAO md = new MemberDAO();
-		Member m = md.get(memberID);
 		
-		ShopDAO sd = new ShopDAO();  
-		Shop s = sd.get(shopId);
+		Member m = MemberDAO.get(memberID);
+		
+		Shop s = ShopDAO.get(shopId);
 		
 		ShopChat nwChat = new ShopChat(m ,s );
 				
