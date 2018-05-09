@@ -1,24 +1,34 @@
 package fr.cpasam.leonardo.model.tag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.cpasam.leonardo.model.product.Product;
 
 public class ProductTag extends Tag{
-	protected Product product;
-
-	public ProductTag() {}
-
-	public ProductTag(Product product) {
-		this.product = product;
+	
+	private List<Product> products;
+	
+	public ProductTag(long id, String keyword) {
+		super(id,keyword);
+		this.products = new ArrayList<Product>();
 	}
+	
 	/**
 	 * Retourne le produit d'un mot clé de produit
 	 * @return produit
 	 */
-	public Product getProduct() {return product;}
+	public List<Product> getProducts() {return products;}
 	
-	/**
-	 * Met à jour le produit d'un mot clé de produit
-	 * @param product
-	 */
-	public void setProduct(Product product) {this.product = product;}
+	public void addProduct(Product product) {
+		this.products.add(product); 
+	}
+	
+	public void deleteProduct(Product p) {
+		for(Product i : products) {
+			if(i.getId() == p.getId()) {
+				products.remove(i);
+			}
+		}
+	}
 }

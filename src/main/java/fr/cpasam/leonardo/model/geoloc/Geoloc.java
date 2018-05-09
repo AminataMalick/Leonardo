@@ -7,15 +7,20 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Geoloc {
 
+	private static long cnt = 1;
+	public static long getCnt() {
+		return cnt++;
+	}
+	
 	protected long id;
 	protected long lat;
 	protected long longit;
 	List<Member> members ;
 	List<RetailPoint> retailpoints ;
 
-	public Geoloc() {}
 	
-	public Geoloc(long lat, long longit, List<Member> members, List<RetailPoint> retailpoints) {
+	public Geoloc(long id, long lat, long longit, List<Member> members, List<RetailPoint> retailpoints) {
+		this.id = id;
 		this.lat = lat;
 		this.longit = longit;
 		this.members = members;
