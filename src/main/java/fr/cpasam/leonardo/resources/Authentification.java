@@ -9,10 +9,10 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
-import fr.cpasam.leonardo.errors.MemberCreationError;
 import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.BadPasswordException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
+import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.utilities.Authentication;
@@ -59,7 +59,7 @@ public class Authentification {
 	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
 	 */
 	@POST
-	@Path("/register")
+	@Path("/member")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	private Response register(JsonObject json) {
@@ -72,7 +72,7 @@ public class Authentification {
 			Authentication.registration(firstName, lastName, mail, pwd);
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
-		} catch (MemberCreationError e) {
+		} catch (MemberCreationException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while creating the member in database.")).build();
 		}
 		JsonObject jsonConnection = new JsonObject();

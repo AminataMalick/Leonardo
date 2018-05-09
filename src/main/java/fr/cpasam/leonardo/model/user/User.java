@@ -13,6 +13,7 @@ public abstract class User {
 	protected List<Chat> chats;
 	protected String token;
 
+
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -38,7 +39,7 @@ public abstract class User {
 	 * Retourne le prénom d'un utilisateur
 	 * @return fistName
 	 */
-	public String getFistName() {return firstName;}
+	public String getFirstName() {return firstName;}
 	/**
 	 * Retourne le nom d'un utilisateur
 	 * @return lastName

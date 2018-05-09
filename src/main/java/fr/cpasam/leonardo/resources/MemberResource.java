@@ -6,7 +6,7 @@ import fr.cpasam.leonardo.model.user.Member;
 
 @Path("member/")
 public class MemberResource {
-
+	
 }
 
 
