@@ -54,7 +54,7 @@ public class Authentication {
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
 	public static void saveToken(User user) {
-		UserDAO.update(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
+		UserDAO.upDate(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
 	}
 	
 	/**
@@ -100,11 +100,25 @@ public class Authentication {
 		return UserDAO.get(userId).getToken().equals(token);
 	}
 	
+	/**
+	 * Permet d'effectuer la modification d'un membre dans la base de données
+	 * @param id l'id du membre à modifier
+	 * @param firstName le nouveau prénom qui va écraser l'ancien dans la base de données
+	 * @param lastName le nouveau nom qui va écraser l'ancien dans la base de données
+	 * @param mail le nouvel e-mail qui va écraser l'ancien dans la base de données
+	 * @param pwd le nouveau mot de passe qui va écraser l'ancien dans la base de données
+	 * @param token le token à comparer pour vérifier l'authenticité de l'utilisateur
+	 * @return le membre modifié
+	 * @throws IncompleteDataException dans le cas où certains champs n'ont pas été renseignés
+	 * @throws MemberRecoveryException dans le cas où un problème est survenu lors de la récupération du membre à modifier
+	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
+	 * @throws MemberUpdateException dans le cas où un problème est survenu lors de la mise à jour du membre
+	 */
 	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, MemberRecoveryException, WrongTokenException, MemberUpdateException {
 		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
 		if(MemberDAO.get(id) == null) throw new MemberRecoveryException();
 		if(!checkCSRF(id, token)) throw new WrongTokenException();
-		Member member = MemberDAO.update(id, firstName, lastName, mail, pwd);
+		Member member = MemberDAO.upDate(id, firstName, lastName, mail, pwd);
 		if(member == null) throw new MemberUpdateException();
 		return member;
 	}

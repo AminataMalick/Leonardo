@@ -50,7 +50,19 @@ public class Authentification {
 		
 		Authentication.saveToken(user);
 		
-		return Response.ok(token).build();
+		JsonObject jsonUser = new JsonObject();
+		jsonUser.addProperty("id", user.getId());
+		jsonUser.addProperty("firstName", user.getFirstName());
+		jsonUser.addProperty("lastName", user.getLastName());
+		jsonUser.addProperty("email", user.getEmail());
+		jsonUser.addProperty("password", user.getPwd());
+		jsonUser.addProperty("token", user.getToken());
+		
+		JsonObject jsonToReturn = new JsonObject();
+		jsonToReturn.add("user", jsonUser);
+		
+		
+		return Response.ok(jsonToReturn).build();
 	}	
 	
 	/**
