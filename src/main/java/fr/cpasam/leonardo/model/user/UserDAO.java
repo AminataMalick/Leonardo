@@ -1,13 +1,9 @@
 package fr.cpasam.leonardo.model.user;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
-import fr.cpasam.leonardo.utilities.Connexion;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class UserDAO extends DAOManager{

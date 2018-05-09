@@ -8,7 +8,6 @@ import java.util.List;
 import java.sql.Statement;
 
 
-import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {

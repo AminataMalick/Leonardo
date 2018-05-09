@@ -44,7 +44,7 @@ public abstract class User {
 	 * Retourne le prénom d'un utilisateur
 	 * @return fistName
 	 */
-	public String getFistName() {return firstName;}
+	public String getFirstName() {return firstName;}
 	/**
 	 * Retourne le nom d'un utilisateur
 	 * @return lastName
