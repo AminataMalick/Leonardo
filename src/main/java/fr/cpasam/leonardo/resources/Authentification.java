@@ -1,18 +1,11 @@
 package fr.cpasam.leonardo.resources;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.soap.Text;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 
 import com.google.gson.JsonObject;
 
@@ -50,7 +43,7 @@ public class Authentification {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
 		}
 		
-		String token = generateToken(user);
+		String token = Authentication.generateToken(user);
 		if(token == null) return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the token.")).build();
 		
 		user.setToken(token);
@@ -58,27 +51,7 @@ public class Authentification {
 		Authentication.saveToken(user);
 		
 		return Response.ok(token).build();
-	}
-	
-	/**
-	 * Génère un token lié à la session de l'utilisateur lors de la connexion de ce-dernier
-	 * @param user l'utilisateur qui souhaite se connecter
-	 * @return le token généré à partir de l'e-mail et de l'id de l'utilisateur ou null si une erreur est survenue
-	 */
-	private String generateToken(User user) {
-		try {
-		    Algorithm algorithm = Algorithm.HMAC256("secret");
-		    String token = JWT.create()
-		        .withIssuer("leonardo")
-		        .withArrayClaim("mail", new String[] {user.GetUserEmail(), Long.toString(user.GetUserId())})
-		        .sign(algorithm);
-		    return token;
-		} catch (UnsupportedEncodingException exception){
-		} catch (JWTCreationException exception){
-		}
-		return null;
-	}
-	
+	}	
 	
 	/**
 	 * Enregistre un nouveau membre dans la base de données et effectue sa connexion

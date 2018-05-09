@@ -1,12 +1,20 @@
 package fr.cpasam.leonardo.utilities;
 
+import java.io.UnsupportedEncodingException;
+
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import fr.cpasam.leonardo.errors.MemberCreationError;
 import fr.cpasam.leonardo.exceptions.BadPasswordException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
-import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
 
@@ -60,6 +68,27 @@ public class Authentication {
 		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
 		String newPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
 		if(MemberDAO.CreateMember(firstName, lastName, mail, newPwd) == null) throw new MemberCreationError();
+	}
+	
+	/**
+	 * Génère un token lié à la session de l'utilisateur lors de la connexion de ce-dernier
+	 * @param user l'utilisateur qui souhaite se connecter
+	 * @return le token généré à partir de l'e-mail et de l'id de l'utilisateur ou null si une erreur est survenue
+	 */
+	public static String generateToken(User user) {
+		try {
+		    Algorithm algorithm = Algorithm.HMAC256("secret");
+		    String token = JWT.create()
+		        .withIssuer("leonardo")
+		        .withArrayClaim("mail", new String[] {user.GetUserEmail(), Long.toString(user.GetUserId())})
+		        .sign(algorithm);
+		    return token;
+		} catch (UnsupportedEncodingException exception){
+		} catch (JWTCreationException exception){}
+		return null;
+	}
+	
+	public static void checkCSRF(long userId, String token) {
 	}
 	
 }
