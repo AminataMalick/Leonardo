@@ -54,4 +54,6 @@ public class Shop {
 		return null;
 	}
 	
+	public Member getMember() {return member;}
+	
 }

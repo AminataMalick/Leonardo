@@ -11,6 +11,7 @@ public abstract class User {
 	protected String email;
 	protected String pwd;
 	protected List<Chat> chats;
+	protected String token;
 
 
 	public User(String firstName, String lastName, String email, String pwd) {
@@ -21,7 +22,7 @@ public abstract class User {
 	}
 
 
-	public User(long id2, String first_name, String last_name, String email2, String password) {
+	public User(long id, String firstName, String lastName, String email, String pwd) {
 		this.id=id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -56,6 +57,12 @@ public abstract class User {
 	public String getPwd() {return pwd;}
 		
 	/**
+	 * Retourne le token associé à la session d'un utilisateur
+	 * @return token
+	 */
+	public String getToken() {return this.token;}
+	
+	/**
 	 * Met à jour l'id d'un utilisateur
 	 * @param id
 	 */
@@ -82,6 +89,11 @@ public abstract class User {
 	public void setPwd(String pwd) {this.pwd=pwd;}
 
 	
+	/**
+	 * Met à jour le token de la session d'un utilisateur
+	 * @param token
+	 */
+	public void setToken(String token) {this.token = token;}
 	
 	public void addChat(Chat nwChat) {
 

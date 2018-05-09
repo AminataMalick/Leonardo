@@ -15,6 +15,12 @@ import javax.mail.internet.MimeMessage;
 
 public class NotificationsMail extends Notifications {
 	
+	/**
+	 * Méthode permettant l'envoi de mail à un destinataire donné
+	 * @param subject
+	 * @param text
+	 * @param destinataire
+	 */
 	
 	public static void sendMail (String subject, String text, String destinataire) {
 		
@@ -52,7 +58,7 @@ public class NotificationsMail extends Notifications {
 		     // Set message 
 		     msg.setFrom(new InternetAddress("leonardo.cpasam@gmail.com"));
 		     msg.setRecipients(Message.RecipientType.TO, 
-		                      InternetAddress.parse("celine.potte38@gmail.com",false));
+		                      InternetAddress.parse(destinataire,false));
 		     msg.setSubject(subject);
 		     msg.setText(text);
 		     msg.setSentDate(new Date());

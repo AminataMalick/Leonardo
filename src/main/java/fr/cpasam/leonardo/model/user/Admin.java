@@ -7,6 +7,10 @@ public class Admin extends User {
 		super(id, firstName, lastName, email, pwd);
 	}
 	
+	public String toString() { 
+		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
+	}
+	
 	/*private static int level=1;
 	
 	public boolean deleteUser (long id) {
