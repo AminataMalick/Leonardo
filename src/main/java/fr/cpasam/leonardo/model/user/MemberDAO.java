@@ -68,17 +68,16 @@ public class MemberDAO {
 	 * @param email
 	 * @param pwd
 	 */
-	public void CreateMember(long id, String firstName, String lastName, String email, String pwd ) {
+	public static Member CreateMember(String firstName, String lastName, String email, String pwd ) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
 		Member member = new Member();
 
-		member.id = id;
 		member.firstName = firstName ;
 		member.lastName = lastName ;
 		member.email = email ;
-		member.pwd = hashPassword(pwd) ;
+		member.pwd = pwd ;
 
 		session.save(member);
 		session.getTransaction().commit();
