@@ -49,4 +49,6 @@ public class Shop {
 		return this.id;
 	}
 	
+	public Member getMember() {return member;}
+	
 }
