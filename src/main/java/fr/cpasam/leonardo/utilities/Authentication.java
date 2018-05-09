@@ -100,10 +100,12 @@ public class Authentication {
 		return UserDAO.get(userId).getToken().equals(token);
 	}
 	
-	public static void modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, MemberRecoveryException, WrongTokenException, MemberUpdateException {
+	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, MemberRecoveryException, WrongTokenException, MemberUpdateException {
 		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
 		if(MemberDAO.get(id) == null) throw new MemberRecoveryException();
 		if(!checkCSRF(id, token)) throw new WrongTokenException();
-		if(MemberDAO.update(id, firstName, lastName, mail, pwd) == null) throw new MemberUpdateException();
+		Member member = MemberDAO.update(id, firstName, lastName, mail, pwd);
+		if(member == null) throw new MemberUpdateException();
+		return member;
 	}
 }

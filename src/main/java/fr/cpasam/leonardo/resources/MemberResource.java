@@ -9,10 +9,12 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
-import fr.cpasam.leonardo.exceptions.WrongTokenException;
+import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberRecoveryException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
+import fr.cpasam.leonardo.exceptions.WrongTokenException;
+import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.Authentication;
 
 public class MemberResource {
@@ -22,6 +24,7 @@ public class MemberResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modify(JsonObject json) {
+		Member member = null;
 		String token = json.get("token").getAsString();
 		long id = json.get("id").getAsLong();
 		String firstName = json.get("firstName").getAsString();
@@ -30,20 +33,17 @@ public class MemberResource {
 		String pwd = json.get("password").getAsString();
 		
 		try {
-			Authentication.modify(id, firstName, lastName, mail, pwd, token);
+			member = Authentication.modify(id, firstName, lastName, mail, pwd, token);
 		} catch (IncompleteDataException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.").message()).build();
 		} catch (MemberRecoveryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while recovering the member to update.")).build();
 		} catch (WrongTokenException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return Response.status(Response.Status.UNAUTHORIZED).entity(new TextError("Wrong CSRF token, you must be logged in.")).build();
 		} catch (MemberUpdateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while updating the member.")).build();
 		}
-		
-		return null;
+		return Response.ok(member).build();
 	}
 	
 }
