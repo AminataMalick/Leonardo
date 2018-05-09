@@ -5,17 +5,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.api.jdbc.Statement;
+import java.sql.Statement;
 
 import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.utilities.DAOManager;
 
-public class ShopDAO {
+public class ShopDAO extends DAOManager {
 
 	public static Shop get(Long shopId) {
-								
+		Statement statement = null;		
+		Shop shop = null ;
 		try {
-			Shop shop;
-			Statement statement = connexion.createStatement();
+			statement = con.createStatement();
 	        /* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop WHERE idShop="+ shopId);
 	            
@@ -23,25 +24,26 @@ public class ShopDAO {
 	            while ( resultat.next() ) {
 	            	//int idShop= resultat.getInt(1);
 	            	shop= new Shop(resultat.getString(2),resultat.getString(3),null,shop.getMember());
-	          } return shop;
+	          } 
 		}catch (SQLException e) { e.printStackTrace();} 
+		return shop;
 	}
 	
 	public static List<Shop> all() {
-								
+		List<Shop> shops = new ArrayList<Shop>();						
 		try {
-			List<Shop> shops=new ArrayList<Shop>();
-			Statement statement = connexion.createStatement();
+			Shop shop = null;
+			Statement statement = con.createStatement();
 	        /* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop ");
 	           /* Récupération des données du résultat de la requête de lecture */
 	            while ( resultat.next() ) {
 	            	//int idShop= resultat.getInt(1);
-	            	Shop shop= new Shop(resultat.getString(2),resultat.getString(3),null,shop.getMember());
+	            	shop= new Shop(resultat.getString(2),resultat.getString(3),null,shop.getMember());
 	            	shops.add(shop);
-	            } return shops;
+	            } 
 		}catch (SQLException e) { e.printStackTrace();} 
-		
+		return shops;
 	}
 }
 
