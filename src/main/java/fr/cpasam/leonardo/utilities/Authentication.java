@@ -50,7 +50,7 @@ public class Authentication {
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
 	public static void saveToken(User user) {
-		updateUser(user.getId(), user.getFistName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
+		UserDAO.updateUser(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
 	}
 	
 	/**
@@ -86,6 +86,12 @@ public class Authentication {
 		return null;
 	}
 	
+	/**
+	 * Vérifie le token envoyé dans la requête de l'utilisateur avec celui enregistré dans la base de données
+	 * @param userId l'identifiant de l'utilisateur à l'origine de la requête
+	 * @param token le token envoyé dans la requête
+	 * @return true si les token correspondent, ou false sinon
+	 */
 	public static boolean checkCSRF(long userId, String token) {
 		return UserDAO.get(userId).getToken().equals(token);
 	}
