@@ -110,6 +110,31 @@ public class MemberDAO extends DAOManager {
 		}	
 	}
 
-
+	//Retourne un user grace a son email
+		// Renvoie un user a l'aide de son email
+		public static Member mailToMember(String email) {
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User="+email);		
+					while (rset.next()) {
+						Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+						return member ;
+					}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}	
+			return null ;
+		}
 
 }

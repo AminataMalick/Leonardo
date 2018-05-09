@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
-import fr.cpasam.leonardo.exceptions.BadPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
@@ -28,7 +28,7 @@ public class Authentification {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	private Response login(JsonObject json) {
+	public Response login(JsonObject json) {
 		String mail = json.get("email").getAsString();
 		String pwd = json.get("password").getAsString();
 		User user = null;
@@ -37,7 +37,7 @@ public class Authentification {
 			user = Authentication.connection(mail, pwd);
 		} catch (UserNotFoundException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
-		} catch (BadPasswordException e) {
+		} catch (WrongPasswordException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Bad password.").message()).build();
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
@@ -62,7 +62,7 @@ public class Authentification {
 	@Path("/member")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	private Response register(JsonObject json) {
+	public Response register(JsonObject json) {
 		String firstName = json.get("firstName").getAsString();
 		String lastName = json.get("lastName").getAsString();
 		String mail = json.get("email").getAsString();
