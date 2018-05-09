@@ -83,9 +83,9 @@ public class MemberDAO extends DAOManager {
 		}	
 		return null ;
 	}
-	
-	
-	
+
+
+
 	public static void delete(Long memberID) {
 		Statement stmt = null;
 		try {
@@ -109,7 +109,7 @@ public class MemberDAO extends DAOManager {
 			}
 		}	
 	}
-	
-	
-	
+
+
+
 }
