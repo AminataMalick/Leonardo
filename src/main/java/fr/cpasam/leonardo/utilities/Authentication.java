@@ -114,12 +114,28 @@ public class Authentication {
 	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
 	 * @throws MemberUpdateException dans le cas où un problème est survenu lors de la mise à jour du membre
 	 */
-	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, MemberRecoveryException, WrongTokenException, MemberUpdateException {
+	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberUpdateException {
 		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
-		if(MemberDAO.get(id) == null) throw new MemberRecoveryException();
+		if(MemberDAO.get(id) == null) throw new UserNotFoundException();
 		if(!checkCSRF(id, token)) throw new WrongTokenException();
 		Member member = MemberDAO.upDate(id, firstName, lastName, mail, pwd);
 		if(member == null) throw new MemberUpdateException();
 		return member;
+	}
+	
+	/**
+	 * Effectue la déconnexion d'un utilisateur
+	 * @param mail l'e-mail de l'utilisateur souhaitant se déconnecter
+	 * @param token le token associé à la requête envoyée par le client
+	 * @throws IncompleteDataException dans le cas où le mail fourni est vide
+	 * @throws UserNotFoundException dans le cas où aucun utilisateur n'est associé à l'e-mail fourni
+	 * @throws WrongTokenException dans le cas où l'utilisateur n'est pas connecté
+	 */
+	public static void logout(String mail, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException {
+		if(mail == null) throw new IncompleteDataException();
+		User user = UserDAO.mailToUser(mail);
+		if(user == null) throw new UserNotFoundException();
+		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
+		UserDAO.deleteToken(user.getId());
 	}
 }

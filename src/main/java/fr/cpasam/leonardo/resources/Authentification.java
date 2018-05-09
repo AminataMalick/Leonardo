@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.WrongPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
@@ -38,7 +39,7 @@ public class Authentification {
 		} catch (UserNotFoundException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
 		} catch (WrongPasswordException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Bad password.").message()).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").message()).build();
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
 		}
@@ -92,5 +93,29 @@ public class Authentification {
 		jsonConnection.addProperty("password", pwd);
 		
 		return login(jsonConnection);
+	}
+	
+	/**
+	 * Déconnecte un utilisateur de l'application
+	 * @param json la requête envoyée par le client demandant sa déconnexion
+	 * @return le code htpp 200 : tout va bien
+	 */
+	@POST
+	@Path("/logout")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response logout(JsonObject json) {
+		String mail = json.get("email").getAsString();
+		String token = json.get("token").getAsString();
+		try {
+			Authentication.logout(mail, token);
+		} catch (IncompleteDataException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
+		} catch (UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
+		} catch (WrongTokenException e) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity(new TextError("Wrong CSRF token, you must be logged in.")).build();
+		}
+		return Response.status(Response.Status.ACCEPTED).build();
 	}
 }
