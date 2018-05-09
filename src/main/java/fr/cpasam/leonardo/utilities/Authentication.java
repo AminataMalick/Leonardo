@@ -8,10 +8,14 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 
-import fr.cpasam.leonardo.exceptions.BadPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
+import fr.cpasam.leonardo.exceptions.MemberRecoveryException;
+import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.model.user.UserDAO;
@@ -25,14 +29,14 @@ public class Authentication {
 	 * @param pwd le mot de passe fourni lors de la connexion
 	 * @return l'utilisateur associé à ces informations de connexion (l'utilisateur peut être nul)
 	 * @throws UserNotFoundException dans le cas où aucun utilisateur n'a été trouvé dans la base de données en fonction du mail
-	 * @throws BadPasswordException dans le cas où le mot de passe donné dans le cadre de la connexion ne correspond pas à celui stocké dans la base de données
+	 * @throws WrongPasswordException dans le cas où le mot de passe donné dans le cadre de la connexion ne correspond pas à celui stocké dans la base de données
 	 * @throws IncompleteDataException dans le cas où l'e-mail et/ou le mot de passe fourni lors de la connexion est vide
 	 */
-	public static User connection(String mail, String pwd) throws UserNotFoundException, BadPasswordException, IncompleteDataException {
+	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException {
 		if(mail == null || pwd == null) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
-			if(!BCrypt.checkpw(pwd, user.getPwd())) throw new BadPasswordException();				
+			if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();				
 		return user;
 	}
 	
@@ -50,7 +54,7 @@ public class Authentication {
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
 	public static void saveToken(User user) {
-		UserDAO.updateUser(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
+		UserDAO.update(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
 	}
 	
 	/**
@@ -96,4 +100,12 @@ public class Authentication {
 		return UserDAO.get(userId).getToken().equals(token);
 	}
 	
+	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, MemberRecoveryException, WrongTokenException, MemberUpdateException {
+		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
+		if(MemberDAO.get(id) == null) throw new MemberRecoveryException();
+		if(!checkCSRF(id, token)) throw new WrongTokenException();
+		Member member = MemberDAO.update(id, firstName, lastName, mail, pwd);
+		if(member == null) throw new MemberUpdateException();
+		return member;
+	}
 }
