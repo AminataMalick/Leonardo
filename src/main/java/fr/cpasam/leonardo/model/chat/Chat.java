@@ -34,6 +34,16 @@ public abstract class Chat<T,U>{
 	protected int getNbMessage() {
 		return this.cnt;
 	}
+
+	public U getEntity2() {
+		
+		return entity2;
+	}
+	
+	public T getEntity1() {
+		
+		return entity1;
+	}
 	
 
 }

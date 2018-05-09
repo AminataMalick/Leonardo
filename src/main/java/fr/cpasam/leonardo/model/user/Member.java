@@ -49,8 +49,8 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public Chat openChat(Shop shop) {
 
-		ChatDAO cd = new ChatDAO();
-		Chat nwChat = cd.getByMemberAndShop(this.id,shop.id());
+		
+		Chat nwChat = ChatDAO.getByMemberAndShop(this.id,shop.id());
 
 		if( nwChat == null) {
 			nwChat = new ShopChat(this, shop);
