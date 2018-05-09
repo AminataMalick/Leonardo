@@ -21,7 +21,7 @@ public abstract class User {
 	}
 
 
-	public User(long id2, String first_name, String last_name, String email2, String password) {
+	public User(long id, String firstName, String lastName, String email, String pwd) {
 		this.id=id;
 		this.firstName = firstName;
 		this.lastName = lastName;
