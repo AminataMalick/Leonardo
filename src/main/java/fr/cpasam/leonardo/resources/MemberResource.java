@@ -15,7 +15,7 @@ import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.utilities.Authentication;
+import fr.cpasam.leonardo.utilities.AuthUtil;
 
 public class MemberResource {
 	
@@ -33,7 +33,7 @@ public class MemberResource {
 		String pwd = json.get("password").getAsString();
 		
 		try {
-			member = Authentication.modify(id, firstName, lastName, mail, pwd, token);
+			member = AuthUtil.modify(id, firstName, lastName, mail, pwd, token);
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.").message()).build();
 		} catch (UserNotFoundException e) {

@@ -14,11 +14,13 @@ import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
+import fr.cpasam.leonardo.exceptions.TokenCreationException;
+import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.User;
-import fr.cpasam.leonardo.utilities.Authentication;
+import fr.cpasam.leonardo.utilities.AuthUtil;
 
-public class Authentification {
+public class AuthResource {
 	
 	/**
 	 * Effectue la connexion d'un utilisateur
@@ -35,21 +37,18 @@ public class Authentification {
 		User user = null;
 		
 		try {
-			user = Authentication.connection(mail, pwd);
+			user = AuthUtil.connection(mail, pwd);
 		} catch (UserNotFoundException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
 		} catch (WrongPasswordException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").message()).build();
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
+		} catch (TokenCreationException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").message()).build();
+		} catch (TokenStorageException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").message()).build();
 		}
-		
-		String token = Authentication.generateToken(user);
-		if(token == null) return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the token.")).build();
-		
-		user.setToken(token);
-		
-		Authentication.saveToken(user);
 		
 		JsonObject jsonUser = new JsonObject();
 		jsonUser.addProperty("id", user.getId());
@@ -61,7 +60,6 @@ public class Authentification {
 		
 		JsonObject jsonToReturn = new JsonObject();
 		jsonToReturn.add("user", jsonUser);
-		
 		
 		return Response.ok(jsonToReturn).build();
 	}	
@@ -82,7 +80,7 @@ public class Authentification {
 		String pwd = json.get("password").getAsString();
 		
 		try {
-			Authentication.registration(firstName, lastName, mail, pwd);
+			AuthUtil.registration(firstName, lastName, mail, pwd);
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
 		} catch (MemberCreationException e) {
@@ -98,17 +96,17 @@ public class Authentification {
 	/**
 	 * Déconnecte un utilisateur de l'application
 	 * @param json la requête envoyée par le client demandant sa déconnexion
-	 * @return le code htpp 200 : tout va bien
+	 * @return le code http 200 : tout va bien
 	 */
 	@POST
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response logout(JsonObject json) {
-		String mail = json.get("email").getAsString();
+		long id = json.get("id").getAsLong();
 		String token = json.get("token").getAsString();
 		try {
-			Authentication.logout(mail, token);
+			AuthUtil.logout(id, token);
 		} catch (IncompleteDataException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
 		} catch (UserNotFoundException e) {

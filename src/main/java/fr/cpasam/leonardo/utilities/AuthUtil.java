@@ -2,6 +2,8 @@ package fr.cpasam.leonardo.utilities;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.ws.rs.core.Response;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.auth0.jwt.JWT;
@@ -10,10 +12,12 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
+import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
-import fr.cpasam.leonardo.exceptions.MemberRecoveryException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
+import fr.cpasam.leonardo.exceptions.TokenCreationException;
+import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
@@ -21,7 +25,7 @@ import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.model.user.UserDAO;
 
 
-public class Authentication {
+public class AuthUtil {
 
 	/**
 	 * Vérifie la présence d'un utilisateur dans la base de données en fonction de ses informations de connexion
@@ -32,11 +36,15 @@ public class Authentication {
 	 * @throws WrongPasswordException dans le cas où le mot de passe donné dans le cadre de la connexion ne correspond pas à celui stocké dans la base de données
 	 * @throws IncompleteDataException dans le cas où l'e-mail et/ou le mot de passe fourni lors de la connexion est vide
 	 */
-	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException {
+	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException, TokenCreationException, TokenStorageException {
 		if(mail == null || pwd == null) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
-			if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();				
+		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
+		String token = generateToken(user);
+		if(token == null) throw new TokenCreationException();
+		user.setToken(token);
+		if(!saveToken(user)) throw new TokenStorageException();
 		return user;
 	}
 	
@@ -53,8 +61,8 @@ public class Authentication {
 	 * Sauvegarde le token généré lors de la connexion d'un utilisateur dans la base de données
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
-	public static void saveToken(User user) {
-		UserDAO.upDate(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
+	public static boolean saveToken(User user) {
+		return UserDAO.upDate(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
 	}
 	
 	/**
@@ -125,17 +133,18 @@ public class Authentication {
 	
 	/**
 	 * Effectue la déconnexion d'un utilisateur
-	 * @param mail l'e-mail de l'utilisateur souhaitant se déconnecter
+	 * @param id l'id de l'utilisateur souhaitant se déconnecter
 	 * @param token le token associé à la requête envoyée par le client
 	 * @throws IncompleteDataException dans le cas où le mail fourni est vide
 	 * @throws UserNotFoundException dans le cas où aucun utilisateur n'est associé à l'e-mail fourni
 	 * @throws WrongTokenException dans le cas où l'utilisateur n'est pas connecté
 	 */
-	public static void logout(String mail, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException {
-		if(mail == null) throw new IncompleteDataException();
-		User user = UserDAO.mailToUser(mail);
+	public static void logout(Long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException {
+		if(Long.toString(id) == null) throw new IncompleteDataException();
+		User user = UserDAO.get(id);
 		if(user == null) throw new UserNotFoundException();
 		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
 		UserDAO.deleteToken(user.getId());
+		user.setToken(null);
 	}
 }
