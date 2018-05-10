@@ -28,8 +28,8 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
 	}
 
-	public Member(long id,String first_name, String last_name, String email, String password ) {
-		super(id,first_name, last_name, email, password);
+	public Member(long id,String first_name, String last_name, String email, String password, String token ) {
+		super(id,first_name, last_name, email, password,token);
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();

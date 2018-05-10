@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS BDbyMEL ;
-
-USE BDbyMEL ;
 
 
 CREATE TABLE IF NOT EXISTS Geoloc (
@@ -11,53 +8,67 @@ CREATE TABLE IF NOT EXISTS Geoloc (
     CHECK (id_Geoloc >0)
 );
 
+CREATE TABLE IF NOT EXISTS User (
+        id_User bigint,
+        firstName_User varchar(255) NOT NULL,
+        lastName_User varchar(255) NOT NULL,
+        email_User varchar(255) NOT NULL,
+    pwd_User varchar(255) NOT NULL,
+    token_User varchar(255),
+    PRIMARY KEY (id_User)
+);
+
 CREATE TABLE IF NOT EXISTS Member (
         id_Member bigint,
-        firstName_Member varchar(255) NOT NULL,
-        lastName_Member varchar(255) NOT NULL,
-        email_Member varchar(255),
-    pwd_Member varchar(255) NOT NULL,
+        id_User bigint UNIQUE NOT NULL,
     id_Geoloc bigint,
     PRIMARY KEY (id_Member),
-    FOREIGN KEY (id_Geoloc) REFERENCES Geoloc(id_Geoloc)
+    FOREIGN KEY (id_Geoloc) REFERENCES Geoloc(id_Geoloc),
+    FOREIGN KEY (id_User) REFERENCES User(id_User)
 );
     
-CREATE TABLE IF NOT EXISTS Chat (
+CREATE TABLE IF NOT EXISTS ShopChat (
         id_Chat bigint,
-    PRIMARY KEY (id_Chat)
+    id_Shop bigint NOT NULL,
+    id_Member bigint NOT NULL,
+    PRIMARY KEY (id_Chat),
+    FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
 );
+
 
 CREATE TABLE IF NOT EXISTS Message (
         id_Message bigint,
         date_Message date NOT NULL,
-        content_Message varchar(255) NOT NULL,
+        content_Message text NOT NULL,
+    id_Member bigint,
         id_Chat bigint,
     PRIMARY KEY (id_Message),
-    FOREIGN KEY (id_Chat) REFERENCES Chat(id_Chat)
+    FOREIGN KEY (id_Chat) REFERENCES ShopChat(id_Chat),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
 );
 
-CREATE TABLE IF NOT EXISTS ChatMember (
-        id_Member bigint,
-        id_Chat bigint,
-    FOREIGN KEY (id_Member) REFERENCES Member(id_Member),
-    FOREIGN KEY (id_Chat) REFERENCES Chat(id_Chat)
-);
+
 
 CREATE TABLE IF NOT EXISTS Admin (
         id_Admin bigint,
-        firstName_Admin varchar(255) NOT NULL,
-        lastName_Admin varchar(255) NOT NULL,
-        email_Admin varchar(255),
-    pwd_Admin varchar(255) NOT NULL,
-    PRIMARY KEY (id_Admin)
+        id_User bigint UNIQUE NOT NULL,
+    id_Geoloc bigint,
+    PRIMARY KEY (id_Admin),
+    FOREIGN KEY (id_Geoloc) REFERENCES Geoloc(id_Geoloc),
+    FOREIGN KEY (id_User) REFERENCES User(id_User)
 );
 
 CREATE TABLE IF NOT EXISTS Shop (
         id_Shop bigint,
         name_Shop varchar(255) NOT NULL,
-        description_Shop varchar(255),
-    PRIMARY KEY (id_Shop)
+        description_Shop text,
+    id_Member bigint,
+    PRIMARY KEY (id_Shop),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
+
 );
+
 
 CREATE TABLE IF NOT EXISTS RetailPoint (
         id_Retail bigint,
@@ -68,8 +79,8 @@ CREATE TABLE IF NOT EXISTS RetailPoint (
 );
 
 CREATE TABLE IF NOT EXISTS ShopRetail (
-        id_Retail bigint,
         id_Shop bigint,
+        id_Retail bigint,
     FOREIGN KEY (id_Retail) REFERENCES RetailPoint(id_Retail),
     FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop)
 );
@@ -95,6 +106,15 @@ CREATE TABLE IF NOT EXISTS ProductTag (
         FOREIGN KEY (id_Product) REFERENCES Product(id_Product),
     FOREIGN KEY (id_Tag) REFERENCES Tag(id_Tag)
 );
+
+
+CREATE TABLE IF NOT EXISTS ShopMember (
+        id_Shop bigint,
+        id_Member bigint,
+        FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
+);
+
 
 
 

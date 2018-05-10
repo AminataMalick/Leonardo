@@ -20,7 +20,7 @@ public class MemberDAO extends DAOManager {
 			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User");
 
 			while (rset.next()) {
-				Member member = new Member(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+				Member member = new Member(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 				members.add(member);
 			}
 
@@ -50,14 +50,14 @@ public class MemberDAO extends DAOManager {
 	 * @param email
 	 * @param pwd
 	 */
-	public static Member create(String firstName, String lastName, String email, String pwd) {
+	public static Member create(String firstName, String lastName, String email, String pwd, String token) {
 		Statement stmt = null;
 		long id = User.getCnt();
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
 			deleted = stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+id+","+id+",null)");
-			Member member = new Member(id,firstName,lastName,email, pwd );
+			Member member = new Member(id,firstName,lastName,email, pwd, token );
 			return member ;
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -76,13 +76,13 @@ public class MemberDAO extends DAOManager {
 	
 	
 	
-	public static Member upDate(long id,String firstName, String lastName, String email, String pwd) {
+	public static Member update(long id,String firstName, String lastName, String email, String pwd, String token) {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("UPDATE User SET firstName_User = '"+firstName+"',lastName_User ='"+lastName+"', email_User='"+email+"', pwd_User='"+pwd+"' WHERE id_User ="+id+"");
 			if (deleted > 0){
-			Member member = new Member(id,firstName,lastName,email, pwd );
+			Member member = new Member(id,firstName,lastName,email, pwd ,token);
 			return member ;
 			}
 		}catch (SQLException e) {
@@ -114,7 +114,7 @@ public class MemberDAO extends DAOManager {
 			if(rset.next())
 			{			
 				while (rset.next()) {
-					Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+					Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 					return member ;
 				}
 
@@ -168,7 +168,7 @@ public class MemberDAO extends DAOManager {
 				stmt = con.createStatement();
 				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User="+email);		
 					while (rset.next()) {
-						Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+						Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 						return member ;
 					}
 			}
@@ -186,5 +186,6 @@ public class MemberDAO extends DAOManager {
 			}	
 			return null ;
 		}
-
+		
+		
 }

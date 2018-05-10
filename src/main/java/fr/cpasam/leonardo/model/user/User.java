@@ -27,12 +27,13 @@ public abstract class User {
 	}
 
 
-	public User(long id, String firstName, String lastName, String email, String pwd) {
+	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
 		this.id=id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.pwd = pwd;	}
+		this.pwd = pwd;
+		this.token=token;}
 
 
 	/**
