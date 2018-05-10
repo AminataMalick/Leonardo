@@ -7,7 +7,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 public class ShopChatDAO extends DAOManager {
 
 	public static ShopChat create(Member m, Shop s) {
-		// TODO Auto-generated method stub
+		long id = ShopChat.getCnt();
 		return null;
 	}
 
