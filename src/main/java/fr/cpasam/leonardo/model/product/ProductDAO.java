@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.tag.ProductTag;
+
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -44,8 +45,8 @@ public class ProductDAO extends DAOManager {
 	 * Retourne la liste de tous les produits de la BD
 	 * @return List<Product>
 	 **/
-	public static List<Product> all() {
-		List<Product> products = new ArrayList<Product>();		
+	public static ArrayList<Product> all() {
+		ArrayList<Product> products = new ArrayList<Product>();		
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
 		Statement statement = null;		
 
