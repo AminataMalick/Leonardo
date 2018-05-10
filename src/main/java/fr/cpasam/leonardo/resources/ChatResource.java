@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ChatDAO;
 import fr.cpasam.leonardo.model.chat.ShopChat;
+import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -61,7 +62,7 @@ public class ChatResource {
 		*/
 		//Vérifier que le chat appartient au membre
 		
-		ShopChat c = (ShopChat) ChatDAO.get(id);
+		ShopChat c = (ShopChat) ShopChatDAO.get(id);
 		if((c.getMember().getId()) != user_id && c.getShop().getMember(user_id)==null) return Response.status(Response.Status.FORBIDDEN).build();
 		
 		
