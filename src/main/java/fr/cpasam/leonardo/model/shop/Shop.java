@@ -54,7 +54,7 @@ public class Shop {
 	}
 
 	public Member getMember(long user_id) {
-		ShopDAO.getMember(user_id);
+		ShopDAO.getMember(user_id,this.id);
 		return null;
 	}
 	

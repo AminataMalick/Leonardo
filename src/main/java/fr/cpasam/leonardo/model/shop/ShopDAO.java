@@ -7,7 +7,7 @@ import java.util.List;
 
 import java.sql.Statement;
 
-
+import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
@@ -46,10 +46,31 @@ public class ShopDAO extends DAOManager {
 
 		return shops;
 	}
-	public static void getMember(long user_id) {
+	
+	
+	public static void getMember(long user_id, long id) {
 		// TODO Auto-generated method stub
 
 	}
+
+	public static Shop createShop(String shopName, String description, long member_id) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static Shop updateShop(long shop_id, String ShopName, String description, long member_id) {
+		
+		// TODO Auto-generated method stub
+		return null; //Attention à bien remettre la liste des produits avant de renvoyer la boutique
+	}
+
+	public static Member getOwner(long shop_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }
 

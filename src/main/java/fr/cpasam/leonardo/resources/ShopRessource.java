@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,81 +19,109 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.JsonObject;
+
+import fr.cpasam.leonardo.model.shop.Shop;
+import fr.cpasam.leonardo.model.shop.ShopDAO;
+
 
 @Path("shop/")
 public class ShopRessource {
-	
-	/*
+
+
 	@GET
 	@Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
-	public Response resGetAllShops() {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getShops() {
+
 		return Response
-	    		.status(Status.OK)
-	    		.entity(ShopDAO.getAllShops())
-	    		.build();
+				.ok(ShopDAO.all())
+				.build();
 	}
-	*/
-	
-    
-	
-	/*
+
+
 	@GET
 	@Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response resGetShopID(@PathParam("id") long id) {
+
+		return Response.ok(ShopDAO.get(id)).build();
+	}
+
+
+
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Response resGetShopID(@PathParam("id") long id) {
+	public Response newShop(JsonObject json) { 
 
-		 return Response
-	    		.status(Status.OK)
-	    		.entity(ShopDAO.getShopID())
-	    		.build();
-    }
-    */
-    
-	/* Version 1 :
-	@Path("/{id}/{name}/{description}/{retailPoint}/{member}/{products}")
-	
-    /* Version 2 :
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response resCreateShop(@PathParam("SHOP_ID") long id, @PathParam("SHOP_NAME") String name, 
-    		@PathParam("DESCRIPTION") String description, @PathParam("RETAILPOINT_ID") RetailPoint retailPoint, 
-    		@PathParam("MEMBER_ID") Member member, @PathParam("PRODUCTS") List<Product> products ) {  
-        
-    	ShopDAO.createShop(id, name, description, retailPoint, member, products) ;
 
-        return Response
-          .status(Status.CREATED)
-          .build();
-    }
-    */
-    
-    
-	/* Version 1 :
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+
+		// Vérifier le jeton CSRF
+		
+		long user_id = json.get("user_id").getAsLong();
+		long token = json.get("token").getAsLong();
+		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+
+		Shop s = ShopDAO.createShop(
+				json.get("name").getAsString(), 
+				json.get("description").getAsString(),
+				user_id) ;
+
+		return Response.ok(s).build();
+	}
+
+
+
+
 	@PUT
     @Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response resUpdateShop(@PathParam("id") long id, Shop shop) {
-		ShopDAO.UpdateShop(shop);
-		 return Response
-                  .status(Status.OK)
-                  .entity(shop)
-                  .build();
+	public Response resCreateShop(@PathParam("id") long id,  JsonObject json) { 
+
+
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+
+		// Vérifier le jeton CSRF
+		
+		long user_id = json.get("user_id").getAsLong();
+		long token = json.get("token").getAsLong();
+		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+		
+		//Vérifier que le shop appartient bien au user
+		
+		long shop_id = json.get("shop_id").getAsLong();
+		
+		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
+		
+		Shop s = ShopDAO.updateShop(
+				shop_id,
+				json.get("name").getAsString(), 
+				json.get("description").getAsString(),
+				user_id) ;
+
+		return Response.ok(s).build();
 	}
-	*/
-	
-	
-	
-    /* Version 2 :
+
+
+
+
+	/* Version 2 :
     @PUT
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response resUpdateShop(Shop s){
-     
+
      Shop shop = ShopDAO.getShopID(id) ;
 		if (shop) {
                 return Response
@@ -105,9 +134,9 @@ public class ShopRessource {
           .status(Status.NO_CONTENT)
           .build();
     }  
-    */
-	
-	
+	 */
+
+
 	/*
     @DELETE
     @Path("{id}")
@@ -120,6 +149,6 @@ public class ShopRessource {
         	.status(Status.ACCEPTED)
         	.build();
     }
-    */
-    
+	 */
+
 }
