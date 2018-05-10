@@ -11,7 +11,8 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 public class ShopChatDAO extends DAOManager {
 
 	public static ShopChat create(Member m, Shop s) {
-		
+
+		long id = ShopChat.getCnt();
 		return null;
 	}
 

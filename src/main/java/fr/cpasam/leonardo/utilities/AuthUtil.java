@@ -36,7 +36,8 @@ public class AuthUtil {
 	 * @throws IncompleteDataException dans le cas où l'e-mail et/ou le mot de passe fourni lors de la connexion est vide
 	 */
 	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException, TokenCreationException, TokenStorageException {
-		if(mail == null || pwd == null) throw new IncompleteDataException();
+		String[] fields = new String[] {mail, pwd};
+		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
 		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
@@ -74,7 +75,8 @@ public class AuthUtil {
 	 * @throws MemberCreationError dans le cas où un problème est survenu lors de la transaction avec la base de données
 	 */
 	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException {
-		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
+		String[] fields = new String[] {firstName, lastName, mail, pwd};
+		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		String newPwd = encryptPassword(pwd);
 		if(MemberDAO.create(firstName, lastName, mail, newPwd) == null) throw new MemberCreationException();
 	}
@@ -98,16 +100,6 @@ public class AuthUtil {
 	}
 	
 	/**
-	 * Vérifie le token envoyé dans la requête de l'utilisateur avec celui enregistré dans la base de données
-	 * @param userId l'identifiant de l'utilisateur à l'origine de la requête
-	 * @param token le token envoyé dans la requête
-	 * @return true si les token correspondent, ou false sinon
-	 */
-	public static boolean checkCSRF(long userId, String token) {
-		return UserDAO.getUserById(userId).getToken().equals(token);
-	}
-	
-	/**
 	 * Permet d'effectuer la modification d'un membre dans la base de données
 	 * @param id l'id du membre à modifier
 	 * @param firstName le nouveau prénom qui va écraser l'ancien dans la base de données
@@ -122,9 +114,8 @@ public class AuthUtil {
 	 * @throws MemberUpdateException dans le cas où un problème est survenu lors de la mise à jour du membre
 	 */
 	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberUpdateException {
-		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
-		if(MemberDAO.get(id) == null) throw new UserNotFoundException();
-		if(!checkCSRF(id, token)) throw new WrongTokenException();
+		String[] fields = new String[] {Long.toString(id), firstName, lastName, mail, pwd, token};
+		Validator.verifyCreatedMember(fields);
 		String newPwd = encryptPassword(pwd);
 		Member member = MemberDAO.update(id, firstName, lastName, mail, newPwd);
 		if(member == null) throw new MemberUpdateException();
@@ -140,10 +131,8 @@ public class AuthUtil {
 	 * @throws WrongTokenException dans le cas où l'utilisateur n'est pas connecté
 	 */
 	public static void logout(Long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, TokenDeletionException {
-		if(Long.toString(id) == null || token == null) throw new IncompleteDataException();
-		User user = UserDAO.getUserById(id);
-		if(user == null) throw new UserNotFoundException();
-		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
+		String[] fields = new String[] {Long.toString(id), token};
+		User user = Validator.verifyCreatedUser(fields);
 		if(!UserDAO.deleteToken(user.getId())) throw new TokenDeletionException();
 		user.setToken(null);
 	}
@@ -167,10 +156,8 @@ public class AuthUtil {
 	 * @throws MemberDeletionException dans le cas où un problème est survenu lors de la suppression du membre
 	 */
 	public static void deleteAccount(long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberDeletionException {
-		if(Long.toString(id) == null || token == null) throw new IncompleteDataException();
-		User user = UserDAO.getUserById(id);
-		if(user == null) throw new UserNotFoundException();
-		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
+		String[] fields = new String[] {Long.toString(id), token};
+		Validator.verifyCreatedMember(fields);
 		if(!MemberDAO.delete(id)) throw new MemberDeletionException();
 	}
 }

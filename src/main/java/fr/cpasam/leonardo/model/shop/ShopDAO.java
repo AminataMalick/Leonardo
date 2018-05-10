@@ -181,7 +181,7 @@ public class ShopDAO extends DAOManager {
 				long product_id = resultat.getLong(1);
 	
 				/* Récupération des tags lié au produit */
-				ResultSet resultat2 = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id); 
+				ResultSet resultat2 = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
 				/* Récupération de chaque tag et ajout dans l'arrayList tags */
 				while ( resultat2.next() ) {
 				
