@@ -56,10 +56,10 @@ public class ChatResource {
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 		
 		// Vérifier le jeton CSRF
-		/*
+		
 		long token = json.get("token").getAsLong();
-		if(!Authenticate.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		*/
+		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		
 		//Vérifier que le chat appartient au membre
 		
 		ShopChat c = (ShopChat) ShopChatDAO.get(id);
