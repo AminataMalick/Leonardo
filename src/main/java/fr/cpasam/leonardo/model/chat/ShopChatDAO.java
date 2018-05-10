@@ -11,4 +11,20 @@ public class ShopChatDAO extends DAOManager {
 		return null;
 	}
 
+	/**
+	 * Récupère le chat associé à un membre et à une boutique
+	 * @param memberID
+	 * @param shopId
+	 * @return 
+	 */
+	public static Chat getByMemberAndShop(Long memberID, Long shopId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static ShopChat get(long shopchat_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
