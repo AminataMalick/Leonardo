@@ -12,13 +12,13 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ChatDAO;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
+import fr.cpasam.leonardo.utilities.AuthUtil;
 
 @Path("/chat")
 public class ChatResource {
@@ -57,8 +57,8 @@ public class ChatResource {
 		
 		// Vérifier le jeton CSRF
 		
-		long token = json.get("token").getAsLong();
-		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		String token = json.get("token").getAsString();
+		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		
 		//Vérifier que le chat appartient au membre
 		
