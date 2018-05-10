@@ -19,10 +19,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.model.product.Product;
+import fr.cpasam.leonardo.model.product.ProductDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.model.tag.ProductTag;
+import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.AuthUtil;
 
@@ -75,14 +81,32 @@ public class ProductResource {
 		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 		
+		JsonArray ja = json.get("tag").getAsJsonArray();
+		
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
+		for(JsonElement e : ja) {
+			// Récupérer le tag
+			
+			String keyword = e.getAsJsonObject().get("keyword").getAsString();
+			ProductTag t = ProductTagDAO.getTagByName(keyword);
+			//Si le tag n'existe pas, le créer
+			
+			if(t == null) t = ProductTagDAO.create(keyword);
+			
+			//ajouter le tag a la liste
+			
+			tags.add(t);
+		}
+		
+		Shop s = ShopDAO.get(json.get("shop_id").getAsLong());
 		
 		Product p = ProductDAO.create(
 				json.get("name").getAsString(), 
-				json.get("description").getAsString(),
-				json.get("price").getAsDouble(),
-				user_id) ;
-
-		return Response.ok(s).build();
+				s, 
+				json.get("price").getAsFloat(), 
+				tags);
+		
+		return Response.ok(p).build();
 	}
 
 
