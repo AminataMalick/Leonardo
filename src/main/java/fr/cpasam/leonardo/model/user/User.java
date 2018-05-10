@@ -26,14 +26,22 @@ public abstract class User {
 		this.pwd = pwd;
 	}
 
-
 	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
 		this.id=id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.pwd = pwd;
-		this.token=token;}
+		this.token=token;
+	}
+	
+	public User(long id, String firstName, String lastName, String email, String pwd) {
+		this.id=id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.pwd = pwd;
+	}
 
 
 	/**

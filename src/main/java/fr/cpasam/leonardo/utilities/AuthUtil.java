@@ -2,8 +2,6 @@ package fr.cpasam.leonardo.utilities;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.ws.rs.core.Response;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.auth0.jwt.JWT;
@@ -12,11 +10,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
-import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.TokenCreationException;
+import fr.cpasam.leonardo.exceptions.TokenDeletionException;
 import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.Member;
@@ -62,7 +60,7 @@ public class AuthUtil {
 	 * @param user l'utilisateur duquel on souhaite enregistrer le token
 	 */
 	public static boolean saveToken(User user) {
-		return UserDAO.upDate(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPwd(), user.getToken());
+		return UserDAO.saveToken(user);
 	}
 	
 	/**
@@ -76,7 +74,7 @@ public class AuthUtil {
 	 */
 	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException {
 		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
-		String newPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+		String newPwd = encryptPassword(pwd);
 		if(MemberDAO.create(firstName, lastName, mail, newPwd) == null) throw new MemberCreationException();
 	}
 	
@@ -105,7 +103,7 @@ public class AuthUtil {
 	 * @return true si les token correspondent, ou false sinon
 	 */
 	public static boolean checkCSRF(long userId, String token) {
-		return UserDAO.get(userId).getToken().equals(token);
+		return UserDAO.getUserById(userId).getToken().equals(token);
 	}
 	
 	/**
@@ -126,7 +124,8 @@ public class AuthUtil {
 		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
 		if(MemberDAO.get(id) == null) throw new UserNotFoundException();
 		if(!checkCSRF(id, token)) throw new WrongTokenException();
-		Member member = MemberDAO.upDate(id, firstName, lastName, mail, pwd);
+		String newPwd = encryptPassword(pwd);
+		Member member = MemberDAO.update(id, firstName, lastName, mail, newPwd);
 		if(member == null) throw new MemberUpdateException();
 		return member;
 	}
@@ -139,12 +138,21 @@ public class AuthUtil {
 	 * @throws UserNotFoundException dans le cas où aucun utilisateur n'est associé à l'e-mail fourni
 	 * @throws WrongTokenException dans le cas où l'utilisateur n'est pas connecté
 	 */
-	public static void logout(Long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException {
+	public static void logout(Long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, TokenDeletionException {
 		if(Long.toString(id) == null) throw new IncompleteDataException();
-		User user = UserDAO.get(id);
+		User user = UserDAO.getUserById(id);
 		if(user == null) throw new UserNotFoundException();
 		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
-		UserDAO.deleteToken(user.getId());
+		if(!UserDAO.deleteToken(user.getId())) throw new TokenDeletionException();
 		user.setToken(null);
+	}
+	
+	/**
+	 * Permet d'encrypter le mot de passe avant de le stocker dans la base de données
+	 * @param pwd le mot de passe à encrypter
+	 * @return le mot de passe encrypté
+	 */
+	public static String encryptPassword(String pwd) {
+		return BCrypt.hashpw(pwd, BCrypt.gensalt());
 	}
 }

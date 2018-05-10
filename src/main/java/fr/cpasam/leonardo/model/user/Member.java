@@ -29,7 +29,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	}
 
 	public Member(long id,String first_name, String last_name, String email, String password, String token ) {
-		super(id,first_name, last_name, email, password,token);
+		super(id, first_name, last_name, email, password,token);
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
@@ -37,6 +37,13 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 
 	public Member(String first_name, String last_name, String email, String password ) {
 		super(first_name, last_name, email, password);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
+	
+	public Member(long id, String first_name, String last_name, String email, String password ) {
+		super(id, first_name, last_name, email, password);
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
