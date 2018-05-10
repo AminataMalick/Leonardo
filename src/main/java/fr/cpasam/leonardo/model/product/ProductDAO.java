@@ -6,33 +6,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.ProductTag;
-import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.utilities.DAOManager;
-import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 public class ProductDAO extends DAOManager {
 
 	/**
 	 * Recherche d'un produit à partir de son id
-	  */
-	public static Product get(long productId)  {
+	 * @param product_id
+	  **/
+	public static Product get(long product_id)  {
 		Statement statement = null;		
 		Product product = null ;
+		Shop shop = null ;
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
+		
 		try {
 			statement = con.createStatement();
-			/* Exécution d'une requête de lecture */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE idproduct="+ productId);
+			tags = getTags(product_id);
+			
+			/* récupération du produit selon l'id donné */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Product="+ product_id);
 
-			/* Récupération des données du résultat de la requête de lecture */
+			/* Affectation valeur récupéré */
 			while ( resultat.next() ) {
-				//idint namestring pricefloat shopint
-				//public Product(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags)
-				product= new Product(resultat.getLong(1),resultat.getString(2),product.getProvenance(),(float) resultat.getDouble(3),null);
+				long shop_id = resultat.getLong(4);
+				shop = Shop.get(shop_id);
+				
+				product= new Product(product_id,resultat.getString(2),shop, resultat.getFloat(3),tags);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
 		return product;
@@ -40,7 +42,7 @@ public class ProductDAO extends DAOManager {
 	
 	/**
 	 * Retourne la liste de tous les produits de la BD
-	 	 */
+	**/
 	public static List<Product> all() {
 		List<Product> products = new ArrayList<Product>();						
 		try {
@@ -119,5 +121,41 @@ public class ProductDAO extends DAOManager {
 				catch (SQLException e) {e.printStackTrace();}
 			}
 		}	
-		}}
+		}
+
+
+
+	/**
+	 * Récupérer les tags d'un produit donné
+	 */
+
+	public static ArrayList<ProductTag> getTags(long product_id) {
+		Statement statement = null;	
+
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();						
+
+		try {
+			ProductTag tag = null ;
+			statement = con.createStatement();
+
+			/* Récupération des tags lié au produit donné */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
+			/* Récupération de chaque tag et ajout dans l'arrayList tags */
+			while ( resultat.next() ) {
+				
+				tag= new ProductTag(resultat.getLong(1),resultat.getString(2));
+				tags.add(tag);
+			}
+
+				
+		}catch (SQLException e) { e.printStackTrace();} 
+		try {statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		
+		return tags ;
+		
+	}
+	
+}
+
 
