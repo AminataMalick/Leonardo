@@ -15,6 +15,7 @@ import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.TokenCreationException;
+import fr.cpasam.leonardo.exceptions.TokenDeletionException;
 import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.user.User;
@@ -105,6 +106,7 @@ public class AuthResource {
 	public Response logout(JsonObject json) {
 		long id = json.get("id").getAsLong();
 		String token = json.get("token").getAsString();
+
 		try {
 			AuthUtil.logout(id, token);
 		} catch (IncompleteDataException e) {
@@ -113,7 +115,10 @@ public class AuthResource {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
 		} catch (WrongTokenException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).entity(new TextError("Wrong CSRF token, you must be logged in.")).build();
+		} catch (TokenDeletionException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while deleting the CSRF token in database.")).build();
 		}
+		
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
 }

@@ -50,14 +50,14 @@ public class MemberDAO extends DAOManager {
 	 * @param email
 	 * @param pwd
 	 */
-	public static Member create(String firstName, String lastName, String email, String pwd, String token) {
+	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		long id = User.getCnt();
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
 			deleted = stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+id+","+id+",null)");
-			Member member = new Member(id,firstName,lastName,email, pwd, token );
+			Member member = new Member(id,firstName,lastName,email, pwd);
 			return member ;
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -76,13 +76,13 @@ public class MemberDAO extends DAOManager {
 	
 	
 	
-	public static Member update(long id,String firstName, String lastName, String email, String pwd, String token) {
+	public static Member update(long id, String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("UPDATE User SET firstName_User = '"+firstName+"',lastName_User ='"+lastName+"', email_User='"+email+"', pwd_User='"+pwd+"' WHERE id_User ="+id+"");
 			if (deleted > 0){
-			Member member = new Member(id,firstName,lastName,email, pwd ,token);
+			Member member = new Member(id,firstName,lastName,email, pwd);
 			return member ;
 			}
 		}catch (SQLException e) {
