@@ -97,7 +97,7 @@ public class AuthResource {
 	/**
 	 * Déconnecte un utilisateur de l'application
 	 * @param json la requête envoyée par le client demandant sa déconnexion
-	 * @return le code http 200 : tout va bien
+	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
 	@POST
 	@Path("/logout")
@@ -110,7 +110,7 @@ public class AuthResource {
 		try {
 			AuthUtil.logout(id, token);
 		} catch (IncompleteDataException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("id or token data is missing.")).build();
 		} catch (UserNotFoundException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
 		} catch (WrongTokenException e) {
