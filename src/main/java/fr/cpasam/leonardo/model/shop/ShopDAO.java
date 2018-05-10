@@ -189,7 +189,7 @@ public class ShopDAO extends DAOManager {
 					tags.add(tag);
 				}
 					
-				product= new Product(product_id,resultat.getString(2),shop,resultat.getFloat(4),tags);
+				product= new Product(product_id,resultat.getString(2),shop.id(),resultat.getFloat(4),tags);
 				products.add(product);
 				
 			}

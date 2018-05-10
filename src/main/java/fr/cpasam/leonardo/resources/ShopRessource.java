@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.utilities.AuthUtil;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
