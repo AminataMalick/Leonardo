@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.utilities.AuthUtil;
+import fr.cpasam.leonardo.utilities.Validator;
 
 
 @Path("shop/")
@@ -63,7 +64,7 @@ public class ShopRessource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		Shop s = ShopDAO.createShop(
@@ -92,7 +93,7 @@ public class ShopRessource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
@@ -124,7 +125,7 @@ public class ShopRessource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
