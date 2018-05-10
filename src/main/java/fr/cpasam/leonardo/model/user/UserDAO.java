@@ -9,7 +9,11 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 public class UserDAO extends DAOManager{
 
 
-
+	/**
+	 * Cherche et renvoi un utilisateur à partir de son identidiant id passé en paramètre de la fonction
+	 * @param id identifiant de l'utilisateur permettant de le retrouver
+	 * @return retourne l'utilisateur lié à l'id passé en paramètre ou null s'il n'existe pas
+	 */
 	// Renvoie un user a l'aide de son id
 	public static User getUserById(long id) {
 		Statement stmt = null;
@@ -45,7 +49,12 @@ public class UserDAO extends DAOManager{
 		}	
 		return null ;
 	}
-
+	
+	/**
+	 * Cherche et renvoi un utilisateur à partir de son adresse mail passée en paramètre de la fonction 
+	 * @param email mail de l'utilisateur recherché
+	 * @return retourne un utilisateur ou null s'il n'existe pas
+	 */
 	public static User mailToUser(String email) {
 		Statement stmt = null;
 		try {
@@ -82,8 +91,11 @@ public class UserDAO extends DAOManager{
 	}
 
 
-	
-			// Supprime un token a partir de l'id d'un utilisateur
+			/**
+			 * Supprime un token à partir de l'identifiant d'un utilisateur
+			 * @param id identifiant de l'utilisateur dont on veut supprimer le token
+			 * @return retourne un booléen si tout s'est bien déroulé
+			 */
 			public static boolean deleteToken(long id) {
 				Statement stmt = null;
 				try {
@@ -108,7 +120,12 @@ public class UserDAO extends DAOManager{
 				return false ;
 			}
 			
-			// Met à jour le token de l'utilisateur passé en parametre
+			
+			/**
+			 * Mise à jour du token d'un utilisateur
+			 * @param user utilisateur avec le nouveau token passé en paramètre
+			 * @return retourne un booléen si tout s'est bien déroulé
+			 */
 			public static boolean saveToken(User user ) {
 				Statement stmt = null;
 				try {

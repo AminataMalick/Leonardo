@@ -11,7 +11,10 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class MemberDAO extends DAOManager {
 	
-	// Affichage de tous les membres de la BD
+	/**
+	 * Affichage de tous les membres
+	 * @return retourne une liste composée de tous les membres
+	 */
 	public static List<Member> all() {
 		List<Member> members = new ArrayList<Member>();
 		Statement stmt = null;
@@ -43,12 +46,12 @@ public class MemberDAO extends DAOManager {
 
 
 	/**
-	 *  Créer un membre avec la recuperation des donnees du formulaire
-	 * @param id
-	 * @param firstName
-	 * @param lastName
-	 * @param email
-	 * @param pwd
+	 * Crée un membre avec la récupération des données du formulaire et un id attribué automatiquement à l'aide d'un compteur
+	 * @param firstName prénom du membre 
+	 * @param lastName nom du membre
+	 * @param email email du membre
+	 * @param pwd mot de passe du membre
+	 * @return retourne le nouveau membre créé
 	 */
 	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
@@ -75,7 +78,15 @@ public class MemberDAO extends DAOManager {
 	}
 	
 	
-	
+	/**
+	 * Met à jour un membre en récupérant toutes les données 
+	 * @param id identifiant du membre à mettre à jour
+	 * @param firstName prénom du membre
+	 * @param lastName nom du membre
+	 * @param email email du membre
+	 * @param pwd mot de passe du membre
+	 * @return retourne le membre mis à jour
+	 */
 	public static Member update(long id, String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		try {
@@ -105,7 +116,11 @@ public class MemberDAO extends DAOManager {
 	
 	
 
-	// Trouver un membre a l'aide de on ID
+	/**
+	 * Trouver un membre à partir de don ID
+	 * @param memberID identifiant du membre que l'on cherche
+	 * @return retourne le membre lié à l'identifiant passé en paramètre de la fonction ou null s'il n'existe pas
+	 */
 	public static Member get(Long memberID) {
 		Statement stmt = null;
 		try {
@@ -135,7 +150,10 @@ public class MemberDAO extends DAOManager {
 	}
 
 
-
+	/**
+	 * Supprime un membre à partir de son identifiant
+	 * @param memberID identifiant du membre à supprimer
+	 */
 	public static void delete(Long memberID) {
 		Statement stmt = null;
 		try {
@@ -160,8 +178,12 @@ public class MemberDAO extends DAOManager {
 		}	
 	}
 
-	//Retourne un user grace a son email
-		// Renvoie un user a l'aide de son email
+
+		/**
+		 * Cherche un membre à partir d'une adresse mail
+		 * @param email email du membre 
+		 * @return retourne le membre associé à l'adresse mail passée en paramètre s'il existe, sinon null
+		 */
 		public static Member mailToMember(String email) {
 			Statement stmt = null;
 			try {

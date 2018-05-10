@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ChatDAO;
-import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat._ChatManager;
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
