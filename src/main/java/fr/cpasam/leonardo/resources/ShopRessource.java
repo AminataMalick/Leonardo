@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.utilities.AuthUtil;
 
 
 @Path("shop/")
@@ -64,8 +65,8 @@ public class ShopRessource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		long token = json.get("token").getAsLong();
-		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		String token = json.get("token").getAsString();
+		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		Shop s = ShopDAO.createShop(
@@ -93,8 +94,8 @@ public class ShopRessource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		long token = json.get("token").getAsLong();
-		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		String token = json.get("token").getAsString();
+		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
@@ -125,8 +126,8 @@ public class ShopRessource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		long token = json.get("token").getAsLong();
-		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		String token = json.get("token").getAsString();
+		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
