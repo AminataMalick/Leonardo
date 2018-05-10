@@ -1,8 +1,11 @@
-package bd;
+package fr.cpasam.leonardo.utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import bd.DatabaseAccessProperties;
+import bd.SQLWarningsExceptions;
 
 public class Connexionsgbd {
 

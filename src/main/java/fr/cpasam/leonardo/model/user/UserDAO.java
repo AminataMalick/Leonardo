@@ -19,13 +19,17 @@ public class UserDAO extends DAOManager{
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE id_User="+id);
+			System.out.println(con);
+			ResultSet rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User FROM Member natural join User WHERE id_User="+id);
+			
 			if(rset.next())
-			{			
-				while (rset.next()) {
-					User user = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
+			{	//while (rset.next()) {
+
+					System.out.println("rset :"+rset);
+					User user = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+					System.out.println("user :"+user.email);
 					return user ;
-				}
+				//}
 			}
 			else {	
 				rset = stmt.executeQuery("SELECT * FROM Admin natural join User WHERE id_User="+id);
@@ -130,6 +134,7 @@ public class UserDAO extends DAOManager{
 				Statement stmt = null;
 				try {
 					stmt = con.createStatement();
+				
 					int deleted = stmt.executeUpdate("UPDATE User SET token_User ='"+user.getToken()+"' WHERE id_User="+user.getId());		
 					if(deleted > 0) {
 						return true;
