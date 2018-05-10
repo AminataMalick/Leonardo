@@ -136,16 +136,20 @@ public class MemberDAO extends DAOManager {
 
 
 
-	public static void delete(Long memberID) {
+	public static boolean delete(Long memberID) {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("DELETE FROM ShopMember WHERE id_Member="+memberID);
-			stmt.executeUpdate("DELETE FROM Message WHERE id_Member="+memberID);
-			stmt.executeUpdate("DELETE FROM Shop WHERE id_Member="+memberID);
-			stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+memberID);
-			stmt.executeUpdate("DELETE FROM Member WHERE id_Member="+memberID);
-			stmt.executeUpdate("DELETE FROM User WHERE id_User="+memberID);
+			deleted += stmt.executeUpdate("DELETE FROM Message WHERE id_Member="+memberID);
+			deleted += stmt.executeUpdate("DELETE FROM Shop WHERE id_Member="+memberID);
+			deleted += stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+memberID);
+			deleted += stmt.executeUpdate("DELETE FROM Member WHERE id_Member="+memberID);
+			deleted += stmt.executeUpdate("DELETE FROM User WHERE id_User="+memberID);
+			
+			if(deleted > 0) {
+				return true;
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -157,7 +161,8 @@ public class MemberDAO extends DAOManager {
 					e.printStackTrace();
 				}
 			}
-		}	
+		}
+		return false;
 	}
 
 	//Retourne un user grace a son email

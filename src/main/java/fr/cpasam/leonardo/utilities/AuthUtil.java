@@ -12,6 +12,7 @@ import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
+import fr.cpasam.leonardo.exceptions.MemberDeletionException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.TokenCreationException;
 import fr.cpasam.leonardo.exceptions.TokenDeletionException;
@@ -116,7 +117,7 @@ public class AuthUtil {
 	 * @param token le token à comparer pour vérifier l'authenticité de l'utilisateur
 	 * @return le membre modifié
 	 * @throws IncompleteDataException dans le cas où certains champs n'ont pas été renseignés
-	 * @throws MemberRecoveryException dans le cas où un problème est survenu lors de la récupération du membre à modifier
+	 * @throws UserNotFoundException dans le cas où un problème est survenu lors de la récupération du membre à modifier
 	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
 	 * @throws MemberUpdateException dans le cas où un problème est survenu lors de la mise à jour du membre
 	 */
@@ -139,7 +140,7 @@ public class AuthUtil {
 	 * @throws WrongTokenException dans le cas où l'utilisateur n'est pas connecté
 	 */
 	public static void logout(Long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, TokenDeletionException {
-		if(Long.toString(id) == null) throw new IncompleteDataException();
+		if(Long.toString(id) == null || token == null) throw new IncompleteDataException();
 		User user = UserDAO.getUserById(id);
 		if(user == null) throw new UserNotFoundException();
 		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
@@ -154,5 +155,22 @@ public class AuthUtil {
 	 */
 	public static String encryptPassword(String pwd) {
 		return BCrypt.hashpw(pwd, BCrypt.gensalt());
+	}
+	
+	/**
+	 * Permet la suppression du compte d'un membre
+	 * @param id l'id du membre ayant demandé la suppression de son compte
+	 * @param token le token de la session active du membre
+	 * @throws IncompleteDataException dans le cas où certains champs n'ont pas été renseignés
+	 * @throws UserNotFoundException dans le cas où un problème est survenu lors de la récupération du membre à supprimer dans la base de données
+	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
+	 * @throws MemberDeletionException dans le cas où un problème est survenu lors de la suppression du membre
+	 */
+	public static void deleteAccount(long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberDeletionException {
+		if(Long.toString(id) == null || token == null) throw new IncompleteDataException();
+		User user = UserDAO.getUserById(id);
+		if(user == null) throw new UserNotFoundException();
+		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
+		if(!MemberDAO.delete(id)) throw new MemberDeletionException();
 	}
 }
