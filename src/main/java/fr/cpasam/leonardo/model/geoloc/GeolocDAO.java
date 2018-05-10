@@ -23,16 +23,22 @@ public class GeolocDAO extends DAOManager {
 	            	geoloc= new Geoloc(resultat.getInt(1),resultat.getInt(2),resultat.getInt(3),geoloc.getMembers(),null);
 	            }
 	     }catch (SQLException e) { e.printStackTrace();} 
-		return geoloc;	
+		finally {
+			if (statement != null){
+				try {statement.close();}
+				catch (SQLException e) {e.printStackTrace();}
+			}
+		}return geoloc;	
 	}
 	
 	
 	public static List<Geoloc> all() {
 		List<Geoloc> geolocs = new ArrayList<Geoloc>();	
+		Statement statement =null;
 		
 		try {
 			Geoloc geoloc= null;
-			Statement statement = con.createStatement();
+			statement = con.createStatement();
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Geoloc");
 	            /* Récupération des données du résultat de la requête de lecture */
@@ -41,8 +47,12 @@ public class GeolocDAO extends DAOManager {
 	            	geolocs.add(geoloc);
 	            }
 	     }catch (SQLException e) { e.printStackTrace();} 
-		return geolocs;	
-		
+		 finally {
+			if (statement != null){
+				try {statement.close();}
+				catch (SQLException e) {e.printStackTrace();}
+			}
+		}return geolocs;	
 	}
 	
 	
