@@ -28,6 +28,7 @@ import fr.cpasam.leonardo.model.product.ProductDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.tag.ProductTag;
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.AuthUtil;

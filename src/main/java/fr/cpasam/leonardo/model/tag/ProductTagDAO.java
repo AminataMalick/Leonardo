@@ -1,6 +1,4 @@
-package fr.cpasam.leonardo.resources;
-
-import fr.cpasam.leonardo.model.tag.ProductTag;
+package fr.cpasam.leonardo.model.tag;
 
 public class ProductTagDAO {
 
