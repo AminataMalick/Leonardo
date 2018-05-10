@@ -31,7 +31,7 @@ public class ShopRessource {
 
 
 	@GET
-	@Path("/all")
+	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
 
@@ -48,9 +48,6 @@ public class ShopRessource {
 
 		return Response.ok(ShopDAO.get(id)).build();
 	}
-
-
-
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

@@ -27,28 +27,6 @@ CREATE TABLE IF NOT EXISTS Member (
     FOREIGN KEY (id_User) REFERENCES User(id_User)
 );
     
-CREATE TABLE IF NOT EXISTS ShopChat (
-        id_Chat bigint,
-    id_Shop bigint NOT NULL,
-    id_Member bigint NOT NULL,
-    PRIMARY KEY (id_Chat),
-    FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop),
-    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
-);
-
-
-CREATE TABLE IF NOT EXISTS Message (
-        id_Message bigint,
-        date_Message date NOT NULL,
-        content_Message text NOT NULL,
-    id_Member bigint,
-        id_Chat bigint,
-    PRIMARY KEY (id_Message),
-    FOREIGN KEY (id_Chat) REFERENCES ShopChat(id_Chat),
-    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
-);
-
-
 
 CREATE TABLE IF NOT EXISTS Admin (
         id_Admin bigint,
@@ -58,6 +36,10 @@ CREATE TABLE IF NOT EXISTS Admin (
     FOREIGN KEY (id_Geoloc) REFERENCES Geoloc(id_Geoloc),
     FOREIGN KEY (id_User) REFERENCES User(id_User)
 );
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS Shop (
         id_Shop bigint,
@@ -69,6 +51,14 @@ CREATE TABLE IF NOT EXISTS Shop (
 
 );
 
+CREATE TABLE IF NOT EXISTS ShopChat (
+        id_Chat bigint,
+    id_Shop bigint NOT NULL,
+    id_Member bigint NOT NULL,
+    PRIMARY KEY (id_Chat),
+    FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
+);
 
 CREATE TABLE IF NOT EXISTS RetailPoint (
         id_Retail bigint,
@@ -116,9 +106,13 @@ CREATE TABLE IF NOT EXISTS ShopMember (
 );
 
 
-
-
-
-
-
-
+CREATE TABLE IF NOT EXISTS Message (
+        id_Message bigint,
+        date_Message date NOT NULL,
+        content_Message text NOT NULL,
+    id_Member bigint,
+        id_Chat bigint,
+    PRIMARY KEY (id_Message),
+    FOREIGN KEY (id_Chat) REFERENCES ShopChat(id_Chat),
+    FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
+);
