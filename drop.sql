@@ -5,7 +5,6 @@ drop table Product ;
 drop table ShopRetail ;
 drop table RetailPoint ;
 drop table Message ;
-drop table ShopChat ;
 drop table Shop ;
 drop table Admin ;
 drop table Member ;
