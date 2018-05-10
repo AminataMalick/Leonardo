@@ -41,7 +41,7 @@ public class ProductDAO extends DAOManager {
 	/**
 	 * Retourne la liste de tous les produits de la BD
 	 	 */
-	public List<Product> all() {
+	public static List<Product> all() {
 		List<Product> products = new ArrayList<Product>();						
 		try {
 			Product product = null ;
@@ -63,9 +63,10 @@ public class ProductDAO extends DAOManager {
 	/**
 	 * Creation d'un produit avec récuperation des donnees du formulaire 
 	  */
-	public static Product create(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags ) {
+	public static Product create( String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags ) {
 		Statement stmt = null;
 		Product product=null;
+		long id = Product.getCnt();
 		try {
 			stmt = con.createStatement();
 			stmt.executeUpdate("INSERT INTO Product(id_Product, name_Product, provenance_Product, unityPrice_Product, tag_Product)VALUES("+id+",'"+name+"','"+provenance+"','"+unityPrice+"','"+tags+"')");
