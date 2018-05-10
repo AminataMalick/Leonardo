@@ -59,5 +59,12 @@ public class Shop {
 	}
 	
 	public Member getMember() {return member;}
+
+	public void addProduct(List<Product> products) {
+		for(Product p : products) {
+			this.products.add(p);
+		}
+		
+	}
 	
 }
