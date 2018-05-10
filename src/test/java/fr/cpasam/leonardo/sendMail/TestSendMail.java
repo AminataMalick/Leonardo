@@ -1,6 +1,6 @@
 package fr.cpasam.leonardo.sendMail;
 
-import fr.cpasam.leonardo.notifications.NotificationsMail;
+import fr.cpasam.leonardo.utilities.NotificationsMail;
 
 public class TestSendMail {
 
