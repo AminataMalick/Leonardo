@@ -182,14 +182,9 @@ public class ShopDAO extends DAOManager {
 		try {
 			Product product = null;
 			ProductTag tag = null ;
-			Shop shop = null ;
 			statement = con.createStatement();
 			statement2 = con.createStatement();
 
-			
-
-			/* Récupération du shop donné */
-			shop.get(shop_id);
 
 			/* Récupération des produits lié au shop donné */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Shop =" + shop_id);
@@ -206,7 +201,7 @@ public class ShopDAO extends DAOManager {
 					tags.add(tag);
 				}
 					
-				product= new Product(product_id,resultat.getString(2),shop,resultat.getFloat(4),tags);
+				product= new Product(product_id,resultat.getString(2),shop_id,resultat.getFloat(4),tags);
 				products.add(product);
 				
 			}
