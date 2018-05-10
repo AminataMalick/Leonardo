@@ -10,7 +10,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 
 public class MemberDAO extends DAOManager {
-
+	
 	// Affichage de tous les membres de la BD
 	public static List<Member> all() {
 		List<Member> members = new ArrayList<Member>();
@@ -50,8 +50,9 @@ public class MemberDAO extends DAOManager {
 	 * @param email
 	 * @param pwd
 	 */
-	public static Member create(long id,String firstName, String lastName, String email, String pwd) {
+	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
+		long id = User.getCnt();
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
