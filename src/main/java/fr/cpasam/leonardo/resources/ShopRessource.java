@@ -32,7 +32,7 @@ public class ShopRessource {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getShops() {
+	public Response all() {
 
 		return Response
 				.ok(ShopDAO.all())
@@ -43,7 +43,7 @@ public class ShopRessource {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response resGetShopID(@PathParam("id") long id) {
+	public Response get(@PathParam("id") long id) {
 
 		return Response.ok(ShopDAO.get(id)).build();
 	}
@@ -54,7 +54,7 @@ public class ShopRessource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response newShop(JsonObject json) { 
+	public Response create(JsonObject json) { 
 
 
 		// Vérifier que l'utilisateur est bien connecté 
@@ -62,7 +62,7 @@ public class ShopRessource {
 
 
 		// Vérifier le jeton CSRF
-		
+
 		long user_id = json.get("user_id").getAsLong();
 		long token = json.get("token").getAsLong();
 		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -80,10 +80,10 @@ public class ShopRessource {
 
 
 	@PUT
-    @Path("/{id}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response resCreateShop(@PathParam("id") long id,  JsonObject json) { 
+	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
 
 		// Vérifier que l'utilisateur est bien connecté 
@@ -91,18 +91,18 @@ public class ShopRessource {
 
 
 		// Vérifier le jeton CSRF
-		
+
 		long user_id = json.get("user_id").getAsLong();
 		long token = json.get("token").getAsLong();
 		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
-		
+
 		//Vérifier que le shop appartient bien au user
-		
+
 		long shop_id = json.get("shop_id").getAsLong();
-		
+
 		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
-		
+
 		Shop s = ShopDAO.updateShop(
 				shop_id,
 				json.get("name").getAsString(), 
@@ -113,42 +113,36 @@ public class ShopRessource {
 	}
 
 
+	@DELETE
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response delete(@PathParam("id") long id, JsonObject json) {
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 
 
-	/* Version 2 :
-    @PUT
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response resUpdateShop(Shop s){
+		// Vérifier le jeton CSRF
 
-     Shop shop = ShopDAO.getShopID(id) ;
-		if (shop) {
-                return Response
-                  .status(Status.OK)
-                  .entity(shop)
-                  .build();
-        }
-
-        return Response
-          .status(Status.NO_CONTENT)
-          .build();
-    }  
-	 */
+		long user_id = json.get("user_id").getAsLong();
+		long token = json.get("token").getAsLong();
+		if(!Auth.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
-	/*
-    @DELETE
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response resDeleteShop(@PathParam("SHOP_ID") long id) {
-    	ShopDAO.deleteShop(id) ;
+		//Vérifier que le shop appartient bien au user
 
-        return Response
-        	.status(Status.ACCEPTED)
-        	.build();
-    }
-	 */
+		long shop_id = json.get("shop_id").getAsLong();
+
+		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
+
+		//Suppression shop
+		
+		ShopDAO.delete(id) ;
+
+		return Response
+				.status(Status.ACCEPTED)
+				.build();
+	}
+
 
 }

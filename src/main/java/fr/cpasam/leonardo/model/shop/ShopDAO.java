@@ -70,6 +70,11 @@ public class ShopDAO extends DAOManager {
 		return null;
 	}
 
+	public static void delete(long shop_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }
