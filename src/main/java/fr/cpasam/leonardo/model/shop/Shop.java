@@ -22,13 +22,13 @@ public class Shop {
 	private List<Product> products ;
 	protected List<Chat> chats;
 
-	public Shop(long id, String name, String description, List<RetailPoint> retailPoints, Member member) {
+	public Shop(long id, String name, String description, List<RetailPoint> retailPoints, Member member, List<Product> products ) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.retailPoints = new ArrayList<RetailPoint>();
 		this.member = member;
-		this.products = new ArrayList<Product>();
+		this.products = products ;
 		this.chats = new ArrayList<Chat>();
 	}
 
