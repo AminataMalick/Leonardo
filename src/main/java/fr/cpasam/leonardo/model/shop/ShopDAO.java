@@ -17,12 +17,16 @@ public class ShopDAO extends DAOManager {
 
 	public static Shop get(Long shop_id) {
 		Statement statement = null;		
+		Statement statement2 = null;		
+
 		Shop shop = null ;
 		List<Product> products = new ArrayList<Product>();	
 		Member member = null ;					
 
 		try {
 			statement = con.createStatement();
+			statement2 = con.createStatement();
+
 
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop WHERE id_Shop="+ shop_id);
@@ -35,7 +39,7 @@ public class ShopDAO extends DAOManager {
 				long member_id = resultat.getLong(4);
 
 				/* Exécution d'une requête de lecture */
-				ResultSet resultat1 = statement.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ member_id);
+				ResultSet resultat1 = statement2.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ member_id);
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
@@ -47,13 +51,17 @@ public class ShopDAO extends DAOManager {
 				shop= new Shop(resultat.getLong(1),resultat.getString(2),resultat.getString(3),null,member, products);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
-		try { statement.close();
+		try { 
+			statement.close();
+			statement2.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return shop;
 	}
 
 	public static List<Shop> all() {
 		Statement statement = null;		
+		Statement statement2 = null;		
+
 		List<Shop> shops = new ArrayList<Shop>();	
 		List<Product> products = new ArrayList<Product>();						
 		Member member = null ;					
@@ -61,6 +69,9 @@ public class ShopDAO extends DAOManager {
 		try {
 			Shop shop = null;
 			statement = con.createStatement();
+			statement2 = con.createStatement();
+
+			
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop ");
 			/* Récupération des données du résultat de la requête de lecture */
@@ -73,7 +84,7 @@ public class ShopDAO extends DAOManager {
 				long member_id = resultat.getLong(4);
 
 				/* Exécution d'une requête de lecture */
-				ResultSet resultat1 = statement.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ member_id);
+				ResultSet resultat1 = statement2.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ member_id);
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
@@ -84,7 +95,9 @@ public class ShopDAO extends DAOManager {
 				shops.add(shop);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
-		try { statement.close();
+		try { 
+			statement.close();
+			statement2.close();
 		} catch (SQLException e) { e.printStackTrace();}
 
 		return shops;
@@ -161,18 +174,17 @@ public class ShopDAO extends DAOManager {
 	
 	public static List<Product> getProducts(long shop_id) {
 		Statement statement = null;	
+		Statement statement2 = null;	
+
 		List<Product> products = new ArrayList<Product>();	
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();						
 
 		try {
 			Product product = null;
 			ProductTag tag = null ;
-			Shop shop = null ;
 			statement = con.createStatement();
-			
+			statement2 = con.createStatement();
 
-			/* Récupération du shop donné */
-			shop.get(shop_id);
 
 			/* Récupération des produits lié au shop donné */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Shop =" + shop_id);
@@ -181,7 +193,7 @@ public class ShopDAO extends DAOManager {
 				long product_id = resultat.getLong(1);
 	
 				/* Récupération des tags lié au produit */
-				ResultSet resultat2 = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
+				ResultSet resultat2 = statement2.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
 				/* Récupération de chaque tag et ajout dans l'arrayList tags */
 				while ( resultat2.next() ) {
 				
@@ -189,12 +201,15 @@ public class ShopDAO extends DAOManager {
 					tags.add(tag);
 				}
 					
-				product= new Product(product_id,resultat.getString(2),shop.id(),resultat.getFloat(4),tags);
+
+				product= new Product(product_id,resultat.getString(2),shop_id,resultat.getFloat(4),tags);
 				products.add(product);
 				
 			}
 		}catch (SQLException e) { e.printStackTrace();} 
-		try { statement.close();
+		try { 
+			statement.close();
+			statement2.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		
 		return products ;
