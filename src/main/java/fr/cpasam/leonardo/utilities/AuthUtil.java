@@ -74,7 +74,7 @@ public class AuthUtil {
 	 */
 	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException {
 		if(firstName == null || lastName == null || mail == null || pwd == null) throw new IncompleteDataException();
-		String newPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+		String newPwd = encryptPassword(pwd);
 		if(MemberDAO.create(firstName, lastName, mail, newPwd) == null) throw new MemberCreationException();
 	}
 	
@@ -124,7 +124,8 @@ public class AuthUtil {
 		if(Long.toString(id) == null || firstName == null || lastName == null || mail == null || pwd == null || token == null) throw new IncompleteDataException();
 		if(MemberDAO.get(id) == null) throw new UserNotFoundException();
 		if(!checkCSRF(id, token)) throw new WrongTokenException();
-		Member member = MemberDAO.update(id, firstName, lastName, mail, pwd);
+		String newPwd = encryptPassword(pwd);
+		Member member = MemberDAO.update(id, firstName, lastName, mail, newPwd);
 		if(member == null) throw new MemberUpdateException();
 		return member;
 	}
@@ -144,5 +145,14 @@ public class AuthUtil {
 		if(!checkCSRF(user.getId(), token)) throw new WrongTokenException();
 		if(!UserDAO.deleteToken(user.getId())) throw new TokenDeletionException();
 		user.setToken(null);
+	}
+	
+	/**
+	 * Permet d'encrypter le mot de passe avant de le stocker dans la base de données
+	 * @param pwd le mot de passe à encrypter
+	 * @return le mot de passe encrypté
+	 */
+	public static String encryptPassword(String pwd) {
+		return BCrypt.hashpw(pwd, BCrypt.gensalt());
 	}
 }
