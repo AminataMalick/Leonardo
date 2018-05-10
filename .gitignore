@@ -116,3 +116,6 @@ local.properties
 hibernate.cfg.xml
 **.**~
 .idea/
+
+# Database Configuration File
+BD.properties

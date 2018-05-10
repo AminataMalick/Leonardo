@@ -39,10 +39,11 @@ public class ProductResource {
 
 
 	@GET
-	@Path("/all")
+	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
-
+	
+		System.out.println("product/all");
 		return Response
 				.ok(ProductDAO.all())
 				.build();
