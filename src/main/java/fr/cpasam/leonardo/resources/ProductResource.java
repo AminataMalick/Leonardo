@@ -32,6 +32,7 @@ import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.AuthUtil;
+import fr.cpasam.leonardo.utilities.Validator;
 
 
 @Path("product/")
@@ -79,7 +80,7 @@ public class ProductResource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
@@ -137,7 +138,7 @@ public class ProductResource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
@@ -193,7 +194,7 @@ public class ProductResource {
 
 		long user_id = json.get("user_id").getAsLong();
 		String token = json.get("token").getAsString();
-		if(!AuthUtil.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
