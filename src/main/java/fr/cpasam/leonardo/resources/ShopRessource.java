@@ -27,12 +27,14 @@ import fr.cpasam.leonardo.utilities.Validator;
 
 
 @Path("shop/")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+
 public class ShopRessource {
 
 
 	@GET
 	@Path("all")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
 
 		return Response
@@ -43,15 +45,35 @@ public class ShopRessource {
 
 	@GET
 	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id) {
-
+		
 		return Response.ok(ShopDAO.get(id)).build();
 	}
 
+
+	@GET
+	@Path("?USER")
+	public Response getByMember(JsonObject json) {
+
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+
+		// Vérifier le jeton CSRF
+
+		long user_id = json.get("user_id").getAsLong();
+		String token = json.get("token").getAsString();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+		// Récupérer les shop de l'utilisateur
+		
+		ArrayList<Shop> shops = ShopDAO.getByMember(user_id);
+
+
+		return Response.ok(shops).build();
+	}
+
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
 
 
@@ -79,8 +101,6 @@ public class ShopRessource {
 
 	@PUT
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
 
@@ -113,8 +133,6 @@ public class ShopRessource {
 
 	@DELETE
 	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response delete(@PathParam("id") long id, JsonObject json) {
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -134,7 +152,7 @@ public class ShopRessource {
 		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
 
 		//Suppression shop
-		
+
 		ShopDAO.delete(id) ;
 
 		return Response

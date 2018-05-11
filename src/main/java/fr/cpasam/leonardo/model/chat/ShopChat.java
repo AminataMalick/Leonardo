@@ -15,12 +15,12 @@ public class ShopChat extends Chat<Member, Shop> {
 		super(id, m, s);
 	}
 	
-	public static Chat getChatByUsers(Long memberID, Long shopId) {
+	public static ShopChat getChatByUsers(Long memberID, Long shopId) {
 		
 		
 		// Faire une requête pour rechercher si un chat existe entre user1 et le user2
 		
-		Chat c = ShopChatDAO.getByMemberAndShop(memberID, shopId);
+		ShopChat c = ShopChatDAO.getByMemberAndShop(memberID, shopId);
 		
 		// Si le chat n'existe pas, le créer
 		

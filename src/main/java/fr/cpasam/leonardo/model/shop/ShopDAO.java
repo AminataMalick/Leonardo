@@ -274,6 +274,16 @@ public class ShopDAO extends DAOManager {
 
 	}
 
+	/**
+	 * Renvoi toutes les boutiques dont le membre est propriétaire ou modérateur
+	 * @param user_id
+	 * @return
+	 */
+	public static ArrayList<Shop> getByMember(long user_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

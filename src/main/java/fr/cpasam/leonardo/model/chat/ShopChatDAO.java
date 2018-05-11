@@ -1,8 +1,11 @@
 package fr.cpasam.leonardo.model.chat;
 
+import java.util.ArrayList;
+
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
+import fr.cpasam.leonardo.model.chat.ShopChat;
 
 public class ShopChatDAO extends DAOManager {
 
@@ -17,12 +20,17 @@ public class ShopChatDAO extends DAOManager {
 	 * @param shopId
 	 * @return 
 	 */
-	public static Chat getByMemberAndShop(Long memberID, Long shopId) {
+	public static ShopChat getByMemberAndShop(Long memberID, Long shopId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public static ShopChat get(long shopchat_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static ArrayList<ShopChat> getByMember(long user_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
