@@ -12,6 +12,14 @@ import fr.cpasam.leonardo.model.user.MemberDAO;
 public class TestShopChatDAO {
 
 	public static void main(String[] args) {
+		
+		/*
+		// Test all
+		ArrayList<ShopChat> shopsChats = new ArrayList<ShopChat>() ;
+		shopsChats = ShopChatDAO.all();
+		System.out.println(shopsChats);
+		*/	
+		
 		/*
 		// Test create
 		Member member = null ;
@@ -36,6 +44,8 @@ public class TestShopChatDAO {
 		System.out.println(shopChat);
 		*/
 		
+		
+		
 		/*
 		// Test get
 		long shopchat_id = 1;
@@ -51,6 +61,22 @@ public class TestShopChatDAO {
 		shopchats = ShopChatDAO.getByMember(member_id);
 		System.out.println(shopchats);
 		*/
+		
+		/*
+		// Test getByShop
+		long shop_id = 2 ;
+		ArrayList<ShopChat> shopchats = new ArrayList<ShopChat>() ;
+		shopchats = ShopChatDAO.getByShop(shop_id);
+		System.out.println(shopchats);
+		*/
+		
+		/*
+		// Test delete
+		long shopchat_id = 1 ;
+		ShopChatDAO.delete(shopchat_id);
+		System.out.println("ok");
+		*/
+		
 	}
 	
 }

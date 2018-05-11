@@ -16,6 +16,44 @@ public class ShopChatDAO extends DAOManager {
 
 	
 	/**
+	 * Retourne tous les ShopsChats
+	 * @return ArrayList<ShopChat>
+	 */
+	public static ArrayList<ShopChat> all() {
+		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
+		Statement statement = null;		
+
+		ShopChat shopChat = null ;
+		Member member = null ;
+		Shop shop = null ;
+		
+		try {
+			statement = con.createStatement();
+
+			/* Récupération du ShopChat */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM ShopChat");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			while ( resultat.next() ) {
+				/* Récupération du membre */
+				long member_id = resultat.getLong(3);
+				member = MemberDAO.get(member_id);
+				
+				/* Récupération du shop */
+				long shop_id = resultat.getLong(2);
+				shop = ShopDAO.get(shop_id);
+				
+				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				shopChats.add(shopChat);
+			}
+			
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return shopChats;
+	}
+	
+	/**
 	 * Création d'un ShopChat a partir d'un membre et d'un shop
 	 * @param member
 	 * @param shop
@@ -123,7 +161,7 @@ public class ShopChatDAO extends DAOManager {
 
 	
 	/**
-	 * Retourne la liste de ShopChat lié au membre donné
+	 * Retourne la liste des ShopChat lié au membre donné
 	 * @param user_id
 	 * @return ArrayList<ShopChat>
 	 */
@@ -159,6 +197,65 @@ public class ShopChatDAO extends DAOManager {
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return shopChats;
+	}
+	
+	
+	/**
+	 * Retourne la liste des ShopChats lié à un shop donné
+	 * @param shop_id
+	 * @return ArrayList<ShopChat>
+	 */
+	public static ArrayList<ShopChat> getByShop(long shop_id) {
+		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
+
+		Statement statement = null;		
+
+		ShopChat shopChat = null ;
+		Member member = null ;
+		Shop shop = null ;
+		
+		try {
+			statement = con.createStatement();
+
+			/* Récupération du ShopChat */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM ShopChat WHERE id_Shop = "+shop_id);
+
+			/* Récupération des données du résultat de la requête de lecture */
+			while ( resultat.next() ) {
+				/* Récupération du membre */
+				long member_id = resultat.getLong(3);
+				member = MemberDAO.get(member_id);
+				
+				/* Récupération du shop */
+				shop = ShopDAO.get(shop_id);
+				
+				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				shopChats.add(shopChat);
+			}
+			
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return shopChats;
+	}
+	
+	
+	/**
+	 * Supprime un shopChat donné
+	 * @param shopchat_id
+	 */
+	public static void delete(long shopchat_id) {
+		Statement statement = null;
+		try {
+			statement = con.createStatement();
+			int deleted =statement.executeUpdate("DELETE FROM Message WHERE id_Chat="+shopchat_id);
+			statement.executeUpdate("DELETE FROM ShopChat WHERE id_Chat="+shopchat_id);
+		}catch (SQLException e) { e.printStackTrace();}
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return ;
+		
+
 	}
 
 }
