@@ -31,7 +31,6 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.utilities.AuthUtil;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -45,8 +44,15 @@ public class ProductResource {
 	public Response all() {
 	
 		System.out.println("product/all");
+		
+		ArrayList<Product> products = ProductDAO.all();
+		
+//		for (Product p : products) {
+//			System.out.println(p.getName());
+//		}
+		
 		return Response
-				.ok(ProductDAO.all())
+				.ok(products)
 				.build();
 	}
 
@@ -105,13 +111,12 @@ public class ProductResource {
 			tags.add(t);
 		}
 
-		Shop s = ShopDAO.get(json.get("shop_id").getAsLong());
+		long shop_id = json.get("shop_id").getAsLong();
 
 		Product p = ProductDAO.create(
 				json.get("name").getAsString(), 
-				s, 
-				json.get("price").getAsFloat(), 
-				tags);
+				shop_id, 
+				json.get("price").getAsFloat());
 
 		return Response.ok(p).build();
 	}
@@ -164,11 +169,11 @@ public class ProductResource {
 			tags.add(t);
 		}
 
-		Shop s = ShopDAO.get(json.get("shop_id").getAsLong());
+		long shop_id = json.get("shop_id").getAsLong();
 
 		Product p = ProductDAO.update(id, 
 									  json.get("name").getAsString(), 
-									  s, 
+									  shop_id, 
 									  json.get("price").getAsFloat(), 
 									  tags);
 

@@ -15,15 +15,15 @@ public class Product {
 	
 	long id;
 	String name ;
-	Shop provenance ;
+	Long provenance ; // shop_id
 	float unityPrice ;
 	protected ArrayList<ProductTag> tags;
 
 	
-	public Product(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags) {
+	public Product(long id, String name, long id_shop, float unityPrice, ArrayList<ProductTag> tags) {
 		this.id = id;
 		this.name = name;
-		this.provenance = provenance;
+		this.provenance = id_shop;
 		this.unityPrice = unityPrice;
 		this.tags = tags;
 	}
@@ -42,7 +42,7 @@ public class Product {
 	 *Retourne la provenance d'un produit 
 	 * @return provenance
 	 */
-	public Shop getProvenance() {return provenance;}
+	public long getProvenance() {return provenance;}
 	/**
 	 * Retourne le prix à l'unité d'un produit
 	 * @return unityPrice
@@ -69,7 +69,7 @@ public class Product {
 	 * Met à jour la provenance d'un produit
 	 * @param provenance
 	 */
-	public void setProvenance(Shop provenance) {this.provenance = provenance;}
+	public void setProvenance(Shop provenance) {this.provenance = provenance.id();}
 	/**
 	 * Met à jour le prix à l'unité d'un produit
 	 * @param unityPrice

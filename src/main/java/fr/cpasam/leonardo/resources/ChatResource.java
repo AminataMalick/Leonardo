@@ -18,7 +18,6 @@ import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
-import fr.cpasam.leonardo.utilities.AuthUtil;
 import fr.cpasam.leonardo.utilities.Validator;
 
 @Path("/chat")

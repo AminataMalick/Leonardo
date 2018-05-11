@@ -1,123 +1,196 @@
 package fr.cpasam.leonardo.model.product;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.ProductTag;
+
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.utilities.DAOManager;
-import fr.cpasam.leonardo.utilities.HibernateUtil;
 
 public class ProductDAO extends DAOManager {
 
 	/**
 	 * Recherche d'un produit à partir de son id
-	  */
-	public static Product get(long productId)  {
+	 * @param product_id
+	 * @return Product
+	 **/
+	public static Product get(long product_id)  {
 		Statement statement = null;		
 		Product product = null ;
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
+
 		try {
 			statement = con.createStatement();
-			/* Exécution d'une requête de lecture */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE idproduct="+ productId);
+			tags = getTags(product_id);
 
-			/* Récupération des données du résultat de la requête de lecture */
-			while ( resultat.next() ) {
-				//idint namestring pricefloat shopint
-				//public Product(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags)
-				product= new Product(resultat.getLong(1),resultat.getString(2),product.getProvenance(),(float) resultat.getDouble(3),null);
+			/* récupération du produit selon l'id donné */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Product="+ product_id);
+
+			/* Affectation valeur récupéré */
+			while ( resultat.next() ) {				
+				product= new Product(product_id,resultat.getString(2),resultat.getLong(4), resultat.getFloat(3),tags);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
 		return product;
 	}
-	
+
 	/**
 	 * Retourne la liste de tous les produits de la BD
-	 	 */
-	public static List<Product> all() {
-		List<Product> products = new ArrayList<Product>();						
+	 * @return List<Product>
+	 **/
+	public static ArrayList<Product> all() {
+		ArrayList<Product> products = new ArrayList<Product>();		
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
+		Statement statement = null;		
+
 		try {
+			statement = con.createStatement();
 			Product product = null ;
-			Statement statement = con.createStatement();
-			/* Exécution d'une requête de lecture */
+			long product_id ;
+
+			/* Récupération de tous les produits */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product ");
+
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
-				//idint namestring pricefloat shopint
-				//public Product(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags)
-				product= new Product(resultat.getLong(1),resultat.getString(2),product.getProvenance(),(float) resultat.getDouble(3),null);
+
+				long id = resultat.getLong(1);
+				String name = resultat.getString(2);
+				float price = resultat.getFloat(3);
+				long id_shop = resultat.getLong(4);
+				ArrayList<ProductTag> t= ProductTagDAO.getTagsByProduct(id);
+
+
+				product= new Product(id, name, id_shop, price, t);
+
 				products.add(product);
+
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
-		return products ;   
+
+		try { 
+			statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+
+		return products;
+
 	}
-	
-	
+
+
 	/**
 	 * Creation d'un produit avec récuperation des donnees du formulaire 
-	  */
-	public static Product create( String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags ) {
-		Statement stmt = null;
-		Product product=null;
-		long id = Product.getCnt();
+	 * @param name 
+	 * @param shop_id
+	 * @param unityPrice
+	 * @return Product
+	 */
+	public static Product create( String name, long shop_id, float unityPrice ) {
+		Statement statement = null;		
+		Product product = null ;
 		try {
-			stmt = con.createStatement();
-			stmt.executeUpdate("INSERT INTO Product(id_Product, name_Product, provenance_Product, unityPrice_Product, tag_Product)VALUES("+id+",'"+name+"','"+provenance+"','"+unityPrice+"','"+tags+"')");
-			product = new Product(id, name, provenance,unityPrice,tags );
-		}catch (SQLException e) {e.printStackTrace();}
-		finally {
-			if (stmt != null){
-				try {stmt.close();}
-				catch (SQLException e) {e.printStackTrace();}
-			}
-		}return product ;
+			long product_id = Product.getCnt() ;
+
+			statement = con.createStatement();
+			/* Insertion d'un produit */
+			int res = statement.executeUpdate("INSERT INTO Product(id_Product, name_Product, UnityPrice, id_Shop)VALUES("+product_id+",'"+name+"',"+unityPrice+","+shop_id+")");
+
+			/* Création shop */
+			product= new Product(product_id, name, shop_id, unityPrice, null );
+
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return product;
 	}
 
-		 
-	/* Met à jour les informations d'un produit 	  */
-	public static Product update(long id, String name, Shop provenance, float unityPrice, ArrayList<ProductTag> tags) {
-	//public static Member update(long id,String firstName, String lastName, String email, String pwd, String token) {
-		Statement stmt = null;
+
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param provenance
+	 * @param unityPrice
+	 * @param tags
+	 * @return Product
+	 */
+	public static Product update(long product_id, String name, long shop_id, float unityPrice) {
+		Statement statement = null;	
+		Product product = null ;
+
 		try {
-			stmt = con.createStatement();
-			int deleted =stmt.executeUpdate("UPDATE Member SET name_Product = '"+name+"',provenance_Product ='"+provenance+"', unityPrice_Product='"+unityPrice+"', tag_Product='"+tags+"' WHERE id_Product ="+id+"");
-			if (deleted > 0){
-				Product product = new Product(id, name, provenance,unityPrice,tags );
-				return product ;
-			}
-		}catch (SQLException e) {e.printStackTrace();}
-		finally {
-				if (stmt != null) {
-					try {stmt.close();}
-					catch (SQLException e) {e.printStackTrace();}
-				}
-		}return null ;
+			statement = con.createStatement();
+
+			/* Modification du Produit */
+			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
+			/* En cas d'erreur */
+			if (update < 0){ return null ; }
+
+			product = new Product(product_id, name, shop_id, unityPrice, null);
+
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+
+		return product;
 	}		
 
-	
+
 	/**
-	 * Supprime un produit à l'aide de son id   */
-	public  static void delete(long id) {
-	//public static void delete(Long memberID) {
-		Statement stmt = null;
+	 * Supprime un produit à l'aide de son id   
+	 * @param product_id
+	 **/
+	public  static void delete(long product_id) {
+		Statement statement = null;
 		try {
-			stmt = con.createStatement();
-			int deleted =stmt.executeUpdate("DELETE FROM ProductTag WHERE id_Product="+id);
-			stmt.executeUpdate("DELETE FROM Product WHERE  id_Product="+id);
-			
-		}catch (SQLException e) {e.printStackTrace();}
-		finally {
-			if (stmt != null) {
-				try {stmt.close();}
-				catch (SQLException e) {e.printStackTrace();}
+			statement = con.createStatement();
+			int deleted =statement.executeUpdate("DELETE FROM ProductTag WHERE id_Product="+product_id);
+			statement.executeUpdate("DELETE FROM Product WHERE id_Product="+product_id);
+		}catch (SQLException e) { e.printStackTrace();}
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return ;
+	}
+
+
+
+	/**
+	 * Récupérer les tags d'un produit donné
+	 */
+
+	public static ArrayList<ProductTag> getTags(long product_id) {
+		Statement statement = null;	
+
+		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();						
+
+		try {
+			ProductTag tag = null ;
+			statement = con.createStatement();
+
+			/* Récupération des tags lié au produit donné */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
+			/* Récupération de chaque tag et ajout dans l'arrayList tags */
+			while ( resultat.next() ) {
+
+				tag= new ProductTag(resultat.getLong(1),resultat.getString(2));
+				tags.add(tag);
 			}
-		}	
-		}}
+
+
+		}catch (SQLException e) { e.printStackTrace();} 
+		try {statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+
+		return tags ;
+
+	}
+
+}
+
 
