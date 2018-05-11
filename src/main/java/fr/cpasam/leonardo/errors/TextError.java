@@ -1,6 +1,5 @@
 package fr.cpasam.leonardo.errors;
 
-import com.google.gson.JsonObject;
 
 public class TextError {
 	
@@ -14,10 +13,10 @@ public class TextError {
 		return this.message;
 	}
 	
-	public JsonObject JsonMessage() {
+	/*public JsonObject JsonMessage() {
 		JsonObject message = new JsonObject();
 		message.addProperty("error", this.message);
 		return message;
-	}
+	}*/
 	
 }
