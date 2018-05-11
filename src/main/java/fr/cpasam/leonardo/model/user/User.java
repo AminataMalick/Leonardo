@@ -42,8 +42,7 @@ public abstract class User {
 		this.email = email;
 		this.pwd = pwd;
 	}
-
-
+	
 	/**
 	 * Retourne l'id d'un utilisateur
 	 * @return id
@@ -114,7 +113,6 @@ public abstract class User {
 		if (!(this.chats.contains(nwChat))) {
 			this.chats.add(nwChat);
 		}
-
 	}
 
 	/*
@@ -124,25 +122,6 @@ public abstract class User {
 
 		return null;
 	}
-
-	//TODO
-	/*
-	public boolean singhIn(String mail, String pwd) return true;
-
-	public boolean singhIn(String firstname, String lastName,String mail, String pwd) return true;
-
-	public boolean changeMail(String newMail) {
-		Query query = session.createQuery("update.... set mail =: mail"+" where id =:id");
-		query.setParameter("mail", newMail);
-		query.setParameter("id", this.id);
-		query.executeUpdate() != 1?return false:return true;
-	}
-
-	public boolean deleteAccount() {
-		Query query = session.createQuery("delete... where id= :id");
-		query.setParameter("id", this.id);
-		query.executeUpdate()!=1?false:return true;
-	}*/
 }
 
 
