@@ -39,9 +39,9 @@ public class Shop {
 	/*
 	 * To Do
 	 */
-	public static Shop get(Long shopId) {
-		// TODO Auto-generated method stub
-		return null;
+	public static Shop get(long shop_id) {
+		Shop shop = ShopDAO.get(shop_id);
+		return shop;
 	}
 
 	public void addChat(Chat nwChat) {
@@ -58,8 +58,8 @@ public class Shop {
 	}
 
 	public Member getMember(long user_id) {
-		ShopDAO.getMember(user_id,this.id);
-		return null;
+		Member member = ShopDAO.getMember(user_id,this.id);
+		return member;
 	}
 	
 	public Member getMember() {return member;}

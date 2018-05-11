@@ -17,7 +17,7 @@ public class ShopChatDAO extends DAOManager {
 
 		long id = ShopChat.getCnt();
 		return null;
-	}
+	}	
 
 	/**
 	 * Récupère le chat associé à un membre et à une boutique
