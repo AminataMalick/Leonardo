@@ -58,8 +58,8 @@ public class Shop {
 	}
 
 	public Member getMember(long user_id) {
-		ShopDAO.getMember(user_id,this.id);
-		return null;
+		Member member = ShopDAO.getMember(user_id,this.id);
+		return member;
 	}
 	
 	public Member getMember() {return member;}

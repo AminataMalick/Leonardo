@@ -8,7 +8,7 @@ import fr.cpasam.leonardo.model.tag.ProductTag;
 
 
 public class Product {
-	private static long cnt = 1;
+	private static long cnt = 100;
 	public static long getCnt() {
 		return cnt++;
 	}

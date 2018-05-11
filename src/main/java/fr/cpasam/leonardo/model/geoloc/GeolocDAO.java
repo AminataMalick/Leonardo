@@ -11,7 +11,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class GeolocDAO extends DAOManager {
 
-	public static Geoloc get(Long geolocId) {
+	public static Geoloc get(long geolocId) {
 		Statement statement = null;		
 		Geoloc geoloc= null;
 		try {
