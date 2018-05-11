@@ -19,6 +19,7 @@ public class Product {
 	float unityPrice ;
 	protected ArrayList<ProductTag> tags;
 
+	public Product() {}
 	
 	public Product(long id, String name, long id_shop, float unityPrice, ArrayList<ProductTag> tags) {
 		this.id = id;
