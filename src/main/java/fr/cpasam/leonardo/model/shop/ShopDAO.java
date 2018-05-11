@@ -14,7 +14,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
 
-	public static Shop get(Long shop_id) {
+	public static Shop get(long shop_id) {
 		Statement statement = null;		
 		Statement statement2 = null;		
 
@@ -42,7 +42,7 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
-					member= new Member(resultat.getLong(2),resultat.getString(4),resultat.getString(5),resultat.getString(6),resultat.getString(7), null);
+					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
 
 
@@ -88,7 +88,7 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
-					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), null);
+					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
 				
 				shop= new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,shop.getMember(), products);

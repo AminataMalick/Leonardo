@@ -25,7 +25,7 @@ public class ShopChatDAO extends DAOManager {
 	 * @param shopId
 	 * @return 
 	 */
-	public static ShopChat getByMemberAndShop(Long memberID, Long shopId) {
+	public static ShopChat getByMemberAndShop(long memberID, long shopId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
