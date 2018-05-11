@@ -1,5 +1,7 @@
 package fr.cpasam.leonardo.resources;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,66 +23,81 @@ import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
 @Path("/chat")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
-	
+
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response openChat(JsonObject json) {
-		
+
 		Long shop_id = json.get("shop_id").getAsLong();
 		Long user_id = json.get("user_id").getAsLong();
-		
+
 		Member m = MemberDAO.get(user_id);
-		
+
 		Shop s = ShopDAO.get(shop_id);
-		
+
 		Chat c = m.openChat(s);
-		
-		
-		
+
+
+
 		return Response.ok(c).build();
-		
+
 	}
-	
+
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id, JsonObject json) {
-		
-		Response r = null;
+
 		long user_id = json.get("user_id").getAsLong();
-		
+
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-		
+
 		// Vérifier le jeton CSRF
-		
+
 		String token = json.get("token").getAsString();
 		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		
+
 		//Vérifier que le chat appartient au membre
-		
+
 		ShopChat c = (ShopChat) ShopChatDAO.get(id);
 		if((c.getMember().getId()) != user_id && c.getShop().getMember(user_id)==null) return Response.status(Response.Status.FORBIDDEN).build();
-		
-		
+
+
 		return Response.ok(c).build();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@GET
+	@Path("?USER")
+	public Response get(JsonObject json) {
+
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+		long user_id = json.get("user_id").getAsLong();
+		
+		// Vérifier le jeton CSRF
+
+		String token = json.get("token").getAsString();
+		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+		//Vérifier que le chat appartient au membre
+
+		ArrayList<ShopChat> chats = ShopChatDAO.getByMember(user_id);
+		
+		return Response.ok(chats).build();
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 }

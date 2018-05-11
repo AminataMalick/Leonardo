@@ -5,7 +5,7 @@ import fr.cpasam.leonardo.model.chat.Chat;
 
 public abstract class User {
 
-	private static long cnt = 1;
+	private static long cnt = 100;
 	public static long getCnt() {
 		return cnt++;
 	}
@@ -18,6 +18,9 @@ public abstract class User {
 	protected List<Chat> chats;
 	protected String token;
 
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;

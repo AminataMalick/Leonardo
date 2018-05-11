@@ -19,6 +19,10 @@ public abstract class Chat<T,U>{
 	protected T entity1;
 	protected U entity2;
 	private List<Message> messages ;
+	
+	public Chat() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Creation of a new chat

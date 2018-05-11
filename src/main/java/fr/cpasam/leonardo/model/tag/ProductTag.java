@@ -9,6 +9,11 @@ public class ProductTag extends Tag{
 	
 	private List<Product> products;
 	
+	public ProductTag() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public ProductTag(long id, String keyword) {
 		super(id,keyword);
 		this.products = new ArrayList<Product>();

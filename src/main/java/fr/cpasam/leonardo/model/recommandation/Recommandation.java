@@ -14,6 +14,9 @@ public class Recommandation {
 	private String comment;
 	private Member member;
 
+	public Recommandation() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public Recommandation(long id, int grade, String comment, Member member) {
 		this.id = id;

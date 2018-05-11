@@ -14,7 +14,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
 
-	public static Shop get(Long shop_id) {
+	public static Shop get(long shop_id) {
 		Statement statement = null;		
 		Statement statement2 = null;		
 
@@ -42,7 +42,7 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
-					member= new Member(resultat.getLong(2),resultat.getString(4),resultat.getString(5),resultat.getString(6),resultat.getString(7), null);
+					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
 
 
@@ -88,10 +88,10 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération des données du résultat de la requête de lecture */
 				while ( resultat1.next() ) {
-					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), null);
+					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
 				
-				shop= new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,shop.getMember(), products);
+				shop= new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,member, products);
 				shops.add(shop);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
@@ -272,6 +272,51 @@ public class ShopDAO extends DAOManager {
 		return ;
 		
 
+	}
+
+	/**
+	 * Renvoi toutes les boutiques dont le membre est propriétaire ou modérateur
+	 * @param user_id
+	 * @return
+	 */
+	public static ArrayList<Shop> getByMember(long user_id) {
+		ArrayList<Shop> shops = new ArrayList<Shop>();
+		List<Product> products = new ArrayList<Product>();	
+		Statement statement = null;
+		Statement statement2 = null;
+
+		Shop shop = null ;
+		Member member = null ;
+		try {
+			
+			statement = con.createStatement();
+			statement2 = con.createStatement();
+
+			/* Recherche de tous les shops non propriétaire lié à un membre */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop WHERE id_Shop = (SELECT id_Shop FROM ShopMember WHERE id_Member = "+user_id+ ")" );
+			 
+			/* Attribution des valeurs récupérées */
+			while ( resultat.next() ) {
+				long shop_id = resultat.getLong(1);
+				products = getProducts(shop_id);
+				
+				/* Récupération du membre correspondant à l'id donné*/
+				ResultSet resultat0 = statement2.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ user_id);
+
+				/* Récupération valeurs attributs du membre */
+				while ( resultat0.next() ) {
+					member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7), null);
+				} 
+
+				shop = new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,member, products);
+				shops.add(shop);
+			}
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { 
+			statement.close();
+			statement2.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return shops;
 	}
 
 

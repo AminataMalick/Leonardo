@@ -21,7 +21,10 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	private List<Recommandation> recommandations;
 
 
-
+	public Member() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String toString() { 
 		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
 	}

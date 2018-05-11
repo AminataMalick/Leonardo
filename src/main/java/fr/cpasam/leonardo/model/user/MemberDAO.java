@@ -29,17 +29,8 @@ public class MemberDAO extends DAOManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-
-			if (stmt != null) {
-				try {
-					// Le stmt.close ferme automatiquement le rset.
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}   
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return members ;   
 	}
 
@@ -55,26 +46,19 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
+		Member member = null ;
 		long id = User.getCnt();
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
 			deleted = stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+id+","+id+",null)");
-			Member member = new Member(id,firstName,lastName,email, pwd);
-			return member ;
+			member = new Member(id,firstName,lastName,email, pwd);
+
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
-		return null ;
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return member ;
 	}
 	
 	
@@ -89,26 +73,19 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static Member update(long id, String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
+		Member member = null ;
 		try {
 			stmt = con.createStatement();
 			int deleted =stmt.executeUpdate("UPDATE User SET firstName_User = '"+firstName+"',lastName_User ='"+lastName+"', email_User='"+email+"', pwd_User='"+pwd+"' WHERE id_User ="+id+"");
-			if (deleted > 0){
-			Member member = new Member(id,firstName,lastName,email, pwd);
-			return member ;
-			}
+			if (deleted < 0){ return null ;}
+			
+			member = new Member(id,firstName,lastName,email, pwd);
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
-		return null ;
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return member ;
 	}
 	
 	
@@ -121,31 +98,21 @@ public class MemberDAO extends DAOManager {
 	 * @param memberID identifiant du membre que l'on cherche
 	 * @return retourne le membre lié à l'identifiant passé en paramètre de la fonction ou null s'il n'existe pas
 	 */
-	public static Member get(Long memberID) {
+	public static Member get(long member_id) {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE id_User="+memberID);
-			if(rset.next())
-			{			
-				while (rset.next()) {
-					Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
-					return member ;
-				}
+			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE id_User="+member_id);
 
+			while (rset.next()) {
+				Member member = new Member(member_id,rset.getString(4),rset.getString(5),rset.getString(6),rset.getString(7),rset.getString(8));
+				return member ;
 			}
+
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return null ;
 	}
 
@@ -156,33 +123,24 @@ public class MemberDAO extends DAOManager {
 	 */
 	
 
-	public static boolean delete(Long memberID) {
+	public static boolean delete(long member_id) {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			int deleted =stmt.executeUpdate("DELETE FROM ShopMember WHERE id_Member="+memberID);
-			deleted += stmt.executeUpdate("DELETE FROM Message WHERE id_Member="+memberID);
-			deleted += stmt.executeUpdate("DELETE FROM Shop WHERE id_Member="+memberID);
-			deleted += stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+memberID);
-			deleted += stmt.executeUpdate("DELETE FROM Member WHERE id_Member="+memberID);
-			deleted += stmt.executeUpdate("DELETE FROM User WHERE id_User="+memberID);
+			int deleted =stmt.executeUpdate("DELETE FROM ShopMember WHERE id_Member="+member_id);
+			deleted += stmt.executeUpdate("DELETE FROM Message WHERE id_Member="+member_id);
+			deleted += stmt.executeUpdate("DELETE FROM Shop WHERE id_Member="+member_id);
+			deleted += stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+member_id);
+			deleted += stmt.executeUpdate("DELETE FROM Member WHERE id_Member="+member_id);
+			deleted += stmt.executeUpdate("DELETE FROM User WHERE id_User="+member_id);
 			
-			if(deleted > 0) {
-				return true;
-			}
+			if (deleted <0) {return false ;}
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return false;
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return true;
 	}
 
 
@@ -193,27 +151,20 @@ public class MemberDAO extends DAOManager {
 		 */
 		public static Member mailToMember(String email) {
 			Statement stmt = null;
+			Member member = null ;
 			try {
 				stmt = con.createStatement();
-				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User="+email);		
+				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User='"+email+"'");
+
 					while (rset.next()) {
-						Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
-						return member ;
+						member = new Member(rset.getLong(2),rset.getString(4),rset.getString(5),rset.getString(6),rset.getString(7),rset.getString(8));
 					}
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
-			}
-			finally {
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}	
-			return null ;
+			}try { stmt.close();
+			} catch (SQLException e) { e.printStackTrace();}
+			return member ;
 		}
 		
 		
