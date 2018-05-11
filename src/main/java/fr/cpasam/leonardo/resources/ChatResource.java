@@ -45,7 +45,6 @@ public class ChatResource {
 	
 	@GET
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id, JsonObject json) {
 		

@@ -34,7 +34,7 @@ public class ShopRessource {
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
-
+		
 		return Response
 				.ok(ShopDAO.all())
 				.build();
