@@ -8,7 +8,7 @@ public class TestMemberDAO {
 	public static void main(String[] args) {
 		
 		Member member = null ;
-		member = MemberDAO.mailToMember("ce@bo");
+		member = MemberDAO.mailToMember("me@ce");
 		System.out.println(member);
 
 	}
