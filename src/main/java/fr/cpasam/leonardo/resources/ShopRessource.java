@@ -36,7 +36,7 @@ public class ShopRessource {
 	@GET
 	@Path("all")
 	public Response all() {
-
+		
 		return Response
 				.ok(ShopDAO.all())
 				.build();

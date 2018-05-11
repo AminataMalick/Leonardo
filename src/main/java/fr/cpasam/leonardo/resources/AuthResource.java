@@ -10,17 +10,18 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
-import fr.cpasam.leonardo.exceptions.WrongPasswordException;
-import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.TokenCreationException;
 import fr.cpasam.leonardo.exceptions.TokenDeletionException;
 import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.exceptions.WrongPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.utilities.AuthUtil;
 
+@Path("auth/")
 public class AuthResource {
 	
 	/**
@@ -29,10 +30,11 @@ public class AuthResource {
 	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
 	 */
 	@POST
-	@Path("/login")
+	@Path("login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(JsonObject json) {
+		System.out.println("********* cc twé ************");
 		String mail = json.get("email").getAsString();
 		String pwd = json.get("password").getAsString();
 		User user = null;
@@ -40,31 +42,41 @@ public class AuthResource {
 		try {
 			user = AuthUtil.connection(mail, pwd);
 		} catch (UserNotFoundException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").message()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").JsonMessage()).build();
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		} catch (WrongPasswordException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").message()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").JsonMessage()).build();
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (IncompleteDataException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").message()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").JsonMessage()).build();
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenCreationException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").message()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").JsonMessage()).build();
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenStorageException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").message()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").JsonMessage()).build();
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
 		
-		JsonObject jsonUser = new JsonObject();
-		jsonUser.addProperty("id", user.getId());
-		jsonUser.addProperty("firstName", user.getFirstName());
-		jsonUser.addProperty("lastName", user.getLastName());
-		jsonUser.addProperty("email", user.getEmail());
-		jsonUser.addProperty("password", user.getPwd());
-		jsonUser.addProperty("token", user.getToken());
+		//System.out.println(user.toString());
 		
-		JsonObject jsonToReturn = new JsonObject();
-		jsonToReturn.add("user", jsonUser);
+//		JsonObject jsonUser = new JsonObject();
+//		jsonUser.addProperty("id", user.getId());
+//		jsonUser.addProperty("firstName", user.getFirstName());
+//		jsonUser.addProperty("lastName", user.getLastName());
+//		jsonUser.addProperty("email", user.getEmail());
+//		jsonUser.addProperty("password", user.getPwd());
+//		jsonUser.addProperty("token", user.getToken());
+//		
+//		JsonObject jsonToReturn = new JsonObject();
+//		jsonToReturn.add("user", jsonUser);
 		
-		
-		
-		return Response.ok(jsonToReturn).build();
+		return Response.ok(user).build();
 	}	
 	
 	/**
