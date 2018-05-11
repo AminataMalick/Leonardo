@@ -9,7 +9,6 @@ import java.sql.Statement;
 
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.tag.ProductTag;
-import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -64,9 +63,10 @@ public class ShopDAO extends DAOManager {
 
 		List<Shop> shops = new ArrayList<Shop>();	
 		List<Product> products = new ArrayList<Product>();						
-		Member member = null ;					
+						
 
 		try {
+			Member member = null ;	
 			Shop shop = null;
 			statement = con.createStatement();
 			statement2 = con.createStatement();

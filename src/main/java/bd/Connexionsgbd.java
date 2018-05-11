@@ -35,7 +35,7 @@ public class Connexionsgbd {
 	 */
 	private static Connection newConnection(String dbUrl, String username, String password) throws SQLException{
 		Connection conn = DriverManager.getConnection(dbUrl, username, password);
-		conn.setAutoCommit(false);
+		conn.setAutoCommit(true);
 		return conn;
 	}
 

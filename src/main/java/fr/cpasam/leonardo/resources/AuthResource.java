@@ -62,6 +62,8 @@ public class AuthResource {
 		JsonObject jsonToReturn = new JsonObject();
 		jsonToReturn.add("user", jsonUser);
 		
+		
+		
 		return Response.ok(jsonToReturn).build();
 	}	
 	

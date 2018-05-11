@@ -29,17 +29,8 @@ public class MemberDAO extends DAOManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-
-			if (stmt != null) {
-				try {
-					// Le stmt.close ferme automatiquement le rset.
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}   
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return members ;   
 	}
 
@@ -64,16 +55,8 @@ public class MemberDAO extends DAOManager {
 			return member ;
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return null ;
 	}
 	
@@ -98,16 +81,8 @@ public class MemberDAO extends DAOManager {
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return null ;
 	}
 	
@@ -136,16 +111,8 @@ public class MemberDAO extends DAOManager {
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}	
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return null ;
 	}
 
@@ -172,16 +139,8 @@ public class MemberDAO extends DAOManager {
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return false;
 	}
 
@@ -193,27 +152,20 @@ public class MemberDAO extends DAOManager {
 		 */
 		public static Member mailToMember(String email) {
 			Statement stmt = null;
+			Member member = null ;
 			try {
 				stmt = con.createStatement();
-				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User="+email);		
+				ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User='"+email+"'");
+
 					while (rset.next()) {
-						Member member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
-						return member ;
+						member = new Member(rset.getLong(2),rset.getString(4),rset.getString(5),rset.getString(6),rset.getString(7),rset.getString(8));
 					}
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
-			}
-			finally {
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}	
-			return null ;
+			}try { stmt.close();
+			} catch (SQLException e) { e.printStackTrace();}
+			return member ;
 		}
 		
 		
