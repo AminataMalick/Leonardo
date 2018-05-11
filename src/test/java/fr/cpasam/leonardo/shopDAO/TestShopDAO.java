@@ -81,6 +81,14 @@ public class TestShopDAO {
 		System.out.println("ok") ;
 		*/
 		
+		/*
+		//Test getbyMember
+		ArrayList<Shop> shops = new ArrayList<Shop>();
+		long user_id = 3 ;
+		shops = ShopDAO.getByMember(user_id);
+		System.out.println(shops) ;
+		*/
+		
 	}
 
 }
