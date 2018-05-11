@@ -91,7 +91,7 @@ public class ShopDAO extends DAOManager {
 					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
 				
-				shop= new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,shop.getMember(), products);
+				shop= new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,member, products);
 				shops.add(shop);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
