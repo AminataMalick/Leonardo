@@ -174,8 +174,7 @@ public class ProductResource {
 		Product p = ProductDAO.update(id, 
 									  json.get("name").getAsString(), 
 									  shop_id, 
-									  json.get("price").getAsFloat(), 
-									  tags);
+									  json.get("price").getAsFloat());
 
 		return Response.ok(p).build();
 	}
