@@ -41,10 +41,12 @@ public class ProductResource {
 		
 		ArrayList<Product> products = ProductDAO.all();
 		
+		
 		String test = "";
 		for (Product p : products) {
 			test+= p.getName()+"\n";
 		}
+		System.out.println("products : "+test);
 		
 		return Response.ok(products).build();
 	}
