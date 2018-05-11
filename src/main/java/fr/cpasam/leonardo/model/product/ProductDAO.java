@@ -28,7 +28,7 @@ public class ProductDAO extends DAOManager {
 
 		try {
 			statement = con.createStatement();
-			tags = getTags(product_id);
+			tags = ProductTagDAO.getTagsByProduct(product_id);
 
 			/* récupération du produit selon l'id donné */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Product="+ product_id);
@@ -38,6 +38,8 @@ public class ProductDAO extends DAOManager {
 				product= new Product(product_id,resultat.getString(2),resultat.getLong(4), resultat.getFloat(3),tags);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return product;
 	}
 
@@ -67,16 +69,13 @@ public class ProductDAO extends DAOManager {
 				long id_shop = resultat.getLong(4);
 				ArrayList<ProductTag> t= ProductTagDAO.getTagsByProduct(id);
 
-
 				product= new Product(id, name, id_shop, price, t);
-
 				products.add(product);
 
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
 
-		try { 
-			statement.close();
+		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
 
 		return products;
@@ -131,8 +130,9 @@ public class ProductDAO extends DAOManager {
 			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
+			ArrayList<ProductTag> tags = ProductTagDAO.getTagsByProduct(product_id);
 
-			product = new Product(product_id, name, shop_id, unityPrice, null);
+			product = new Product(product_id, name, shop_id, unityPrice, tags);
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -158,38 +158,6 @@ public class ProductDAO extends DAOManager {
 		return ;
 	}
 
-
-
-	/**
-	 * Récupérer les tags d'un produit donné
-	 */
-
-	public static ArrayList<ProductTag> getTags(long product_id) {
-		Statement statement = null;	
-
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();						
-
-		try {
-			ProductTag tag = null ;
-			statement = con.createStatement();
-
-			/* Récupération des tags lié au produit donné */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
-			/* Récupération de chaque tag et ajout dans l'arrayList tags */
-			while ( resultat.next() ) {
-
-				tag= new ProductTag(resultat.getLong(1),resultat.getString(2));
-				tags.add(tag);
-			}
-
-
-		}catch (SQLException e) { e.printStackTrace();} 
-		try {statement.close();
-		} catch (SQLException e) { e.printStackTrace();}
-
-		return tags ;
-
-	}
 
 }
 
