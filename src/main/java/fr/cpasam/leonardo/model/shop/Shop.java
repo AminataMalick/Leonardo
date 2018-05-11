@@ -22,6 +22,10 @@ public class Shop {
 	private List<Product> products ;
 	protected List<Chat> chats;
 
+	public Shop() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Shop(long id, String name, String description, List<RetailPoint> retailPoints, Member member, List<Product> products ) {
 		this.id = id;
 		this.name = name;

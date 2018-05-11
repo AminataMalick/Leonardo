@@ -17,6 +17,10 @@ public class RetailPoint {
 	protected Shop shop;
 	List<Shop> shops ;
 
+	public RetailPoint() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public RetailPoint(long id, String name, Geoloc geoloc, Shop shop, List<Shop> shops) {
 		this.id = id;
 		this.name = name;

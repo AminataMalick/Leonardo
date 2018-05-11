@@ -18,6 +18,9 @@ public abstract class User {
 	protected List<Chat> chats;
 	protected String token;
 
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;

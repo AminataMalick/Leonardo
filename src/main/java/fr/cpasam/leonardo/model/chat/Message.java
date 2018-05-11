@@ -10,6 +10,9 @@ public abstract class Message<T> {
 	protected java.util.Date date;
 	protected Chat chat;
 	
+	public Message() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * Create new entity in db
