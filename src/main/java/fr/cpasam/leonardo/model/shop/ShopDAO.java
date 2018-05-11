@@ -14,6 +14,11 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
 
+	/**
+	 * Retourne le shop lié à l'id donné
+	 * @param shop_id
+	 * @return shop
+	 */
 	public static Shop get(long shop_id) {
 		Statement statement = null;		
 		Statement statement2 = null;		
@@ -57,6 +62,10 @@ public class ShopDAO extends DAOManager {
 		return shop;
 	}
 
+	/**
+	 * Retourne la liste de tous les shops
+	 * @return List<Shop>
+	 */
 	public static List<Shop> all() {
 		Statement statement = null;		
 		Statement statement2 = null;		
@@ -104,7 +113,13 @@ public class ShopDAO extends DAOManager {
 	}
 	
 
-
+	/**
+	 * Créer un shop et le retourne
+	 * @param shopName
+	 * @param description
+	 * @param member_id
+	 * @return shop
+	 */
 	public static Shop createShop(String shopName, String description, long member_id) {
 		Statement statement = null;		
 		Shop shop = null ;
@@ -133,6 +148,14 @@ public class ShopDAO extends DAOManager {
 
 	}
 
+	/**
+	 * Met à jour un shop et le retourne
+	 * @param shop_id
+	 * @param ShopName
+	 * @param description
+	 * @param member_id
+	 * @return shop
+	 */
 	public static Shop updateShop(long shop_id, String ShopName, String description, long member_id) {
 		Statement statement = null;	
 		Shop shop = null ;
@@ -172,6 +195,11 @@ public class ShopDAO extends DAOManager {
 	}
 	
 	
+	/**
+	 * Retourne la liste des produits lié au shop
+	 * @param shop_id
+	 * @return List<Product>
+	 */
 	public static List<Product> getProducts(long shop_id) {
 		Statement statement = null;	
 		Statement statement2 = null;	
@@ -217,6 +245,12 @@ public class ShopDAO extends DAOManager {
 	}
 	
 
+	/**
+	 * Retourne le membre si celui ci est bien membre d'un shop
+	 * @param member_id
+	 * @param shop_id
+	 * @return member
+	 */
 	public static Member getMember(long member_id, long shop_id) {
 		Statement statement = null;		
 		Member member = null ;
@@ -238,6 +272,12 @@ public class ShopDAO extends DAOManager {
 	}
 	
 	
+	
+	/**
+	 * Retourne le membre propriétaire du shop donné
+	 * @param shop_id
+	 * @return member
+	 */
 	public static Member getOwner(long shop_id) {
 		Statement statement = null;		
 		Member member = null ;
@@ -258,6 +298,10 @@ public class ShopDAO extends DAOManager {
 		return member;
 	}
 
+	/**
+	 * Supprime un shop donné
+	 * @param shop_id
+	 */
 	public static void delete(long shop_id) {
 		Statement statement = null;
 		try {
