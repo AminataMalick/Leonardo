@@ -1,10 +1,11 @@
 package fr.cpasam.leonardo.model.recommandation;
 
+import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 
 public class Recommandation {
 
-	private static long cnt = 1;
+	private static long cnt = 10;
 	public static long getCnt() {
 		return cnt++;
 	}
@@ -13,17 +14,25 @@ public class Recommandation {
 	private int grade;
 	private String comment;
 	private Member member;
+	private Shop shop;
 
 	public Recommandation() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Recommandation(long id, int grade, String comment, Member member) {
+	public Recommandation(long id,int grade, String comment, Member member, Shop shop) {
 		this.id = id;
+		this.shop = shop;
 		this.grade = grade;
 		this.comment = comment;
 		this.member = member;
 	}
+	
+	public String toString() { 
+		return("id : " + this.id + " shop : " + this.shop + " grade : " + this.grade + " comment : " + this.comment + " member : " + this.member);	
+	}
+
+	
 	
 	/**
 	 * Retourne l'id d'une recommandation
@@ -69,5 +78,7 @@ public class Recommandation {
 	public void setMember(Member member) {this.member = member;}
 
 }
+
+
 
 
