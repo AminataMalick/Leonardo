@@ -25,10 +25,18 @@ public class ProductTag extends Tag{
 	 */
 	public List<Product> getProducts() {return products;}
 	
+	/**
+	 * Ajoute un produit
+	 * @param product
+	 */
 	public void addProduct(Product product) {
 		this.products.add(product); 
 	}
 	
+	/**
+	 * Supprime le produit donné
+	 * @param Product
+	 */
 	public void deleteProduct(Product p) {
 		for(Product i : products) {
 			if(i.getId() == p.getId()) {

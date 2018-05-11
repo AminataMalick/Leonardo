@@ -5,7 +5,7 @@ import fr.cpasam.leonardo.model.chat.Chat;
 
 public abstract class User {
 
-	private static long cnt = 100;
+	private static long cnt = 106;
 	public static long getCnt() {
 		return cnt++;
 	}
@@ -117,14 +117,17 @@ public abstract class User {
 			this.chats.add(nwChat);
 		}
 	}
-
-	/*
-	 * TODO
+	
+	/**
+	 * Renvoie la représentation textuelle d'un utilisateur
+	 * @return la chaine de caractère représentant l'utilisateur
 	 */
-	public static Member get(Long memberID) {
-
-		return null;
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", pwd="
+				+ pwd + ", chats=" + chats + ", token=" + token + "]";
 	}
+	
 }
 
 
