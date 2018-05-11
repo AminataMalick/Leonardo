@@ -2,6 +2,10 @@ package fr.cpasam.leonardo.model.user;
 
 
 public class Admin extends User {
+	
+	public Admin() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Admin(long id, String firstName, String lastName, String email, String pwd) {
 		super(id, firstName, lastName, email, pwd);

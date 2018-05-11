@@ -10,6 +10,9 @@ public abstract class Tag {
 	protected long id;
 	protected String keyword;
 	
+	public Tag() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public Tag(long id,String keyword) {
 		this.id=id;
