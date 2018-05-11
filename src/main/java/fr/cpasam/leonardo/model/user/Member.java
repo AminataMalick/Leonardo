@@ -102,5 +102,14 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public void setRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 
+	/**
+	 * Retourne l'id du membre
+	 * @param member
+	 * @return
+	 */
+	public static long getID(Member member) {
+		return member.id;
+	}
+
 
 }

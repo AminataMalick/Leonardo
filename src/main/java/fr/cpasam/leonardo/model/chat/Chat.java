@@ -9,7 +9,7 @@ import fr.cpasam.leonardo.model.user.User;
 
 public abstract class Chat<T,U>{
 
-	private static long cnt = 1;
+	private static long cnt = 10;
 	public static long getCnt() {
 		return cnt++;
 	}

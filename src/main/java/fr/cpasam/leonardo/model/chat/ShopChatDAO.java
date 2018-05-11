@@ -1,7 +1,6 @@
 package fr.cpasam.leonardo.model.chat;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,14 +11,40 @@ import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
 import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.product.Product;
 
 public class ShopChatDAO extends DAOManager {
 
-	public static ShopChat create(Member m, Shop s) {
+	
+	/**
+	 * Création d'un ShopChat a partir d'un membre et d'un shop
+	 * @param member
+	 * @param shop
+	 * @return ShopChat
+	 */
+	public static ShopChat create(Member member, Shop shop) {
+		
+		Statement statement = null;		
+		ShopChat shopChat = null ;
+		try {
+			long chat_id = ShopChat.getCnt();
+			statement = con.createStatement();
+			
+			/*Récupération id du membre*/
+			long member_id = Member.getID(member);
+			
+			/*Récupération id du shop*/
+			long shop_id = Shop.getID(shop);
+			
+			/* Insertion d'un shopChat */
+			int res = statement.executeUpdate("INSERT INTO ShopChat(id_Chat, id_Shop, id_Member)VALUES("+chat_id+","+member_id+","+shop_id+")");
 
-		long id = ShopChat.getCnt();
-		return null;
+			/* Création shopChat */
+			shopChat = new ShopChat(chat_id, member, shop );
+			 
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return shopChat;
 	}	
 
 	/**
@@ -59,7 +84,11 @@ public class ShopChatDAO extends DAOManager {
 	}
 	
 	
-	
+	/**
+	 * Retourne le ShopChat lié a l'idée donné
+	 * @param shopchat_id
+	 * @return ShopChat
+	 */
 	public static ShopChat get(long shopchat_id) {
 		Statement statement = null;		
 
@@ -92,6 +121,12 @@ public class ShopChatDAO extends DAOManager {
 		return shopChat;
 	}
 
+	
+	/**
+	 * Retourne la liste de ShopChat lié au membre donné
+	 * @param user_id
+	 * @return ArrayList<ShopChat>
+	 */
 	public static ArrayList<ShopChat> getByMember(long user_id) {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 
