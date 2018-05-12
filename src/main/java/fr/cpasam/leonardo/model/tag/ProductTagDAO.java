@@ -44,7 +44,7 @@ public class ProductTagDAO extends DAOManager{
 	 * @param id
 	 * @return ArrayList<ProductTag>
 	 */
-	public static ArrayList<ProductTag> getTagsByProduct(long id) {
+	public static ArrayList<ProductTag> getTagsByProduct(long product_id) {
 		
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
 		Statement statement = null;		
@@ -52,7 +52,7 @@ public class ProductTagDAO extends DAOManager{
 		try {
 			statement = con.createStatement();
 			/* Exécution d'une requête de lecture */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag Natural Join ProductTag WHERE id_product="+id);
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag Natural Join ProductTag WHERE id_product="+product_id);
 
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
@@ -60,6 +60,8 @@ public class ProductTagDAO extends DAOManager{
 				tags.add(pt);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return tags;
 	}
 
@@ -82,6 +84,8 @@ public class ProductTagDAO extends DAOManager{
 				tag = new ProductTag(resultat.getLong(1), resultat.getString(2));
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
 		return tag;
 	}
 	
