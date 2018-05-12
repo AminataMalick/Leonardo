@@ -100,7 +100,7 @@ public class ProductResource {
 
 		System.out.println("Retrievment of the member...");
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
-		System.out.println("email"+ m.getEmail());
+		if(m != null) System.out.println("email"+ m.getEmail());
 		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 

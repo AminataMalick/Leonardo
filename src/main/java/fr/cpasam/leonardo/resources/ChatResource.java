@@ -3,11 +3,13 @@ package fr.cpasam.leonardo.resources;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -28,7 +30,7 @@ import fr.cpasam.leonardo.utilities.Validator;
  * @param json [shop_id et user_id]
  * @return le chat créé
  */
-@Path("/chat")
+@Path("chat/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
@@ -59,28 +61,43 @@ public class ChatResource {
 	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe / 403 : chat n'appartient pas au membre]
 	 */
 	@GET
-	@Path("/{id}")
-	public Response get(@PathParam("id") long id, JsonObject json) {
+	@Path("{id}")
+	public Response get(@PathParam("id") long id,@QueryParam("USER") long user_id,@QueryParam("TOKEN") String token ) {
 
-		long user_id = json.get("user_id").getAsLong();
-
+		
+		System.out.println("id ="+id);
+		System.out.println("user_id = "+user_id);
+		System.out.println("token ="+ token);
 		// Vérifier que l'utilisateur est bien connecté 
-		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
 
 		// Vérifier le jeton CSRF
 
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
 		ShopChat c = (ShopChat) ShopChatDAO.get(id);
-		if((c.getMember().getId()) != user_id && c.getShop().getMember(user_id)==null) return Response.status(Response.Status.FORBIDDEN).build();
+		long idm = c.getMember().getId();
+		boolean isMember = (idm == user_id);
+		
+		if(isMember) System.out.println(user_id + "est le membre du chat");
+		
+		Member m = c.getShop().getMember(user_id);
+		
+		boolean isShop = (m !=null);
+		if(isShop) System.out.println(user_id +" est un membre de la boutique "+c.getShop().id());
+		
+		if(m != null ) System.out.println("Membre "+user_id+", email : "+m.getEmail());
+		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
 
 
 		return Response.ok(c).build();
 	}
 
+	
+	
 	
 	/**
 	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
