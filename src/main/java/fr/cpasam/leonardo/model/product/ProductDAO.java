@@ -100,6 +100,8 @@ public class ProductDAO extends DAOManager {
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
 			System.out.println("FIN create");
+			
+			
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();

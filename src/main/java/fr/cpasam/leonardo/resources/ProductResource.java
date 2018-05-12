@@ -112,15 +112,11 @@ public class ProductResource {
 		for(JsonElement e : ja) {
 			JsonObject jo = e.getAsJsonObject();
 			// Récupérer le tag
-			long tag_id = jo.get("id").getAsLong();
-			
-
 			String keyword = jo.get("keyword").getAsString();
 
 			Tag t = TagDAO.getTagByName(keyword);
 
 			//Si le tag n'existe pas, le créer
-
 			if(t == null) t = TagDAO.create(keyword);
 
 			//ajouter le tag a la liste
@@ -128,7 +124,7 @@ public class ProductResource {
 
 			
 		}
-
+		System.out.println("TAGS :" +tags);
 
 		long shop_id = json.get("shop_id").getAsLong();
 		long product_id = json.get("id").getAsLong();
@@ -138,6 +134,7 @@ public class ProductResource {
 				json.get("unityPrice").getAsFloat());
 
 		ProductTagDAO.addTags(product_id, tags);
+		
 		return Response.ok(p).build();
 	}
 
