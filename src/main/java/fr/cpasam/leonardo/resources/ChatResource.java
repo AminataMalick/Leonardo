@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
@@ -26,7 +27,7 @@ import fr.cpasam.leonardo.utilities.Validator;
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
 
-	/*@POST
+	@POST
 	public Response openChat(JsonObject json) {
 
 		Long shop_id = json.get("shop_id").getAsLong();
@@ -88,7 +89,7 @@ public class ChatResource {
 
 	}
 
-*/
+
 
 
 
