@@ -5,13 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
-import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.tag.ProductTag;
 
 import fr.cpasam.leonardo.model.tag.ProductTagDAO;
-import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductDAO extends DAOManager {
@@ -24,7 +20,7 @@ public class ProductDAO extends DAOManager {
 	public static Product get(long product_id)  {
 		Statement statement = null;		
 		Product product = null ;
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
+		ArrayList<Tag> tags = new ArrayList<Tag>() ;
 
 		try {
 			statement = con.createStatement();
@@ -49,7 +45,7 @@ public class ProductDAO extends DAOManager {
 	 **/
 	public static ArrayList<Product> all() {
 		ArrayList<Product> products = new ArrayList<Product>();		
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>() ;
+		ArrayList<Tag> tags = new ArrayList<Tag>() ;
 		Statement statement = null;		
 
 		try {
@@ -67,7 +63,7 @@ public class ProductDAO extends DAOManager {
 				String name = resultat.getString(2);
 				float price = resultat.getFloat(3);
 				long id_shop = resultat.getLong(4);
-				ArrayList<ProductTag> t= ProductTagDAO.getTagsByProduct(id);
+				ArrayList<Tag> t= ProductTagDAO.getTagsByProduct(id);
 
 				product= new Product(id, name, id_shop, price, t);
 				products.add(product);
@@ -94,6 +90,7 @@ public class ProductDAO extends DAOManager {
 		Statement statement = null;		
 		Product product = null ;
 		try {
+			System.out.println("dans try de create");
 			long product_id = Product.getCnt() ;
 
 			statement = con.createStatement();
@@ -102,6 +99,7 @@ public class ProductDAO extends DAOManager {
 
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
+			System.out.println("FIN create");
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -130,7 +128,7 @@ public class ProductDAO extends DAOManager {
 			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
-			ArrayList<ProductTag> tags = ProductTagDAO.getTagsByProduct(product_id);
+			ArrayList<Tag> tags = ProductTagDAO.getTagsByProduct(product_id);
 
 			product = new Product(product_id, name, shop_id, unityPrice, tags);
 
@@ -140,6 +138,7 @@ public class ProductDAO extends DAOManager {
 
 		return product;
 	}		
+	
 
 
 	/**

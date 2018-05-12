@@ -89,8 +89,7 @@ public class Shop {
 	public void addProduct(List<Product> products) {
 		for(Product p : products) {
 			this.products.add(p);
-		}
-		
+		}		
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.tag.ProductTag;
+import fr.cpasam.leonardo.model.tag.Tag;
 
 
 public class Product {
@@ -14,16 +14,16 @@ public class Product {
 		return cnt++;
 	}
 	
-	@Expose
+	
 	long id;
 	String name ;
 	Long provenance ; // shop_id
 	float unityPrice ;
-	protected ArrayList<ProductTag> tags;
+	protected ArrayList<Tag> tags;
 
 	public Product() {}
 	
-	public Product(long id, String name, long id_shop, float unityPrice, ArrayList<ProductTag> tags) {
+	public Product(long id, String name, long id_shop, float unityPrice, ArrayList<Tag> tags) {
 		this.id = id;
 		this.name = name;
 		this.provenance = id_shop;
@@ -55,7 +55,7 @@ public class Product {
 	 * Retourne les mots clés d'un produit
 	 * @return tags
 	 */
-	public ArrayList<ProductTag> getTags() {return tags;}
+	public ArrayList<Tag> getTags() {return tags;}
 	
 	
 	/**
@@ -82,6 +82,11 @@ public class Product {
 	 * Met à jour les mots clés d'un produit
 	 * @param tags
 	 */
-	public void setTags(ArrayList<ProductTag> tags) {this.tags = tags;}
+	public void setTags(ArrayList<Tag> tags) {this.tags = tags;}
+	
+	
+	public void addTag (Tag tag) {
+		this.tags.add(tag);
+	}
 	
 }

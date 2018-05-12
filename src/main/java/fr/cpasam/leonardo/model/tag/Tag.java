@@ -1,8 +1,8 @@
 package fr.cpasam.leonardo.model.tag;
 
-public abstract class Tag {
+public class Tag {
 
-	private static long cnt = 100;
+	private static long cnt = 201;
 	public static long getCnt() {
 		return cnt++;
 	}
