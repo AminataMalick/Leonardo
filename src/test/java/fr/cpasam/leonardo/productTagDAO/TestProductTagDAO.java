@@ -2,8 +2,7 @@ package fr.cpasam.leonardo.productTagDAO;
 
 import java.util.ArrayList;
 
-import fr.cpasam.leonardo.model.tag.ProductTag;
-import fr.cpasam.leonardo.model.tag.ProductTagDAO;
+import fr.cpasam.leonardo.model.tag.TagDAO;
 
 public class TestProductTagDAO {
 	public static void main(String[] args) {

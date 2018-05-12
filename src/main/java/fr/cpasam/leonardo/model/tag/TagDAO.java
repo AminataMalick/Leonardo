@@ -11,16 +11,16 @@ import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
-public class ProductTagDAO extends DAOManager{
+public class TagDAO extends DAOManager{
 	
 	/**
 	 * Créer un productTag
 	 * @param keyword
 	 * @return ProductTag
 	 */
-	public static ProductTag create(String keyword) {
+	public static Tag create(String keyword) {
 		Statement statement = null;		
-		ProductTag tag = null;
+		Tag tag = null;
 		try {
 			long tag_id = Tag.getCnt() ;
 			statement = con.createStatement();
@@ -29,7 +29,7 @@ public class ProductTagDAO extends DAOManager{
 			int res = statement.executeUpdate("INSERT INTO Tag(id_Tag, keyword)VALUES("+tag_id+",'"+keyword+"')");
 
 			/* Création shop */
-			tag = new ProductTag(tag_id, keyword);
+			tag = new Tag(tag_id, keyword);
 			 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -44,9 +44,9 @@ public class ProductTagDAO extends DAOManager{
 	 * @param id
 	 * @return ArrayList<ProductTag>
 	 */
-	public static ArrayList<ProductTag> getTagsByProduct(long product_id) {
+	public static ArrayList<Tag> getTagsByProduct(long product_id) {
 		
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
+		ArrayList<Tag> tags = new ArrayList<Tag>();
 		Statement statement = null;		
 
 		try {
@@ -56,7 +56,7 @@ public class ProductTagDAO extends DAOManager{
 
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
-				ProductTag pt = new ProductTag(resultat.getLong(1), resultat.getString(2));
+				Tag pt = new Tag(resultat.getLong(1), resultat.getString(2));
 				tags.add(pt);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
@@ -70,8 +70,8 @@ public class ProductTagDAO extends DAOManager{
 	 * @param keyword
 	 * @return ProductTag
 	 */
-	public static ProductTag getTagByName(String keyword) {
-		ProductTag tag = null;
+	public static Tag getTagByName(String keyword) {
+		Tag tag = null;
 		Statement statement = null;		
 
 		try {
@@ -81,7 +81,7 @@ public class ProductTagDAO extends DAOManager{
 
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
-				tag = new ProductTag(resultat.getLong(1), resultat.getString(2));
+				tag = new Tag(resultat.getLong(1), resultat.getString(2));
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();

@@ -23,8 +23,8 @@ import com.google.gson.JsonObject;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.product.ProductDAO;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.model.tag.ProductTag;
-import fr.cpasam.leonardo.model.tag.ProductTagDAO;
+import fr.cpasam.leonardo.model.tag.Tag;
+import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.Validator;
 
@@ -106,15 +106,15 @@ public class ProductResource {
 
 		JsonArray ja = json.get("tags").getAsJsonArray();
 
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
+		ArrayList<Tag> tags = new ArrayList<Tag>();
 		for(JsonElement e : ja) {
 			// Récupérer le tag
 
 			String keyword = e.getAsJsonObject().get("keyword").getAsString();
-			ProductTag t = ProductTagDAO.getTagByName(keyword);
+			Tag t = TagDAO.getTagByName(keyword);
 			//Si le tag n'existe pas, le créer
 
-			if(t == null) t = ProductTagDAO.create(keyword);
+			if(t == null) t = TagDAO.create(keyword);
 
 			//ajouter le tag a la liste
 			
@@ -175,7 +175,7 @@ public class ProductResource {
 		JsonArray ja = json.get("tags").getAsJsonArray();
 
 		System.out.println("tags retrieved...");
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
+		ArrayList<Tag> tags = new ArrayList<Tag>();
 		
 		System.out.println("Init tags array ...");
 		for(JsonElement e : ja) {
@@ -185,7 +185,7 @@ public class ProductResource {
 			
 			System.out.println("Try to retrieve "+keyword);
 			
-			ProductTag t = ProductTagDAO.getTagByName(keyword);
+			Tag t = TagDAO.getTagByName(keyword);
 			
 			
 			//Si le tag n'existe pas, le créer
@@ -193,7 +193,7 @@ public class ProductResource {
 			if(t == null) {
 				System.out.println("The tag "+keyword+" doesn't exist");
 				System.out.println("Creation of "+keyword+" in progress...");
-				t = ProductTagDAO.create(keyword);
+				t = TagDAO.create(keyword);
 				
 				System.out.println("Creation successful");
 			}

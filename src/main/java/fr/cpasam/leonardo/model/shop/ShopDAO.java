@@ -8,7 +8,7 @@ import java.util.List;
 import java.sql.Statement;
 
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.tag.ProductTag;
+import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -205,11 +205,11 @@ public class ShopDAO extends DAOManager {
 		Statement statement2 = null;	
 
 		List<Product> products = new ArrayList<Product>();	
-		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();						
+		ArrayList<Tag> tags = new ArrayList<Tag>();						
 
 		try {
 			Product product = null;
-			ProductTag tag = null ;
+			Tag tag = null ;
 			statement = con.createStatement();
 			statement2 = con.createStatement();
 
@@ -225,7 +225,7 @@ public class ShopDAO extends DAOManager {
 				/* Récupération de chaque tag et ajout dans l'arrayList tags */
 				while ( resultat2.next() ) {
 
-					tag= new ProductTag(resultat2.getLong(1),resultat2.getString(2));
+					tag= new Tag(resultat2.getLong(1),resultat2.getString(2));
 					tags.add(tag);
 				}
 
