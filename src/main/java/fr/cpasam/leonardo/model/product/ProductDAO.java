@@ -94,6 +94,7 @@ public class ProductDAO extends DAOManager {
 		Statement statement = null;		
 		Product product = null ;
 		try {
+			System.out.println("dans try de create");
 			long product_id = Product.getCnt() ;
 
 			statement = con.createStatement();
@@ -102,6 +103,7 @@ public class ProductDAO extends DAOManager {
 
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
+			System.out.println("FIN create");
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();

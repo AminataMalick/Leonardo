@@ -21,6 +21,7 @@ public class ProductTagDAO extends DAOManager{
 	 * @return Product
 	 */
 	public static Product addTag(long product_id, long tag_id) {
+		// To do : Penser a vérifier avant d'ajouter que l'asociation n'existe pas déja
 		
 		Statement statement = null;	
 		Product product = null ;
@@ -45,6 +46,26 @@ public class ProductTagDAO extends DAOManager{
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return product;
+	}
+	
+	/**
+	 * Ajoute une liste de tag à un produit
+	 * @param product_id
+	 * @param tags
+	 * @return Product
+	 */
+	public static Product addTags(long product_id, ArrayList<Tag> tags) {
+		Product product = null ;
+		
+		for (Tag tag : tags) {
+			long tag_id = tag.getId();
+			addTag(product_id, tag_id);
+		}
+		
+		product = ProductDAO.get(product_id);
+		
+		return product ;
+		
 	}
 	
 	
