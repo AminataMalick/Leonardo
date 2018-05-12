@@ -39,7 +39,7 @@ public class ProductResource {
 
 		System.out.println("product/all");
 		
-		ArrayList<Product> products = ProductDAO.all();
+		List<Product> products = ProductDAO.all();
 		
 		System.out.println("Get Product");
 		String test = "";
