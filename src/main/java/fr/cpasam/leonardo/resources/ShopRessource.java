@@ -27,12 +27,14 @@ import fr.cpasam.leonardo.utilities.Validator;
 
 
 @Path("shop/")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+
 public class ShopRessource {
 
 
 	@GET
 	@Path("all")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
 		
 		return Response
@@ -43,7 +45,6 @@ public class ShopRessource {
 
 	@GET
 	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id) {
 		
 		return Response.ok(ShopDAO.get(id)).build();
@@ -52,7 +53,6 @@ public class ShopRessource {
 
 	@GET
 	@Path("?USER")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response getByMember(JsonObject json) {
 
 		// Vérifier que l'utilisateur est bien connecté 
@@ -74,8 +74,6 @@ public class ShopRessource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
 
 
@@ -103,8 +101,6 @@ public class ShopRessource {
 
 	@PUT
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
 
@@ -137,8 +133,6 @@ public class ShopRessource {
 
 	@DELETE
 	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response delete(@PathParam("id") long id, JsonObject json) {
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -165,4 +159,6 @@ public class ShopRessource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
+
+
 }

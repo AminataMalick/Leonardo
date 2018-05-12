@@ -2,6 +2,7 @@ package fr.cpasam.leonardo.model.product;
 
 import java.util.ArrayList;
 
+import com.google.gson.annotations.Expose;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.ProductTag;
@@ -13,6 +14,7 @@ public class Product {
 		return cnt++;
 	}
 	
+	@Expose
 	long id;
 	String name ;
 	Long provenance ; // shop_id

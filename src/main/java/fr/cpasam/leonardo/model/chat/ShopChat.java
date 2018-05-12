@@ -10,11 +10,17 @@ import fr.cpasam.leonardo.model.user.User;
 
 public class ShopChat extends Chat<Member, Shop> {
 
-	
+	/**
+	 * Constructeur du ShopChat
+	 * @param long
+	 * @param member
+	 * @param shop
+	 */
 	public ShopChat(long id, Member m, Shop s) {
 		super(id, m, s);
 	}
 	
+
 	public static ShopChat getChatByUsers(Long memberID, Long shopId) {
 		
 		

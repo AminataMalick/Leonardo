@@ -10,6 +10,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import fr.cpasam.leonardo.model.chat.Chat;
+import fr.cpasam.leonardo.model.recommandation.Recommandation;
+import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
+import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Admin;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
@@ -22,7 +25,8 @@ public class TestJDBC extends DAOManager {
 
 	public static void main(String[] args) throws Exception {
 	//User user = new Member(10,"Hanna","Ri","rihanna@loveuse.com","riri","kjhgff");
-	System.out.println(UserDAO.getUserById(1));
+		
+		System.out.println(RecommandationDAO.all(10).toString());
 	
 	}
 }

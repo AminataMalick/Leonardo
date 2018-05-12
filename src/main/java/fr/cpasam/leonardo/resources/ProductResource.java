@@ -2,6 +2,7 @@ package fr.cpasam.leonardo.resources;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,7 +28,6 @@ import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.Validator;
 
-
 @Path("product/")
 public class ProductResource {
 
@@ -35,33 +35,32 @@ public class ProductResource {
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response all() {
+	public List<Product> all() {
 
 		System.out.println("product/all");
 		
-		ArrayList<Product> products = ProductDAO.all();
+		List<Product> products = ProductDAO.all();
 		
+		System.out.println("Get Product");
 		String test = "";
 		for (Product p : products) {
 			test+= p.getName()+"\n";
 		}
+		System.out.println("products : "+test);
 		
-		return Response.ok(products).build();
+		return products;
 	}
 
 
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("id") long id) {
+	public Product get(@PathParam("id") long id) {
 		
-		// Vérifier si le produit existe
-
-		if(ProductDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
-
-		return Response.ok(ProductDAO.get(id)).build();
+		Product p = ProductDAO.get(id);
+		System.out.println("Product : "+ p.getName());
+		return p;
 	}
-
 
 
 

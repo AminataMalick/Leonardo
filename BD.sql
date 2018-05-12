@@ -116,3 +116,18 @@ CREATE TABLE IF NOT EXISTS Message (
     FOREIGN KEY (id_Chat) REFERENCES ShopChat(id_Chat),
     FOREIGN KEY (id_Member) REFERENCES Member(id_Member)
 );
+
+
+CREATE TABLE IF NOT EXISTS Recommandation (
+	id_Recommandation bigint,
+	id_Shop bigint,
+	grade_Recommandation bigint, 
+	comment_Recommandation varchar(255), 
+	id_Member bigint,
+	PRIMARY KEY (id_Recommandation),
+	FOREIGN KEY (id_Shop) REFERENCES Shop(id_Shop),
+	FOREIGN KEY (id_Member) REFERENCES Member(id_Member),
+	CHECK (grade_Recommandation >=0 && grade_Recommandation <=5)
+);
+
+

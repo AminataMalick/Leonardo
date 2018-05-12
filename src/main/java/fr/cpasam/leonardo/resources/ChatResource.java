@@ -23,11 +23,11 @@ import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
 @Path("/chat")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response openChat(JsonObject json) {
 
 		Long shop_id = json.get("shop_id").getAsLong();
@@ -47,7 +47,6 @@ public class ChatResource {
 
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id, JsonObject json) {
 
 		long user_id = json.get("user_id").getAsLong();
@@ -71,7 +70,6 @@ public class ChatResource {
 
 	@GET
 	@Path("?USER")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(JsonObject json) {
 
 		// Vérifier que l'utilisateur est bien connecté 

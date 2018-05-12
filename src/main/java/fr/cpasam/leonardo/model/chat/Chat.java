@@ -9,7 +9,11 @@ import fr.cpasam.leonardo.model.user.User;
 
 public abstract class Chat<T,U>{
 
-	private static long cnt = 1;
+	private static long cnt = 10;
+	/**
+	 * Retourne le prochain id disponible
+	 * @return long
+	 */
 	public static long getCnt() {
 		return cnt++;
 	}
@@ -54,7 +58,10 @@ public abstract class Chat<T,U>{
 		this.cntMessage = messages.size();
 	}
 	
-	
+	/**
+	 * Ajoute un message au chat
+	 * @param Message
+	 */
 	protected void addMessages(Message m) {
 		
 		this.messages.add(m);
@@ -62,6 +69,10 @@ public abstract class Chat<T,U>{
 
 	}
 	
+	/**
+	 * Retourne le nombre de message d'un chat
+	 * @return int
+	 */
 	protected int getNbMessage() {
 		return this.cntMessage;
 	}
