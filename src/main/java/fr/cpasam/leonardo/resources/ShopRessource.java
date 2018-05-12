@@ -21,8 +21,11 @@ import javax.ws.rs.core.Response.Status;
 
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -98,6 +101,7 @@ public class ShopRessource {
 
 
 
+	
 
 	@PUT
 	@Path("{id}")
@@ -155,4 +159,20 @@ public class ShopRessource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
+	
+	
+	@GET
+	@Path("{id}/recommandation")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response recommandations(@PathParam("id") long id) {
+		
+		return Response
+				.ok(RecommandationDAO.all(id))
+				.build();
+	}
+
+
+	
+	
+	
 }
