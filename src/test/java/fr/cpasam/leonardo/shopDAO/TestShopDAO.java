@@ -59,14 +59,14 @@ public class TestShopDAO {
 		System.out.println(products1) ;
 		*/
 		
-		/*
+		
 		// Test getMember
 		Member member = null ;
 		long member_id = 3;
 		long shop_id = 1 ;
 		member = ShopDAO.getMember(member_id, shop_id);
 		System.out.println(member) ;
-		*/
+		
 		
 		/*
 		// Test getOwner

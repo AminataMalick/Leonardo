@@ -5,7 +5,7 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Recommandation {
 
-	private static long cnt = 10;
+	private static long cnt = 12;
 	public static long getCnt() {
 		return cnt++;
 	}
