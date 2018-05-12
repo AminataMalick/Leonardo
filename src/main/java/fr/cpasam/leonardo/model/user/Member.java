@@ -58,13 +58,18 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public Chat openChat(Shop shop) {
 
-		
+		System.out.println("OpenChat shop_id : "+shop.id()+" user : "+this.id);
 		Chat nwChat = ShopChatDAO.getByMemberAndShop(this.id,shop.id());
 
 		if( nwChat == null) {
+			System.out.println("Chat not found");
+			System.out.println("Chat creation in progress ...");
 			nwChat = ShopChatDAO.create(this, shop);
 		}
+		System.out.println("Before adding to chat list in member : "+this.chats);
 		this.addChat(nwChat);
+
+		System.out.println("Before adding to chat list in member");
 		shop.addChat(nwChat);
 		return nwChat;
 	}
@@ -138,5 +143,6 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * @return
 	 */
 	public static String getToken(Member member) {return member.token;}
+	
 	
 }
