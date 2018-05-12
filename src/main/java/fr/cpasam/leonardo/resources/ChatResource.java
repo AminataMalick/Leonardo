@@ -64,10 +64,6 @@ public class ChatResource {
 	@Path("{id}")
 	public Response get(@PathParam("id") long id,@QueryParam("USER") long user_id,@QueryParam("TOKEN") String token ) {
 
-		
-		System.out.println("id ="+id);
-		System.out.println("user_id = "+user_id);
-		System.out.println("token ="+ token);
 		// Vérifier que l'utilisateur est bien connecté 
 		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -79,20 +75,17 @@ public class ChatResource {
 		//Vérifier que le chat appartient au membre
 
 		ShopChat c = (ShopChat) ShopChatDAO.get(id);
+
+		// L'utilisateur est le membre du chat
 		long idm = c.getMember().getId();
 		boolean isMember = (idm == user_id);
-		
-		if(isMember) System.out.println(user_id + "est le membre du chat");
-		
+	
+		// L'utilisateur est membre de la boutique qui chat
 		Member m = c.getShop().getMember(user_id);
-		
 		boolean isShop = (m !=null);
-		if(isShop) System.out.println(user_id +" est un membre de la boutique "+c.getShop().id());
 		
-		if(m != null ) System.out.println("Membre "+user_id+", email : "+m.getEmail());
+		// Interdir l'accès à un utilisateur qui n'est pas dans le chat
 		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
-
-
 		return Response.ok(c).build();
 	}
 
@@ -105,17 +98,14 @@ public class ChatResource {
 	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe]
 	 */
 	@GET
-	@Path("?USER")
-	public Response get(JsonObject json) {
+	public Response get(JsonObject json,@QueryParam("USER") long user_id, @QueryParam("TOKEN") String token) {
 
 		// Vérifier que l'utilisateur est bien connecté 
-		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-		long user_id = json.get("user_id").getAsLong();
+		if(user_id == 0) return Response.status(Response.Status.UNAUTHORIZED).build();
 		
 		// Vérifier le jeton CSRF
 
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
