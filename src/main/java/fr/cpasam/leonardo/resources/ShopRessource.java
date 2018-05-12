@@ -1,10 +1,7 @@
 package fr.cpasam.leonardo.resources;
 
-import java.util.function.Predicate;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,7 +11,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -24,9 +20,8 @@ import com.google.gson.JsonObject;
 import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.Validator;
+
 
 
 @Path("shop/")
@@ -35,7 +30,10 @@ import fr.cpasam.leonardo.utilities.Validator;
 
 public class ShopRessource {
 
-
+	/**
+	 * Affiche tous les shops 
+	 * @return retourne la liste de tous les shops
+	 */
 	@GET
 	@Path("all")
 	public Response all() {
@@ -45,7 +43,11 @@ public class ShopRessource {
 				.build();
 	}
 
-
+	/**
+	 * Affiche un shop à partir de son identifiant
+	 * @param id identifiant du shop à afficher
+	 * @return retourne le shop dont l'identifiant est passé en paramètre
+	 */
 	@GET
 	@Path("{id}")
 	public Response get(@PathParam("id") long id) {
@@ -53,7 +55,11 @@ public class ShopRessource {
 		return Response.ok(ShopDAO.get(id)).build();
 	}
 
-
+	/**
+	 * 
+	 * @param json la requête du user
+	 * @return 
+	 */
 	@GET
 	@Path("?USER")
 	public Response getByMember(JsonObject json) {

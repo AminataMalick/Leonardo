@@ -1,6 +1,5 @@
 package fr.cpasam.leonardo.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -13,10 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
@@ -25,15 +21,9 @@ import fr.cpasam.leonardo.exceptions.MemberDeletionException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
-import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.product.ProductDAO;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.model.tag.ProductTag;
-import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.AuthUtil;
-import fr.cpasam.leonardo.utilities.Validator;
 
 @Path("/member")
 public class MemberResource {
@@ -137,7 +127,7 @@ public class MemberResource {
 
 	/**
 	 * Creation d'un membre
-	 * @param json
+	 * @param json requête du membre
 	 * @return membre créé
 	 */
 	@POST
@@ -161,7 +151,7 @@ public class MemberResource {
 	/**
 	 * Mise à jour d'un membre
 	 * @param id identifiant du membre à mettre à jour
-	 * @param json 
+	 * @param json requête du membre
 	 * @return retourne le membre mis à jour
 	 */
 	@PUT
@@ -180,6 +170,11 @@ public class MemberResource {
 		return Response.ok(m).build();
 	}
 	
+	/**
+	 * Affichage d'un membre à partir de son adresse 
+	 * @param mail email du membre recherché
+	 * @return retour le membre associé à l'adresse mail renseignée
+	 */
 	@GET
 	@Path("email/{mail}")
 	@Produces(MediaType.APPLICATION_JSON)
