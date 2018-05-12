@@ -1,13 +1,22 @@
 package fr.cpasam.leonardo.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
@@ -16,8 +25,15 @@ import fr.cpasam.leonardo.exceptions.MemberDeletionException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
+import fr.cpasam.leonardo.model.product.Product;
+import fr.cpasam.leonardo.model.product.ProductDAO;
+import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.model.tag.ProductTag;
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.user.Member;
+import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.AuthUtil;
+import fr.cpasam.leonardo.utilities.Validator;
 
 @Path("/member")
 public class MemberResource {
@@ -77,6 +93,99 @@ public class MemberResource {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while deleting the member.")).build();
 		}
 		return Response.status(Response.Status.ACCEPTED).build();
+	}
+	
+	/**
+	 * Affiche tous les membres de la base
+	 * @return retourne une liste avec tous les membres
+	 */
+	@GET
+	@Path("all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Member> all() {
+
+		System.out.println("member/all");
+		
+		List<Member> members= MemberDAO.all();
+		
+		System.out.println("Get Member");
+		String test = "";
+		for (Member m : members) {
+			test+= m.getFirstName()+" "+m.getLastName()+"\n";
+		}
+		System.out.println("members : "+test);
+		
+		return members;
+	}
+
+	/**
+	 * Cherche un membre à partir de son identifiant
+	 * @param id identifiant du membre que l'on cherche
+	 * @return retourne le membre recherché
+	 */
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Member get(@PathParam("id") long id) {
+		
+		Member m = MemberDAO.get(id);
+		System.out.println("Member : "+ m.getFirstName() +" "+m.getLastName());
+		return m;
+	}
+
+	
+
+	/**
+	 * Creation d'un membre
+	 * @param json
+	 * @return membre créé
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response create(JsonObject json) { 
+		
+		System.out.println("Member Creation Launched... ");
+
+		
+
+		Member m = MemberDAO.create(
+				json.get("firstName").getAsString(), 
+				json.get("lastName").getAsString(),   
+				json.get("email").getAsString(),
+				json.get("pwd").getAsString());
+
+		return Response.ok(m).build();
+	}
+
+	/**
+	 * Mise à jour d'un membre
+	 * @param id identifiant du membre à mettre à jour
+	 * @param json 
+	 * @return retourne le membre mis à jour
+	 */
+	@PUT
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response update(@PathParam("id") long id,  JsonObject json) { 
+		if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
+		
+		Member m = MemberDAO.update(id, 	
+				json.get("firstName").getAsString(), 
+				json.get("lastName").getAsString(),   
+				json.get("email").getAsString(),
+				json.get("pwd").getAsString());
+		
+		return Response.ok(m).build();
+	}
+	
+	@GET
+	@Path("email/{mail}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Member mailToMember(@PathParam("mail") String mail) {
+		Member member = MemberDAO.mailToMember(mail);
+		return member;
 	}
 	
 }
