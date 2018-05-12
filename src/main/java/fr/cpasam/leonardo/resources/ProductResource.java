@@ -144,6 +144,7 @@ public class ProductResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
+		System.out.println("Udpate of product : "+id);
 		// Vérifier si le produit existe
 
 		if(ProductDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
@@ -152,31 +153,49 @@ public class ProductResource {
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 
+		System.out.println("Access granted...");
 
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
-
+		
+		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 
+		System.out.println("Bienvenue "+m.getFirstName()+"...");
+		
+		
+		JsonArray ja = json.get("tags").getAsJsonArray();
 
-		JsonArray ja = json.get("tag").getAsJsonArray();
-
+		System.out.println("tags retrieved...");
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
+		
+		System.out.println("Init tags array ...");
 		for(JsonElement e : ja) {
 			// Récupérer le tag
 
 			String keyword = e.getAsJsonObject().get("keyword").getAsString();
+			
+			System.out.println("Try to retrieve "+keyword);
+			
 			ProductTag t = ProductTagDAO.getTagByName(keyword);
+			
+			
 			//Si le tag n'existe pas, le créer
 
-			if(t == null) t = ProductTagDAO.create(keyword);
+			if(t == null) {
+				System.out.println("The tag "+keyword+" doesn't exist");
+				System.out.println("Creation of "+keyword+" in progress...");
+				t = ProductTagDAO.create(keyword);
+				
+				System.out.println("Creation successful");
+			}
 
 			//ajouter le tag a la liste
 
@@ -184,12 +203,14 @@ public class ProductResource {
 		}
 
 		long shop_id = json.get("shop_id").getAsLong();
-
+		System.out.println("updating the product ...");
 		Product p = ProductDAO.update(id, 
 									  json.get("name").getAsString(), 
 									  shop_id, 
 									  json.get("price").getAsFloat());
 
+		System.out.println("The product "+p.getName()+" has been updated...");
+		
 		return Response.ok(p).build();
 	}
 
