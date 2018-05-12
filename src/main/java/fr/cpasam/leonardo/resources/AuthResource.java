@@ -42,25 +42,24 @@ public class AuthResource {
 		try {
 			user = AuthUtil.connection(mail, pwd);
 		} catch (UserNotFoundException e) {
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").JsonMessage()).build();
 			e.printStackTrace();
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").JsonMessage()).build();
+//			return Response.status(Response.Status.NOT_FOUND).build();
 		} catch (WrongPasswordException e) {
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").JsonMessage()).build();
 			e.printStackTrace();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").JsonMessage()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (IncompleteDataException e) {
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").JsonMessage()).build();
 			e.printStackTrace();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").JsonMessage()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenCreationException e) {
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").JsonMessage()).build();
-			e.printStackTrace();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").JsonMessage()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenStorageException e) {
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").JsonMessage()).build();
 			e.printStackTrace();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").JsonMessage()).build();
+//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
 		
 		//System.out.println(user.toString());
@@ -76,7 +75,7 @@ public class AuthResource {
 //		JsonObject jsonToReturn = new JsonObject();
 //		jsonToReturn.add("user", jsonUser);
 		
-		return Response.ok(user).build();
+		return Response.ok(user.toString()).build();
 	}	
 	
 	/**

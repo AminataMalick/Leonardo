@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS Message (
 CREATE TABLE IF NOT EXISTS Recommandation (
 	id_Recommandation bigint,
 	id_Shop bigint,
-	grade_Recommandation bigint, 
+	grade_Recommandation int, 
 	comment_Recommandation varchar(255), 
 	id_Member bigint,
 	PRIMARY KEY (id_Recommandation),

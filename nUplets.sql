@@ -289,8 +289,22 @@ INSERT INTO ShopMember ( id_Shop, id_Member)
 
 
 
+-- Recommandation
 
-
+INSERT INTO Recommandation (id_Recommandation,	id_Shop, grade_Recommandation, comment_Recommandation, id_Member)
+	VALUES (1,1,4,'cool',1);
+	
+INSERT INTO Recommandation (id_Recommandation,	id_Shop, grade_Recommandation, comment_Recommandation, id_Member)
+	VALUES (2,1,5,'tres tres bon produits',3);
+	
+INSERT INTO Recommandation (id_Recommandation,	id_Shop, grade_Recommandation, comment_Recommandation, id_Member)
+	VALUES (3,2,4,'passable',4);
+	
+INSERT INTO Recommandation (id_Recommandation,	id_Shop, grade_Recommandation, comment_Recommandation, id_Member)
+	VALUES (4,3,1,'nul',1);
+	
+INSERT INTO Recommandation (id_Recommandation,	id_Shop, grade_Recommandation, comment_Recommandation, id_Member)
+	VALUES (5,3,0,'très mauvais produit, je ne vous conseille pas',2);
 
 
 

@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
@@ -50,7 +51,7 @@ public class ShopRessource {
 	}
 
 
-	/*@GET
+	@GET
 	@Path("?USER")
 	public Response getByMember(JsonObject json) {
 
@@ -158,6 +159,4 @@ public class ShopRessource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
-*/
-
 }

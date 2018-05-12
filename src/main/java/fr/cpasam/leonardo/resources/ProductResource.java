@@ -32,6 +32,10 @@ import fr.cpasam.leonardo.utilities.Validator;
 public class ProductResource {
 
 
+	/**
+	 * Return all the product in the database
+	 * @return 200 : OK
+	 */
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -52,6 +56,11 @@ public class ProductResource {
 	}
 
 
+	/**
+	 * Return the product
+	 * @param id id of the product will be displayed
+	 * @return 200 : OK 
+	 */
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,30 +72,38 @@ public class ProductResource {
 	}
 
 
-
+	/**
+	 * Creation of a Product
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
-
+		
+		System.out.println("Product Creation Launched... ");
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-
+		
+		System.out.println("Access granted...");
 
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
+		System.out.println("Retrievment of the member...");
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
-
+		System.out.println("email"+ m.getEmail());
+		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 
-		JsonArray ja = json.get("tag").getAsJsonArray();
+		JsonArray ja = json.get("tags").getAsJsonArray();
 
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
 		for(JsonElement e : ja) {
@@ -115,7 +132,12 @@ public class ProductResource {
 
 
 
-
+	/**
+	 * Update a Product
+	 * @param id id of the product that has to be update
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@PUT
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -172,6 +194,12 @@ public class ProductResource {
 	}
 
 
+	/**
+	 * Delete a Product
+	 * @param id id of the product that has to be delete
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@DELETE
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -207,6 +235,4 @@ public class ProductResource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
-
-
 }
