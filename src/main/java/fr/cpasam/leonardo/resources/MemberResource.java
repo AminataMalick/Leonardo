@@ -3,7 +3,6 @@ package fr.cpasam.leonardo.resources;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -25,7 +24,7 @@ import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.AuthUtil;
 
-@Path("/member")
+@Path("member/")
 public class MemberResource {
 	
 	/**
@@ -34,10 +33,11 @@ public class MemberResource {
 	 * @return une une requête en json indiquant un message d'erreur si un problème est survenu ou le nouveau membre si la requête a été traitée avec succès
 	 */
 	@PUT
+	@Path("update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modify(JsonObject json) {
-		Member member = null;
+		Member member = new Member();
 		String token = json.get("token").getAsString();
 		long id = json.get("id").getAsLong();
 		String firstName = json.get("firstName").getAsString();
@@ -64,7 +64,8 @@ public class MemberResource {
 	 * @param json la requête du membre
 	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
-	@DELETE
+	@POST
+	@Path("remove")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteAccount(JsonObject json) {

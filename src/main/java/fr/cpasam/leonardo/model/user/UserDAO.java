@@ -20,18 +20,18 @@ public class UserDAO extends DAOManager{
 		User user = null ;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User FROM Member natural join User WHERE id_User="+id);
+			ResultSet rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User,token_User  FROM Member natural join User WHERE id_User="+id);
 
 			if(rset.next())
 			{	
 
-				user = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+				user = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), rset.getString(6));
 
 			}
 			else {	
-				rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User FROM Admin natural join User WHERE id_User="+id);
+				rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User,token_User FROM Admin natural join User WHERE id_User="+id);
 				while (rset.next()) {
-					user = new Admin(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));				
+					user = new Admin(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), rset.getString(6));				
 				}
 			}
 		}
@@ -85,7 +85,7 @@ public class UserDAO extends DAOManager{
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			int deleted = stmt.executeUpdate("UPDATE User SET token_User = null WHERE id_User="+id);		
+			int deleted = stmt.executeUpdate("UPDATE User SET token_User = null WHERE id_User="+id);
 			if(deleted > 0) {
 				return true;
 			}

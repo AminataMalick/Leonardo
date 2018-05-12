@@ -1,5 +1,7 @@
 package fr.cpasam.leonardo.resources;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,48 +36,31 @@ public class AuthResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(JsonObject json) {
-		System.out.println("********* cc twé ************");
 		String mail = json.get("email").getAsString();
 		String pwd = json.get("password").getAsString();
 		User user = null;
 		
 		try {
 			user = AuthUtil.connection(mail, pwd);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Encoding error").JsonMessage()).build();
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found in database.").JsonMessage()).build();
-//			return Response.status(Response.Status.NOT_FOUND).build();
 		} catch (WrongPasswordException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Wrong password.").JsonMessage()).build();
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (IncompleteDataException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Email and/or password missing.").JsonMessage()).build();
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenCreationException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while generating the CSRF token.").JsonMessage()).build();
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		} catch (TokenStorageException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").JsonMessage()).build();
-//			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
-		
-		//System.out.println(user.toString());
-		
-//		JsonObject jsonUser = new JsonObject();
-//		jsonUser.addProperty("id", user.getId());
-//		jsonUser.addProperty("firstName", user.getFirstName());
-//		jsonUser.addProperty("lastName", user.getLastName());
-//		jsonUser.addProperty("email", user.getEmail());
-//		jsonUser.addProperty("password", user.getPwd());
-//		jsonUser.addProperty("token", user.getToken());
-//		
-//		JsonObject jsonToReturn = new JsonObject();
-//		jsonToReturn.add("user", jsonUser);
-		
-		return Response.ok(user.toString()).build();
+		return Response.ok(user.getToken()).build();
 	}	
 	
 	/**
@@ -84,7 +69,7 @@ public class AuthResource {
 	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
 	 */
 	@POST
-	@Path("/member")
+	@Path("member")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response register(JsonObject json) {
@@ -113,7 +98,7 @@ public class AuthResource {
 	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
 	@POST
-	@Path("/logout")
+	@Path("logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response logout(JsonObject json) {

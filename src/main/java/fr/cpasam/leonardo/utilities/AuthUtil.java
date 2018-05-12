@@ -6,10 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 
-import fr.cpasam.leonardo.exceptions.WrongPasswordException;
-import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.MemberDeletionException;
@@ -18,6 +15,8 @@ import fr.cpasam.leonardo.exceptions.TokenCreationException;
 import fr.cpasam.leonardo.exceptions.TokenDeletionException;
 import fr.cpasam.leonardo.exceptions.TokenStorageException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.exceptions.WrongPasswordException;
+import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
@@ -34,15 +33,16 @@ public class AuthUtil {
 	 * @throws UserNotFoundException dans le cas où aucun utilisateur n'a été trouvé dans la base de données en fonction du mail
 	 * @throws WrongPasswordException dans le cas où le mot de passe donné dans le cadre de la connexion ne correspond pas à celui stocké dans la base de données
 	 * @throws IncompleteDataException dans le cas où l'e-mail et/ou le mot de passe fourni lors de la connexion est vide
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException, TokenCreationException, TokenStorageException {
+	public static User connection(String mail, String pwd) throws UserNotFoundException, WrongPasswordException, IncompleteDataException, TokenCreationException, TokenStorageException, UnsupportedEncodingException {
 		String[] fields = new String[] {mail, pwd};
 		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
 		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
 		String token = generateToken(user);
-		if(token == null) throw new TokenCreationException();
+		if(token == null) {System.out.println("NULL");throw new TokenCreationException();}
 		user.setToken(token);
 		if(!saveToken(user)) throw new TokenStorageException();
 		return user;
@@ -82,22 +82,16 @@ public class AuthUtil {
 	}
 	
 	/**
-	 * Génère un token lié à la session de l'utilisateur lors de la connexion de ce-dernier
-	 * @param user l'utilisateur qui souhaite se connecter
-	 * @return le token généré à partir de l'e-mail et de l'id de l'utilisateur ou null si une erreur est survenue
+	 * Génère le token associé à la session de l'utilisateur
+	 * @param user l'utilisateur souhaitant se connecter
+	 * @return le token généré
+	 * @throws UnsupportedEncodingException dans le cas où une erreur d'encodage est survenue lors de la génération du token
 	 */
-	public static String generateToken(User user) {
-		try {
-		    Algorithm algorithm = Algorithm.HMAC256("secret");
-		    String token = JWT.create()
-		        .withIssuer("leonardo")
-		        .withArrayClaim("mail", new String[] {user.getEmail(), Long.toString(user.getId())})
-		        .sign(algorithm);
-		    return token;
-		} catch (UnsupportedEncodingException exception){
-		} catch (JWTCreationException exception){}
-		return null;
-	}
+	public static String generateToken(User user) throws UnsupportedEncodingException {
+        return JWT.create()
+                .withIssuer(Long.toString(user.getId()))
+                .sign(Algorithm.HMAC256(user.getEmail() + user.getPwd()));
+}
 	
 	/**
 	 * Permet d'effectuer la modification d'un membre dans la base de données

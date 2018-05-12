@@ -4,12 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.product.ProductDAO;
-import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductTagDAO extends DAOManager{
