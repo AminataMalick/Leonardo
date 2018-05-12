@@ -71,6 +71,7 @@ public class ProductResource {
 		return p;
 	}
 
+	
 
 	/**
 	 * Creation of a Product
@@ -116,7 +117,7 @@ public class ProductResource {
 			if(t == null) t = ProductTagDAO.create(keyword);
 
 			//ajouter le tag a la liste
-
+			
 			tags.add(t);
 		}
 
