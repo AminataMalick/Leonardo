@@ -103,13 +103,40 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	public void setRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 
 	/**
-	 * Retourne l'id du membre
+	 * Retourne l'identifiant du membre
+	 * @param member membre dont on veut l'identifiant
+	 * @return
+	 */
+	public static long getID(Member member) {return member.id;}
+	/**
+	 * Retourne le prénom du membre
 	 * @param member
 	 * @return
 	 */
-	public static long getID(Member member) {
-		return member.id;
-	}
-
-
+	public static String getFirstname(Member member) {return member.firstName;}
+	/**
+	 * Retourne le nom du membre
+	 * @param member
+	 * @return
+	 */
+	public static String getLastname(Member member) {return member.lastName;}
+	/**
+	 * Retourne l'email du membre
+	 * @param member
+	 * @return
+	 */
+	public static String getEmail(Member member) {return member.email;}
+	/**
+	 * Retourne le mot de passe du membre
+	 * @param member
+	 * @return
+	 */
+	public static String getPassword(Member member) {return member.pwd;}
+	/**
+	 * Retourne le token du membre
+	 * @param member
+	 * @return
+	 */
+	public static String getToken(Member member) {return member.token;}
+	
 }
