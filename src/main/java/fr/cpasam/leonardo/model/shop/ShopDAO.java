@@ -167,6 +167,7 @@ public class ShopDAO extends DAOManager {
 
 			/* Modification du Shop */
 			int update = statement.executeUpdate("UPDATE Shop SET id_Shop = "+shop_id+",name_Shop ='"+ShopName+"', description_Shop='"+description+"', id_Member="+member_id+" WHERE id_Shop ="+shop_id);
+		
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
 
@@ -177,14 +178,13 @@ public class ShopDAO extends DAOManager {
 			while ( resultat0.next() ) {
 				member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7), null);
 			} 
-
-			shop = new Shop(shop_id,ShopName,description,null, member, null);
-
+			
 			/* Récupération des produits liés au shop */
 			products = getProducts(shop_id) ;
-
-			/*Ajout des produit lié au shop */
-			shop.addProduct(products) ;
+			
+			/* Création du shop */
+			shop = new Shop(shop_id,ShopName,description,null, member, products);
+			
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -318,10 +318,12 @@ public class ShopDAO extends DAOManager {
 		Statement statement = null;
 		try {
 			statement = con.createStatement();
-			int deleted =statement.executeUpdate("DELETE FROM ShopMember WHERE id_Shop="+shop_id);
+			statement.executeUpdate("DELETE FROM Recommandation WHERE id_Shop="+shop_id);
+			statement.executeUpdate("DELETE FROM ShopMember WHERE id_Shop="+shop_id);
 			statement.executeUpdate("DELETE FROM Product WHERE id_Shop="+shop_id);
 			statement.executeUpdate("DELETE FROM ShopRetail WHERE id_Shop="+shop_id);
 			statement.executeUpdate("DELETE FROM Shop WHERE id_Shop="+shop_id);
+
 		}catch (SQLException e) { e.printStackTrace();}
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
