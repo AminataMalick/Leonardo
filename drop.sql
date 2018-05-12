@@ -1,3 +1,4 @@
+drop table Recommandation ;
 drop table ShopMember ;
 drop table ProductTag ;
 drop table Tag ;
