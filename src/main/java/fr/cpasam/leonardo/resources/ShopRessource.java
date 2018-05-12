@@ -159,6 +159,4 @@ public class ShopRessource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
-
-
 }

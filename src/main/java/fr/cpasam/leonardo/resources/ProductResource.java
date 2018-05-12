@@ -231,6 +231,4 @@ public class ProductResource {
 				.status(Status.ACCEPTED)
 				.build();
 	}
-
-
 }

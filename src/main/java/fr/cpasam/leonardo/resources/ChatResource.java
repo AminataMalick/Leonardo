@@ -88,16 +88,4 @@ public class ChatResource {
 		return Response.ok(chats).build();
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 }
