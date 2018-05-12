@@ -11,17 +11,16 @@ import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
-public class ProductTagDAO extends DAOManager{
+public class TagDAO extends DAOManager{
 	
 	/**
 	 * Créer un productTag
 	 * @param keyword
 	 * @return ProductTag
 	 */
-	public static Tag create(long tag_id, long product_id) {
+	public static Tag create(String keyword) {
 		Statement statement = null;		
-		Tag t= null;
-		Product p = null;
+		Tag tag = null;
 		try {
 			long tag_id = Tag.getCnt() ;
 			statement = con.createStatement();

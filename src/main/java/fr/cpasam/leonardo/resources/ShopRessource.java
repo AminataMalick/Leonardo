@@ -100,7 +100,7 @@ public class ShopRessource {
 
 
 	@PUT
-	@Path("/{id}")
+	@Path("{id}")
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
 
