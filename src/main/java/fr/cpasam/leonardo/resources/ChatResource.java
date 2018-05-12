@@ -22,6 +22,12 @@ import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
+
+/**
+ * Traitement de la requete d'ouverture d'un chat
+ * @param json [shop_id et user_id]
+ * @return le chat créé
+ */
 @Path("/chat")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -45,6 +51,13 @@ public class ChatResource {
 
 	}
 
+	
+	/**
+	 * Traitement de la requete de récupération d'un chat via son id
+	 * @param id du chat
+	 * @param json [user_id et token pour vérifier la connexion]
+	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe / 403 : chat n'appartient pas au membre]
+	 */
 	@GET
 	@Path("/{id}")
 	public Response get(@PathParam("id") long id, JsonObject json) {
@@ -68,6 +81,12 @@ public class ChatResource {
 		return Response.ok(c).build();
 	}
 
+	
+	/**
+	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
+	 * @param json [user_id et token]
+	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe]
+	 */
 	@GET
 	@Path("?USER")
 	public Response get(JsonObject json) {
