@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cpasam.leonardo.model.shop.Shop;
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -27,7 +28,7 @@ public class ProductDAO extends DAOManager {
 
 		try {
 			statement = con.createStatement();
-			tags = TagDAO.getTagsByProduct(product_id);
+			tags = ProductTagDAO.getTagsByProduct(product_id);
 
 			/* récupération du produit selon l'id donné */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Product="+ product_id);
@@ -66,7 +67,7 @@ public class ProductDAO extends DAOManager {
 				String name = resultat.getString(2);
 				float price = resultat.getFloat(3);
 				long id_shop = resultat.getLong(4);
-				ArrayList<Tag> t= TagDAO.getTagsByProduct(id);
+				ArrayList<Tag> t= ProductTagDAO.getTagsByProduct(id);
 
 				product= new Product(id, name, id_shop, price, t);
 				products.add(product);
@@ -93,6 +94,7 @@ public class ProductDAO extends DAOManager {
 		Statement statement = null;		
 		Product product = null ;
 		try {
+			System.out.println("dans try de create");
 			long product_id = Product.getCnt() ;
 
 			statement = con.createStatement();
@@ -101,6 +103,7 @@ public class ProductDAO extends DAOManager {
 
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
+			System.out.println("FIN create");
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -129,7 +132,7 @@ public class ProductDAO extends DAOManager {
 			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
-			ArrayList<Tag> tags = TagDAO.getTagsByProduct(product_id);
+			ArrayList<Tag> tags = ProductTagDAO.getTagsByProduct(product_id);
 
 			product = new Product(product_id, name, shop_id, unityPrice, tags);
 
@@ -139,6 +142,7 @@ public class ProductDAO extends DAOManager {
 
 		return product;
 	}		
+	
 
 
 	/**

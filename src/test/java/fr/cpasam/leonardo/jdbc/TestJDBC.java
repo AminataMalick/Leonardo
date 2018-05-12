@@ -40,7 +40,7 @@ public class TestJDBC extends DAOManager {
 		// System.out.println(RecommandationDAO.get(12));
 		
 		// Test pour retourner toutes les recommandations liées à un shop
-		// System.out.println(RecommandationDAO.all(10).toString());
+		System.out.println(RecommandationDAO.all(10).toString());
 	
 		// Test pour supprimer une recommandation
 		// System.out.println(RecommandationDAO.delete(13));

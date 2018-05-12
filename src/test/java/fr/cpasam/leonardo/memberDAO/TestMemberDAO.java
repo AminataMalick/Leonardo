@@ -1,9 +1,5 @@
 package fr.cpasam.leonardo.memberDAO;
 
-import java.util.List;
-
-import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 
 public class TestMemberDAO {
 

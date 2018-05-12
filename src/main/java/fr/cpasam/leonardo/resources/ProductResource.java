@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.product.ProductDAO;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -98,8 +99,8 @@ public class ProductResource {
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
-		System.out.println("Retrievment of the member...");
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
+
 		if(m != null) System.out.println("email"+ m.getEmail());
 		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
@@ -107,27 +108,36 @@ public class ProductResource {
 		JsonArray ja = json.get("tags").getAsJsonArray();
 
 		ArrayList<Tag> tags = new ArrayList<Tag>();
-		for(JsonElement e : ja) {
-			// Récupérer le tag
 
-			String keyword = e.getAsJsonObject().get("keyword").getAsString();
+		for(JsonElement e : ja) {
+			JsonObject jo = e.getAsJsonObject();
+			// Récupérer le tag
+			long tag_id = jo.get("id").getAsLong();
+			
+
+			String keyword = jo.get("keyword").getAsString();
+
 			Tag t = TagDAO.getTagByName(keyword);
+
 			//Si le tag n'existe pas, le créer
 
 			if(t == null) t = TagDAO.create(keyword);
 
 			//ajouter le tag a la liste
-			
 			tags.add(t);
+
+			
 		}
 
-		long shop_id = json.get("shop_id").getAsLong();
 
+		long shop_id = json.get("shop_id").getAsLong();
+		long product_id = json.get("id").getAsLong();
 		Product p = ProductDAO.create(
 				json.get("name").getAsString(), 
 				shop_id, 
-				json.get("price").getAsFloat());
+				json.get("unityPrice").getAsFloat());
 
+		ProductTagDAO.addTags(product_id, tags);
 		return Response.ok(p).build();
 	}
 

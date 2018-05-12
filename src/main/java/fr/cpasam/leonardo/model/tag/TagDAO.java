@@ -14,9 +14,9 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 public class TagDAO extends DAOManager{
 	
 	/**
-	 * Créer un productTag
+	 * Créer un Tag
 	 * @param keyword
-	 * @return ProductTag
+	 * @return Tag
 	 */
 	public static Tag create(String keyword) {
 		Statement statement = null;		
@@ -28,7 +28,7 @@ public class TagDAO extends DAOManager{
 			/* Insertion d'un tag*/
 			int res = statement.executeUpdate("INSERT INTO Tag(id_Tag, keyword)VALUES("+tag_id+",'"+keyword+"')");
 
-			/* Création shop */
+			/* Création du tag */
 			tag = new Tag(tag_id, keyword);
 			 
 		}catch (SQLException e) { e.printStackTrace();} 
@@ -38,46 +38,48 @@ public class TagDAO extends DAOManager{
 
 	}
 
-
+	
 	/**
-	 * Retourne la liste de tags lié au produit donné
-	 * @param id
-	 * @return ArrayList<ProductTag>
+	 * Retourne tous les tags
+	 * @return 
 	 */
-	public static ArrayList<Tag> getTagsByProduct(long product_id) {
-		
-		ArrayList<Tag> tags = new ArrayList<Tag>();
-		Statement statement = null;		
+	public static ArrayList<Tag> all() {
+		Statement statement = null;			
+		ArrayList<Tag> tags = new ArrayList<Tag>();							
 
 		try {
+			Tag tag = null ;
 			statement = con.createStatement();
-			/* Exécution d'une requête de lecture */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag Natural Join ProductTag WHERE id_product="+product_id);
 
+			/* Exécution d'une requête de lecture */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag ");
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
-				Tag pt = new Tag(resultat.getLong(1), resultat.getString(2));
-				tags.add(pt);
+				tag= new Tag(resultat.getLong(1),resultat.getString(2));
+				tags.add(tag);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
-		try { statement.close();
+		try { 
+			statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
+
 		return tags;
 	}
 
+	
 	/**
-	 * Retourne le ProductTag lié au keyword donné
-	 * @param keyword
-	 * @return ProductTag
+	 * Récupère le tag lié à l'id donné
+	 * @param tag_id
+	 * @return Tag
 	 */
-	public static Tag getTagByName(String keyword) {
+	public static Tag getTagByID(long tag_id) {
 		Tag tag = null;
 		Statement statement = null;		
 
 		try {
 			statement = con.createStatement();
 			/* Exécution d'une requête de lecture */
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag Natural Join ProductTag WHERE keyword='"+keyword+"'");
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag WHERE id_Tag="+tag_id);
 
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
@@ -89,11 +91,76 @@ public class TagDAO extends DAOManager{
 		return tag;
 	}
 	
+	
+
+	/**
+	 * Retourne le Tag lié au keyword donné
+	 * @param keyword
+	 * @return Tag
+	 */
+	public static Tag getTagByName(String keyword) {
+		Tag tag = null;
+		Statement statement = null;		
+
+		try {
+			statement = con.createStatement();
+			/* Exécution d'une requête de lecture */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag WHERE keyword='"+keyword+"'");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			while ( resultat.next() ) {
+				tag = new Tag(resultat.getLong(1), resultat.getString(2));
+			} 
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return tag;
+	}
+	
+	
+	/**
+	 * Modification d'un tag
+	 * @param tag_id
+	 * @param keyword
+	 * @return Tag
+	 */
+	public static Tag update(long tag_id, String keyword) {
+		Statement statement = null;	
+		Tag tag = null ;
+
+		try {
+			statement = con.createStatement();
+
+			/* Modification du tag */
+			int update = statement.executeUpdate("UPDATE Tag SET keyword ='"+keyword+"' WHERE id_Tag = "+tag_id );
+		
+			/* En cas d'erreur */
+			if (update < 0){ return null ; }
+
+			/* Création du tag */
+			tag = new Tag(tag_id,keyword);
+			
+
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+
+		return tag;
+
+	}
+	
+	
+	/**
+	 * Supprimer un tag
+	 * @param tag_id
+	 */
 	public static void delete(long tag_id) {
 		Statement statement = null;
 		try {
 			statement = con.createStatement();
-			int deleted = statement.executeUpdate("DELETE FROM ProductTag WHERE id_Tag="+tag_id);
+			statement.executeUpdate("DELETE FROM ProductTag WHERE id_Tag="+tag_id);
+			statement.executeUpdate("DELETE FROM Tag WHERE id_Tag="+tag_id);
+			
 		}catch (SQLException e) { e.printStackTrace();}
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
