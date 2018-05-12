@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
@@ -26,7 +27,7 @@ public class MemberResource {
 	 * @param json la requête du membre
 	 * @return une une requête en json indiquant un message d'erreur si un problème est survenu ou le nouveau membre si la requête a été traitée avec succès
 	 */
-	/*@PUT
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modify(JsonObject json) {
@@ -57,7 +58,7 @@ public class MemberResource {
 	 * @param json la requête du membre
 	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
-	/*@DELETE
+	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteAccount(JsonObject json) {
@@ -76,7 +77,7 @@ public class MemberResource {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while deleting the member.")).build();
 		}
 		return Response.status(Response.Status.ACCEPTED).build();
-	}*/
+	}
 	
 }
 
