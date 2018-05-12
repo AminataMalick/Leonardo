@@ -11,6 +11,10 @@ public class Admin extends User {
 		super(id, firstName, lastName, email, pwd);
 	}
 	
+	public Admin(long id, String firstName, String lastName, String email, String pwd, String token) {
+		super(id, firstName, lastName, email, pwd, token);
+	}
+	
 	public String toString() { 
 		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
 	}
