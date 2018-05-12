@@ -32,6 +32,10 @@ import fr.cpasam.leonardo.utilities.Validator;
 public class ProductResource {
 
 
+	/**
+	 * Return all the product in the database
+	 * @return 200 : OK
+	 */
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -52,6 +56,11 @@ public class ProductResource {
 	}
 
 
+	/**
+	 * Return the product
+	 * @param id id of the product will be displayed
+	 * @return 200 : OK 
+	 */
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,7 +72,11 @@ public class ProductResource {
 	}
 
 
-
+	/**
+	 * Creation of a Product
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -86,7 +99,7 @@ public class ProductResource {
 
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 
-		JsonArray ja = json.get("tag").getAsJsonArray();
+		JsonArray ja = json.get("tags").getAsJsonArray();
 
 		ArrayList<ProductTag> tags = new ArrayList<ProductTag>();
 		for(JsonElement e : ja) {
@@ -115,7 +128,12 @@ public class ProductResource {
 
 
 
-
+	/**
+	 * Update a Product
+	 * @param id id of the product that has to be update
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@PUT
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -172,6 +190,12 @@ public class ProductResource {
 	}
 
 
+	/**
+	 * Delete a Product
+	 * @param id id of the product that has to be delete
+	 * @param json {user_id:__,token:__,shop_id:__,tags:[{...},{...},...],name=__, price=__ }
+	 * @return 200 : OK, 401 : AUNOTHORIZED, 403 : FORBIDEN, 406 : NOT ACCEPTABLE 
+	 */
 	@DELETE
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
