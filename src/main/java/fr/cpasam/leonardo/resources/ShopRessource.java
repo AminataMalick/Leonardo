@@ -84,8 +84,8 @@ public class ShopRessource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//String token = json.get("token").getAsString();
+		//if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		Shop s = ShopDAO.createShop(
@@ -111,8 +111,8 @@ public class ShopRessource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//String token = json.get("token").getAsString();
+		//if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
@@ -134,25 +134,21 @@ public class ShopRessource {
 	@DELETE
 	@Path("{id}")
 	public Response delete(@PathParam("id") long id, JsonObject json) {
+		
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 
-
 		// Vérifier le jeton CSRF
-
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//String token = json.get("token").getAsString();
+		//if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
-
 		long shop_id = json.get("shop_id").getAsLong();
-
 		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
 
 		//Suppression shop
-
 		ShopDAO.delete(id) ;
 
 		return Response
