@@ -14,7 +14,7 @@ public class Product {
 		return cnt++;
 	}
 	
-	@Expose
+	
 	long id;
 	String name ;
 	Long provenance ; // shop_id
