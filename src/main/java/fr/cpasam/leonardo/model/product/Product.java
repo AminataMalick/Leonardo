@@ -84,4 +84,9 @@ public class Product {
 	 */
 	public void setTags(ArrayList<Tag> tags) {this.tags = tags;}
 	
+	
+	public void addTag (Tag tag) {
+		this.tags.add(tag);
+	}
+	
 }
