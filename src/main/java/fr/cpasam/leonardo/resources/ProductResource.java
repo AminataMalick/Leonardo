@@ -81,22 +81,26 @@ public class ProductResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
-
+		
+		System.out.println("Product Creation Launched... ");
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-
+		
+		System.out.println("Access granted...");
 
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que l'utilisateur est bien modérateur sur la boutique
 
+		System.out.println("Retrievment of the member...");
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
-
+		System.out.println("email"+ m.getEmail());
+		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 
 		JsonArray ja = json.get("tags").getAsJsonArray();
