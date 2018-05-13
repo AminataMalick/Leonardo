@@ -61,7 +61,7 @@ public class AuthResource {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while storing the CSRF token in database.").JsonMessage()).build();
 		}
-		return Response.ok(user.getToken()).build();
+		return Response.ok(user).build();
 	}	
 	
 	/**
