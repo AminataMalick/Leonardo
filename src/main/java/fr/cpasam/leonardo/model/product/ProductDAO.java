@@ -127,7 +127,7 @@ public class ProductDAO extends DAOManager {
 			statement = con.createStatement();
 
 			/* Modification du Produit */
-			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
+			int update = statement.executeUpdate("UPDATE Product SET name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
 			ArrayList<Tag> tags = ProductTagDAO.getTagsByProduct(product_id);
