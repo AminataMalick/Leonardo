@@ -3,36 +3,39 @@ package fr.cpasam.leonardo.model.user;
 
 public class Admin extends User {
 	
-	public Admin() {
-		// TODO Auto-generated constructor stub
-	}
-
+	public Admin() {}
+	
+	/**
+	 * 
+	 * @param id identifiant de l'administrateur
+	 * @param firstName prénom de l'administrateur
+	 * @param lastName nom de l'administrateur
+	 * @param email email de l'administrateur
+	 * @param pwd mot de passe de l'administrateur
+	 */
 	public Admin(long id, String firstName, String lastName, String email, String pwd) {
 		super(id, firstName, lastName, email, pwd);
 	}
 	
+	/**
+	 * 
+	 * @param id identifiant de l'administrateur
+	 * @param firstName prénom de l'administrateur
+	 * @param lastName nom de l'administrateur
+	 * @param email email de l'administrateur
+	 * @param pwd mot de passe de l'administrateur
+	 * @param token token de l'administrateur
+	 */
 	public Admin(long id, String firstName, String lastName, String email, String pwd, String token) {
 		super(id, firstName, lastName, email, pwd, token);
 	}
 	
+	/**
+	 * méthode toString pour décrire l'objet Admin
+	 */
 	public String toString() { 
 		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
 	}
 	
-	/*private static int level=1;
-	
-	public boolean deleteUser (long id) {
-		Query query = session.createQuery("from Member where id =:id");
-		query.getParameter("id",id);
-		List<Member> res = query.list();
-		return res.get(0).deleteAccount();
-	}
-	
-	public boolean deleteProduct(long id) {
-		Query query = session.createQuery("from Product where id =:id");
-		query.getParameter("id",id);
-		List<Product> res = query.list();
-		return res.get(0).deleteAccount();
-	}*/
 
 }

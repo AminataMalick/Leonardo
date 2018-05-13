@@ -1,53 +1,43 @@
 package fr.cpasam.leonardo.memberDAO;
 
+import fr.cpasam.leonardo.model.user.MemberDAO;
 
+import java.util.List;
+
+import fr.cpasam.leonardo.model.user.Member;
 public class TestMemberDAO {
 
 	public static void main(String[] args) {
 		
-		/*
-		// Test mailToMemebr
-		Member member = null ;
-		member = MemberDAO.mailToMember("me@ce");
-		System.out.println(member);
-		*/
 		
-		/*
+		// Test mailToMember
+		// System.out.println(MemberDAO.mailToMember("ce@de"));
+		
+			
 		// Test create
-		Member member2 = null ;
-		member2 =MemberDAO.create("jacques", "deCompostel", "ja@de", "jade");
-		System.out.println(member2);
-		*/
+		// System.out.println(MemberDAO.create("jacques", "deCompostel", "ja@de", "jade"));
 		
-		/*
+		
 		// Test all
-		List<Member> members = null ;
-		members = MemberDAO.all();
-		System.out.println(members);
-		*/
+		// System.out.println(MemberDAO.all());
 		
-		/*
+		
 		// Test update
-		Member member3 = null ;
-		member3 =MemberDAO.update(100, "celine", "deCompostel", "ce@de", "cede");
-		System.out.println(member3);
-		*/
+		//  System.out.println(MemberDAO.update(200, "celine", "deCompostel", "ce@de", "cede"));
 		
-		/*
-		//Test get by id
-		Member member4 = null ;
-		long member_id = 100 ;
-		member4 =MemberDAO.get(member_id);
-		System.out.println(member4);
-		*/
 		
-		/*
-		//Test delete
-		boolean = false;
-		long member_id = 100 ;
-		bool = MemberDAO.delete(member_id);
-		System.out.println(bool);
-		*/
+		/**
+		 * Affichage d'un membre à partir de son identifiant
+		 */
+		// System.out.println(MemberDAO.get(200));
+		
+		
+		
+		/**
+		 * Suppression d'un membre en passant l'identifiant en paramètre
+		 */
+		 System.out.println(MemberDAO.delete(200));
+		
 	}
 
 }

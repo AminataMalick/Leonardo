@@ -12,23 +12,37 @@ import fr.cpasam.leonardo.model.geoloc.Geoloc;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
 import fr.cpasam.leonardo.model.shop.Shop;
 
-
 public class Member extends User implements _ChatManager<Member, Shop>{
 
-
+	
+	
+	
+	/**
+	 * Attributs de la classe Member
+	 */
 	private Geoloc geoloc;
 	private List<Shop> shops ;
 	private List<Recommandation> recommandations;
 
 
-	public Member() {
-		// TODO Auto-generated constructor stub
-	}
+	public Member() {}
 	
+	/**
+	 * Méthode toString() pour décrire un objet Member
+	 */
 	public String toString() { 
 		return("id : " + this.id + " firstName : " + this.firstName + " lastName : " + this.lastName + " email : " + this.email + " pwd : " + this.pwd);	
 	}
 
+	/**
+	 * Constructeur Member avec 6 paramètres
+	 * @param id identifiant du membre
+	 * @param first_name prénom du membre
+	 * @param last_name nomdu membre
+	 * @param email email du membre
+	 * @param password mot de passe du membre
+	 * @param token token du membre
+	 */
 	public Member(long id,String first_name, String last_name, String email, String password, String token ) {
 		super(id, first_name, last_name, email, password,token);
 		this.geoloc = null;
@@ -36,6 +50,13 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 
+	/**
+	 * Constructeur Member avec 4 paramètres sans l'identifiant, permettant ainsi de l'autogénérer selon le dernier identifiant présent dans la base
+	 * @param first_name prénom du membre
+	 * @param last_name nom du membre
+	 * @param email email du membre
+	 * @param password mot de passe du membre
+	 */
 	public Member(String first_name, String last_name, String email, String password ) {
 		super(first_name, last_name, email, password);
 		this.geoloc = null;
@@ -43,6 +64,15 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 	
+	/**
+	 * 
+	 * Constructeur Member avec 5 paramètres
+	 * @param id identifiant du membre
+	 * @param first_name prénom du membre
+	 * @param last_name nomdu membre
+	 * @param email email du membre
+	 * @param password mot de passe du membre
+	 */
 	public Member(long id, String first_name, String last_name, String email, String password ) {
 		super(id, first_name, last_name, email, password);
 		this.geoloc = null;
