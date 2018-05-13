@@ -1,5 +1,6 @@
 package fr.cpasam.leonardo.model.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import fr.cpasam.leonardo.model.chat.Chat;
 
@@ -27,6 +28,7 @@ public abstract class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.pwd = pwd;
+		this.chats = new ArrayList<>();
 	}
 
 	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
@@ -36,6 +38,7 @@ public abstract class User {
 		this.email = email;
 		this.pwd = pwd;
 		this.token=token;
+		this.chats = new ArrayList<>();
 	}
 	
 	public User(long id, String firstName, String lastName, String email, String pwd) {
@@ -44,6 +47,7 @@ public abstract class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.pwd = pwd;
+		this.chats = new ArrayList<>();
 	}
 	
 	/**
