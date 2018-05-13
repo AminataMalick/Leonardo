@@ -15,7 +15,7 @@ import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
-import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 
@@ -208,8 +208,8 @@ public class ShopChatDAO extends DAOManager {
 	 * @throws UserNotFoundException 
 	 * @throws ChatNotFoundException 
 	 */
-	public static ArrayList<ShopChat> getByMember(long user_id) throws ChatNotFoundException, UserNotFoundException {
-		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
+	public static List<Chat> getByMember(long user_id) throws ChatNotFoundException, UserNotFoundException {
+		List<Chat> shopChats = new ArrayList<>();	
 
 
 		Statement statement = null;

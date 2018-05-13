@@ -1,6 +1,7 @@
 package fr.cpasam.leonardo.resources;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -15,7 +16,7 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
-import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
@@ -144,7 +145,7 @@ public class ChatResource {
 
 		//Vérifier que le chat appartient au membre
 
-		ArrayList<ShopChat> chats;
+		List<Chat> chats;
 		try {
 			chats = ShopChatDAO.getByMember(user_id);
 		} catch (ChatNotFoundException | UserNotFoundException e) {

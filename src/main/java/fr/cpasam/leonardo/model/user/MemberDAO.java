@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
@@ -65,10 +67,12 @@ public class MemberDAO extends DAOManager {
 	/**
 	 * Affichage de tous les membres sous forme de liste
 	 * @return retourne une liste composée de tous les membres
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static List<Member> all() {
+	public static List<Member> all() throws ChatNotFoundException, UserNotFoundException {
 		List<Member> members = new ArrayList<Member>();
-		ArrayList<ShopChat> chats = new ArrayList<ShopChat>();
+		List<Chat> chats = new ArrayList<>();
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
@@ -77,11 +81,11 @@ public class MemberDAO extends DAOManager {
 			while (rset.next()) {
 				// Récupération des chats d'un membre
 				long member_id = rset.getInt(1);
-				//chats = ShopChatDAO.getByMember(member_id);
+				chats = ShopChatDAO.getByMember(member_id);
 				
-				Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
+				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
-				//Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
+				Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
 				members.add(member);
 			}
 

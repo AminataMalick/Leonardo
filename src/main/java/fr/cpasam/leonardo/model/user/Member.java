@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
@@ -60,13 +60,13 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * @param token
 	 * @param chats
 	 */
-	public Member(long id,String first_name, String last_name, String email, String password, String token, ArrayList<Chat> chats ) {
+	public Member(long id,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
 		super(id, first_name, last_name, email, password,token, chats);
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
 	}
-
+	
 	/**
 	 * Constructeur Member avec 4 paramètres sans l'identifiant, permettant ainsi de l'autogénérer selon le dernier identifiant présent dans la base
 	 * @param first_name prénom du membre
@@ -98,6 +98,8 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 
+
+	
 
 	/**
 	 * Créé un nouveau chat pour une boutique

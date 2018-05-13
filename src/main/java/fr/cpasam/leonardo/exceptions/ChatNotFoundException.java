@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.errors;
+package fr.cpasam.leonardo.exceptions;
 
 public class ChatNotFoundException extends Exception {
 

@@ -3,7 +3,7 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;

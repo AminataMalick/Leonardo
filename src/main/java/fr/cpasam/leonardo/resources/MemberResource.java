@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberDeletionException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
@@ -93,11 +94,14 @@ public class MemberResource {
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Member> all() {
+	public Response all() {
 
 		System.out.println("member/all");
 		
-		List<Member> members= MemberDAO.all();
+		List<Member> members;
+		try {
+			members = MemberDAO.all();
+		
 		
 		System.out.println("Get Member");
 		String test = "";
@@ -106,7 +110,11 @@ public class MemberResource {
 		}
 		System.out.println("members : "+test);
 		
-		return members;
+		return Response.ok(members).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 	}
 
 	/**
