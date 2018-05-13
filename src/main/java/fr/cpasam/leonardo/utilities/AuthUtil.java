@@ -40,7 +40,8 @@ public class AuthUtil {
 		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
-		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
+		String newPwd = encryptPassword(pwd);
+		if(!BCrypt.checkpw(newPwd, user.getPwd())) throw new WrongPasswordException();
 		String token = generateToken(user);
 		if(token == null) {System.out.println("NULL");throw new TokenCreationException();}
 		user.setToken(token);
