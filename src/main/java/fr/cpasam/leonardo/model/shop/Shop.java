@@ -9,10 +9,7 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Shop {
 	
-	private static long cnt = 400;
-	public static long getCnt() {
-		return cnt++;
-	}
+	
 	
 	private long id;
 	protected String name;

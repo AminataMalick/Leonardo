@@ -10,7 +10,45 @@ import java.sql.Statement;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class GeolocDAO extends DAOManager {
+	
+	private static long cnt = 0;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_Geoloc = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération de l'identifiant max du Produit */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Geoloc) FROM Geoloc");
 
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du produit */
+					id_Geoloc= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_Geoloc;
+		}
 	public static Geoloc get(long geolocId) {
 		Statement statement = null;		
 		Geoloc geoloc= null;

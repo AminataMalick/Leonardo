@@ -12,6 +12,46 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductDAO extends DAOManager {
 
+	private static long cnt = 0;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_Product = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération de l'identifiant max du Produit */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Product) FROM Product");
+
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du produit */
+					id_Product= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_Product;
+		}
+	
+	
 	/**
 	 * Recherche d'un produit à partir de son id
 	 * @param product_id
@@ -91,7 +131,7 @@ public class ProductDAO extends DAOManager {
 		Product product = null ;
 		try {
 			System.out.println("dans try de create");
-			long product_id = Product.getCnt() ;
+			long product_id = getCnt() ;
 
 			statement = con.createStatement();
 			/* Insertion d'un produit */

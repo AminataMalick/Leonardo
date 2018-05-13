@@ -13,6 +13,53 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class TagDAO extends DAOManager{
 	
+
+	/**
+	 * Attribut de la classe MemberDAO representant un compteur pour générer un identifiant automatiquement
+	 */
+	private static long cnt = 10;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	  
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_Tag = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération de l'identifiant du tag */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Tag) FROM Tag");
+
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du tag */
+					id_Tag= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_Tag;
+		}
+
+
+	
+	
+	
 	/**
 	 * Créer un Tag
 	 * @param keyword
@@ -22,7 +69,7 @@ public class TagDAO extends DAOManager{
 		Statement statement = null;		
 		Tag tag = null;
 		try {
-			long tag_id = Tag.getCnt() ;
+			long tag_id = getCnt() ;
 			statement = con.createStatement();
 			
 			/* Insertion d'un tag*/
