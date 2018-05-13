@@ -11,14 +11,20 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class MemberDAO extends DAOManager {
 
-	
-	private static long cnt = 200;
+	/**
+	 * Attribut de la classe MemberDAO representant un compteur pour générer un identifiant automatiquement
+	 */
+	private static long cnt = 500;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
 	public static long getCnt() {
 		return cnt++;
 	}
 	
 	/**
-	 * Affichage de tous les membres
+	 * Affichage de tous les membres sous forme de liste
 	 * @return retourne une liste composée de tous les membres
 	 */
 	public static List<Member> all() {
@@ -43,7 +49,7 @@ public class MemberDAO extends DAOManager {
 
 
 	/**
-	 * Crée un membre avec la récupération des données du formulaire et un id attribué automatiquement à l'aide d'un compteur
+	 * Crée un membre avec un id attribué automatiquement à l'aide d'un compteur et véréfication que l'adresse mail ne soit pas déjà utilisée
 	 * @param firstName prénom du membre 
 	 * @param lastName nom du membre
 	 * @param email email du membre
@@ -56,9 +62,9 @@ public class MemberDAO extends DAOManager {
 		long idUser = User.getCnt();
 		long idMember = getCnt();
 		try {
-			// vérifier si le membre n'esxiste pas déja
+			// vérifier si le membre n'existe pas déja
 			member = mailToMember(email) ;
-			// si non, on le créé
+			// si non, on le crée
 			if (member==null) {
 				stmt = con.createStatement();
 				int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+idUser+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
@@ -77,7 +83,7 @@ public class MemberDAO extends DAOManager {
 
 
 	/**
-	 * Met à jour un membre en récupérant toutes les données 
+	 * Met à jour un membre à partir de son identifiant et des données à modifier en vérifiant que l'adresse mail ne soit pas déjà utilisée si modification de celle-ci 
 	 * @param id identifiant du membre à mettre à jour
 	 * @param firstName prénom du membre
 	 * @param lastName nom du membre
@@ -90,6 +96,12 @@ public class MemberDAO extends DAOManager {
 		Member member = null ;
 		long idUser = 0 ;
 		try {
+			// on vérifie si l'email n'est pas déjà associé à un autre membre
+			member = mailToMember(email) ;
+			if (member!=null && member.id!=id) {
+				System.out.println("email déjà associé à un membre");
+				return null ;
+			}
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT id_User FROM User natural join Member where id_Member ="+ id);
 			while (rset.next()) {
@@ -99,7 +111,7 @@ public class MemberDAO extends DAOManager {
 			if (deleted <= 0){ return null ;}
 
 			member = new Member(id,firstName,lastName,email, pwd);
-
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}try { stmt.close();
@@ -111,7 +123,7 @@ public class MemberDAO extends DAOManager {
 
 
 	/**
-	 * Trouver un membre à partir de don ID
+	 * Trouver un membre à partir de son ID
 	 * @param memberID identifiant du membre que l'on cherche
 	 * @return retourne le membre lié à l'identifiant passé en paramètre de la fonction ou null s'il n'existe pas
 	 */

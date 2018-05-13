@@ -14,9 +14,6 @@ import fr.cpasam.leonardo.model.shop.Shop;
 
 public class Member extends User implements _ChatManager<Member, Shop>{
 
-	
-	
-	
 	/**
 	 * Attributs de la classe Member
 	 */
