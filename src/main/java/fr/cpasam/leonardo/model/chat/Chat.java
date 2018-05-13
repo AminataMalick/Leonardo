@@ -9,7 +9,7 @@ import fr.cpasam.leonardo.model.user.User;
 
 public abstract class Chat<T,U>{
 
-	private static long cnt = 10;
+	private static long cnt = 20;
 	/**
 	 * Retourne le prochain id disponible
 	 * @return long
@@ -28,6 +28,15 @@ public abstract class Chat<T,U>{
 		// TODO Auto-generated constructor stub
 	}
 
+	// Bloc static 
+	  
+	  static {
+	  	
+	  	cnt = ShopChatDAO.getLastId()+1;
+	  }
+	  
+	  
+	 
 	/**
 	 * Creation of a new chat
 	 * @param id id in the database

@@ -41,6 +41,8 @@ public class ChatResource {
 		Long shop_id = json.get("shop_id").getAsLong();
 		Long user_id = json.get("user_id").getAsLong();
 
+		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
+
 		Member m = MemberDAO.get(user_id);
 
 		Shop s = ShopDAO.get(shop_id);

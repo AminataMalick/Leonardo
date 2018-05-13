@@ -56,15 +56,19 @@ public class MemberDAO extends DAOManager {
 		long idUser = User.getCnt();
 		long idMember = getCnt();
 		try {
-			stmt = con.createStatement();
-			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+idUser+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
-			deleted += stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+idMember+","+idUser+",null)");
-			if (deleted <=0) {
-				return null;
+			// vérifier si le membre n'esxiste pas déja
+			member = mailToMember(email) ;
+			// si non, on le créé
+			if (member==null) {
+				stmt = con.createStatement();
+				int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+idUser+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
+				deleted += stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+idMember+","+idUser+",null)");
+				if (deleted <=0) {
+					return null;
+				}
+				member = new Member(idMember,firstName,lastName,email, pwd);
 			}
-			member = new Member(idMember,firstName,lastName,email, pwd);
-
-		}catch (SQLException e) {
+	}catch (SQLException e) {
 			e.printStackTrace();
 		}try { stmt.close();
 		} catch (SQLException e) { e.printStackTrace();}

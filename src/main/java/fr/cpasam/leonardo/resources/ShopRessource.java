@@ -15,11 +15,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.model.product.Product;
+import fr.cpasam.leonardo.model.product.ProductDAO;
 import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
+import fr.cpasam.leonardo.model.tag.Tag;
+import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -95,7 +101,6 @@ public class ShopRessource {
 		long user_id = json.get("user_id").getAsLong();
 		//String token = json.get("token").getAsString();
 		//if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-
 
 		Shop s = ShopDAO.createShop(
 				json.get("name").getAsString(), 

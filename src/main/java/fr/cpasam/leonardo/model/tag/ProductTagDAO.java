@@ -46,17 +46,15 @@ public class ProductTagDAO extends DAOManager{
 	 * @return Product
 	 */
 
-	public static void addTag(long product_id, long tag_id) {
+	public static void addTag(long product_id, Tag tag) {
 
 		Statement statement = null;	
 		Product product = null ;
-		ArrayList<Tag> tags = new ArrayList<Tag>() ;
-
 
 		try {
-			Tag tag = null ;
 			statement = con.createStatement();
 			/* Insertion d'un tag*/
+			long tag_id = tag.getId();
 			
 			if (!estProductTag(product_id, tag_id)) {
 				statement.executeUpdate("INSERT INTO ProductTag(id_Product, id_Tag)VALUES("+product_id+","+tag_id+")");
@@ -64,8 +62,8 @@ public class ProductTagDAO extends DAOManager{
 			/* Récupération du produit */
 			product = ProductDAO.get(product_id);
 	
+			System.out.println("TAG : "+tag);
 			/* Récupération des infos du tag et ajout de celui */
-			tag = TagDAO.getTagByID(tag_id);
 			product.addTag(tag);
 			
 
@@ -84,8 +82,7 @@ public class ProductTagDAO extends DAOManager{
 	public static void addTags(long product_id, ArrayList<Tag> tags) {
 
 		for (Tag tag : tags) {
-			long tag_id = tag.getId();
-			addTag(product_id, tag_id);
+			addTag(product_id, tag);
 		}
 
 		
