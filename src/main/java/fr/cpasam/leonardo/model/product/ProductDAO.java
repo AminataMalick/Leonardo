@@ -13,6 +13,49 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 public class ProductDAO extends DAOManager {
 
 	/**
+	 * Attribut de la classe ProductDAO representant un compteur pour générer un identifiant automatiquement
+	 */
+	private static long cnt = 0;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_Product = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération de l'identifiant max du Produit */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Product) FROM Product");
+
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du produit */
+					id_Product= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_Product;
+		}
+	
+	
+	/**
 	 * Recherche d'un produit à partir de son id
 	 * @param product_id
 	 * @return Product
@@ -91,7 +134,7 @@ public class ProductDAO extends DAOManager {
 		Product product = null ;
 		try {
 			System.out.println("dans try de create");
-			long product_id = Product.getCnt() ;
+			long product_id = getCnt() ;
 
 			statement = con.createStatement();
 			/* Insertion d'un produit */
@@ -127,7 +170,7 @@ public class ProductDAO extends DAOManager {
 			statement = con.createStatement();
 
 			/* Modification du Produit */
-			int update = statement.executeUpdate("UPDATE Product SET id_Product = "+product_id+",name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
+			int update = statement.executeUpdate("UPDATE Product SET name_Product ='"+name+"', UnityPrice="+unityPrice+", id_Shop="+shop_id+" WHERE id_Product ="+product_id);
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
 			ArrayList<Tag> tags = ProductTagDAO.getTagsByProduct(product_id);

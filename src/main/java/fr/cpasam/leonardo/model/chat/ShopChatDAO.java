@@ -23,6 +23,24 @@ public class ShopChatDAO extends DAOManager {
 
 	
 	/**
+	 * Attribut de la classe ShopChatDAO representant un compteur pour générer un identifiant automatiquement
+	 */
+	private static long cnt = 0;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	  
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+
+	/**
 	 * Retourne tous les ShopsChats
 	 * @return ArrayList<ShopChat>
 	 */
@@ -71,7 +89,7 @@ public class ShopChatDAO extends DAOManager {
 		Statement statement = null;		
 		ShopChat shopChat = null ;
 		try {
-			long chat_id = ShopChat.getCnt();
+			long chat_id = getCnt();
 			statement = con.createStatement();
 
 			/*Récupération id du membre*/
@@ -193,7 +211,8 @@ public class ShopChatDAO extends DAOManager {
 	public static ArrayList<ShopChat> getByMember(long user_id) throws ChatNotFoundException, UserNotFoundException {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 
-		Statement statement = null;		
+
+		Statement statement = null;
 
 		ShopChat shopChat = null ;
 		Member member = null ;

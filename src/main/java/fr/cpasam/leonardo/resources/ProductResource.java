@@ -246,8 +246,8 @@ public class ProductResource {
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//String token = json.get("token").getAsString();
+		//if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		//Vérifier que le shop appartient bien au user
