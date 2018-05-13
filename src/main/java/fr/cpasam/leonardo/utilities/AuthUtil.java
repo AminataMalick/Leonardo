@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.MemberDeletionException;
@@ -73,9 +74,11 @@ public class AuthUtil {
 	 * @param mail l'e-mail du membre à enregistrer
 	 * @param pwd le mot de passe du membre à enregistrer
 	 * @throws IncompleteDataException dans le cas où des données nécessaires à la création d'un membre sont manquantes
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 * @throws MemberCreationError dans le cas où un problème est survenu lors de la transaction avec la base de données
 	 */
-	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException {
+	public static void registration(String firstName, String lastName, String mail, String pwd) throws IncompleteDataException, MemberCreationException, ChatNotFoundException, UserNotFoundException {
 		String[] fields = new String[] {firstName, lastName, mail, pwd};
 		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		String newPwd = encryptPassword(pwd);
@@ -107,8 +110,9 @@ public class AuthUtil {
 	 * @throws UserNotFoundException dans le cas où un problème est survenu lors de la récupération du membre à modifier
 	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
 	 * @throws MemberUpdateException dans le cas où un problème est survenu lors de la mise à jour du membre
+	 * @throws ChatNotFoundException 
 	 */
-	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberUpdateException {
+	public static Member modify(long id, String firstName, String lastName, String mail, String pwd, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberUpdateException, ChatNotFoundException {
 		String[] fields = new String[] {Long.toString(id), firstName, lastName, mail, pwd, token};
 		Validator.verifyCreatedMember(fields);
 		String newPwd = encryptPassword(pwd);
@@ -149,8 +153,10 @@ public class AuthUtil {
 	 * @throws UserNotFoundException dans le cas où un problème est survenu lors de la récupération du membre à supprimer dans la base de données
 	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant à l'utilisateur ayant fait la requête
 	 * @throws MemberDeletionException dans le cas où un problème est survenu lors de la suppression du membre
+	 * @throws ChatNotFoundException 
+	 * @throws NumberFormatException 
 	 */
-	public static void deleteAccount(long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberDeletionException {
+	public static void deleteAccount(long id, String token) throws IncompleteDataException, UserNotFoundException, WrongTokenException, MemberDeletionException, NumberFormatException, ChatNotFoundException {
 		String[] fields = new String[] {Long.toString(id), token};
 		Validator.verifyCreatedMember(fields);
 		if(!MemberDAO.delete(id)) throw new MemberDeletionException();

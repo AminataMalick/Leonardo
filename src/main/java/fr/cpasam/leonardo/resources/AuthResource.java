@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
 import fr.cpasam.leonardo.exceptions.TokenCreationException;
@@ -84,6 +85,10 @@ public class AuthResource {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("One or several fields are missing.")).build();
 		} catch (MemberCreationException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while creating the member in database.")).build();
+		} catch (ChatNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Chat not found")).build();
+		} catch (UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("User not found")).build();
 		}
 		JsonObject jsonConnection = new JsonObject();
 		jsonConnection.addProperty("email", mail);

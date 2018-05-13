@@ -1,5 +1,6 @@
 package fr.cpasam.leonardo.utilities;
 
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
@@ -35,8 +36,10 @@ public class Validator {
 	 * @throws IncompleteDataException dans le cas où certains champs n'ont pas été renseignés
 	 * @throws UserNotFoundException dans le cas où un problème est survenu lors de la récupération du membre
 	 * @throws WrongTokenException dans le cas où le token reçu ne correspond pas à celui correspondant au membre ayant fait la requête
+	 * @throws ChatNotFoundException 
+	 * @throws NumberFormatException 
 	 */
-	public static void verifyCreatedMember(String[] fields) throws IncompleteDataException, UserNotFoundException, WrongTokenException {
+	public static void verifyCreatedMember(String[] fields) throws IncompleteDataException, UserNotFoundException, WrongTokenException, NumberFormatException, ChatNotFoundException {
 		if(!checkFields(fields)) throw new IncompleteDataException();
 		if(MemberDAO.get(Long.parseLong(fields[0])) == null) throw new UserNotFoundException();
 		if(!checkCSRF(Long.parseLong(fields[0]), fields[fields.length-1])) throw new WrongTokenException();
