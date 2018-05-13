@@ -71,10 +71,10 @@ public class ShopChatDAO extends DAOManager {
 			statement = con.createStatement();
 
 			/*Récupération id du membre*/
-			long member_id = Member.getID(member);
+			long member_id = member.getId();
 
 			/*Récupération id du shop*/
-			long shop_id = Shop.getID(shop);
+			long shop_id = shop.id();
 
 			/* Insertion d'un shopChat */
 			int res = statement.executeUpdate("INSERT INTO ShopChat(id_Chat, id_Shop, id_Member)VALUES("+chat_id+","+shop_id+","+member_id+")");

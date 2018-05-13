@@ -15,9 +15,11 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.chat.TextMessageDAO;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
+import fr.cpasam.leonardo.model.chat.TextMessage;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -41,6 +43,16 @@ public class ChatResource {
 		Long shop_id = json.get("shop_id").getAsLong();
 		Long user_id = json.get("user_id").getAsLong();
 
+		
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		
+		// Vérifier le jeton CSRF
+
+		//		String token = json.get("token").getAsString();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
 		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
 
 		Member m = MemberDAO.get(user_id);
@@ -55,7 +67,7 @@ public class ChatResource {
 
 	}
 
-	
+
 	/**
 	 * Traitement de la requete de récupération d'un chat via son id
 	 * @param id du chat
@@ -71,8 +83,8 @@ public class ChatResource {
 
 		// Vérifier le jeton CSRF
 
-//		String token = json.get("token").getAsString();
-//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//		String token = json.get("token").getAsString();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
@@ -81,19 +93,19 @@ public class ChatResource {
 		// L'utilisateur est le membre du chat
 		long idm = c.getMember().getId();
 		boolean isMember = (idm == user_id);
-	
+
 		// L'utilisateur est membre de la boutique qui chat
 		Member m = c.getShop().getMember(user_id);
 		boolean isShop = (m !=null);
-		
+
 		// Interdir l'accès à un utilisateur qui n'est pas dans le chat
 		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
 		return Response.ok(c).build();
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
 	 * @param json [user_id et token]
@@ -104,16 +116,71 @@ public class ChatResource {
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(user_id == 0) return Response.status(Response.Status.UNAUTHORIZED).build();
-		
+
 		// Vérifier le jeton CSRF
 
-//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
 		ArrayList<ShopChat> chats = ShopChatDAO.getByMember(user_id);
-		
+
 		return Response.ok(chats).build();
 
 	}
+	
+	/**
+	 * Create a new message in the cat
+	 * @param chat_id id of the chat where the message has to be send
+	 * @param json {user_id,token,content}
+	 * @return
+	 */
+	@POST
+	@Path("{id}/message")
+	public Response sendMessage(@PathParam("id") long chat_id, JsonObject json) {
+		System.out.println("Sending message ... ");
+
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+		
+		System.out.println("Access granted...");
+
+		// Vérifier le jeton CSRF
+
+		long user_id = json.get("user_id").getAsLong();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+		ShopChat chat = ShopChatDAO.get(chat_id);
+
+		if(chat == null ) return Response.status(Response.Status.NOT_FOUND).build();
+
+
+		Member member = chat.getMember();
+		
+		if((member.getId() != user_id)) member = chat.getShop().getMember(user_id);  
+		
+	
+		if ( member == null) return Response.status(Response.Status.FORBIDDEN).build();
+		
+		String content = json.get("content").getAsString();
+		
+		System.out.println("Member : "+member.getFirstName()+" on chat : "+chat.id()+"\n \""+content+"\"");
+		TextMessage<Member> message = TextMessageDAO.create(member,chat,content);
+		
+		if(message == null ) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		return Response.ok(message).build();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 }

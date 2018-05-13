@@ -1,5 +1,6 @@
 package fr.cpasam.leonardo.model.chat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -7,8 +8,7 @@ public abstract class Message<T> {
 	
 	protected long id ;
 	protected T emiter;
-	protected java.util.Date date;
-	protected Chat chat;
+	protected LocalDateTime date;
 	
 	public Message() {
 		// TODO Auto-generated constructor stub
@@ -19,11 +19,11 @@ public abstract class Message<T> {
 	 * @param chat
 	 * @param emiter
 	 */
-	public Message(Chat chat, T emiter){
+	public Message(Chat chat, T emiter, LocalDateTime date){
 		this.id = chat.getNbMessage()+1;
 		this.emiter=emiter;
-		this.date=new Date();
-		this.chat=chat;
+		this.date = date;
+		chat.addMessage(this);
 
 	}
 	
@@ -44,13 +44,10 @@ public abstract class Message<T> {
 	 * Retourne la date d'un message
 	 * @return date
 	 */
-	public Date getDate() {return date;}
+	public LocalDateTime getDate() {return date;}
 	
 	/**
 	 * Retourne le chat d'un message
 	 * @return chat
 	 */
-	
-	public Chat getChat() {return chat;}	
-
 }

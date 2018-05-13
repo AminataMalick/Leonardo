@@ -71,10 +71,10 @@ public abstract class Chat<T,U>{
 	 * Ajoute un message au chat
 	 * @param Message
 	 */
-	protected void addMessages(Message m) {
+	protected void addMessage(Message m) {
 		
 		this.messages.add(m);
-		this.cnt++;
+		this.cntMessage++;
 
 	}
 	
@@ -96,6 +96,9 @@ public abstract class Chat<T,U>{
 		return entity1;
 	}
 	
+	public long id() {
+		return this.id;
+	}
 	
 	
 
