@@ -3,11 +3,13 @@ package fr.cpasam.leonardo.resources;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -28,7 +30,7 @@ import fr.cpasam.leonardo.utilities.Validator;
  * @param json [shop_id et user_id]
  * @return le chat créé
  */
-@Path("/chat")
+@Path("chat/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
@@ -59,28 +61,36 @@ public class ChatResource {
 	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe / 403 : chat n'appartient pas au membre]
 	 */
 	@GET
-	@Path("/{id}")
-	public Response get(@PathParam("id") long id, JsonObject json) {
-
-		long user_id = json.get("user_id").getAsLong();
+	@Path("{id}")
+	public Response get(@PathParam("id") long id,@QueryParam("USER") long user_id,@QueryParam("TOKEN") String token ) {
 
 		// Vérifier que l'utilisateur est bien connecté 
-		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
 
 		// Vérifier le jeton CSRF
 
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
 		ShopChat c = (ShopChat) ShopChatDAO.get(id);
-		if((c.getMember().getId()) != user_id && c.getShop().getMember(user_id)==null) return Response.status(Response.Status.FORBIDDEN).build();
 
-
+		// L'utilisateur est le membre du chat
+		long idm = c.getMember().getId();
+		boolean isMember = (idm == user_id);
+	
+		// L'utilisateur est membre de la boutique qui chat
+		Member m = c.getShop().getMember(user_id);
+		boolean isShop = (m !=null);
+		
+		// Interdir l'accès à un utilisateur qui n'est pas dans le chat
+		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
 		return Response.ok(c).build();
 	}
 
+	
+	
 	
 	/**
 	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
@@ -88,17 +98,14 @@ public class ChatResource {
 	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe]
 	 */
 	@GET
-	@Path("?USER")
-	public Response get(JsonObject json) {
+	public Response get(JsonObject json,@QueryParam("USER") long user_id, @QueryParam("TOKEN") String token) {
 
 		// Vérifier que l'utilisateur est bien connecté 
-		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-		long user_id = json.get("user_id").getAsLong();
+		if(user_id == 0) return Response.status(Response.Status.UNAUTHORIZED).build();
 		
 		// Vérifier le jeton CSRF
 
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 

@@ -5,7 +5,7 @@ import fr.cpasam.leonardo.model.chat.Chat;
 
 public abstract class User {
 
-	private static long cnt = 106;
+	private static long cnt = 400;
 	public static long getCnt() {
 		return cnt++;
 	}

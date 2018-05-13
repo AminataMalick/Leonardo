@@ -167,7 +167,7 @@ public class ShopDAO extends DAOManager {
 
 			/* Modification du Shop */
 			int update = statement.executeUpdate("UPDATE Shop SET id_Shop = "+shop_id+",name_Shop ='"+ShopName+"', description_Shop='"+description+"', id_Member="+member_id+" WHERE id_Shop ="+shop_id);
-		
+
 			/* En cas d'erreur */
 			if (update < 0){ return null ; }
 
@@ -178,13 +178,13 @@ public class ShopDAO extends DAOManager {
 			while ( resultat0.next() ) {
 				member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7), null);
 			} 
-			
+
 			/* Récupération des produits liés au shop */
 			products = getProducts(shop_id) ;
-			
+
 			/* Création du shop */
 			shop = new Shop(shop_id,ShopName,description,null, member, products);
-			
+
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -255,7 +255,9 @@ public class ShopDAO extends DAOManager {
 		System.out.println("In getMember with member_id = "+member_id+" and shop_id = "+shop_id);
 		Statement statement = null;		
 		Member member = null ;
-		member = getOwner(shop_id);
+		Member owner = getOwner(shop_id);
+
+		if(owner.getId() == member_id) member = owner;
 		if(member == null ) {
 
 			try {
@@ -268,18 +270,24 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération des données du résultat de la requête de lecture */
 				System.out.println("before while...");
-				while ( resultat.next() ) {
+				System.out.println("resultat "+resultat.isAfterLast());
+				if(resultat.next()) {
 					//int idShop= resultat.getInt(1);
 					System.out.println("before creation of member");
 					member = new Member(resultat.getLong(7),resultat.getString(2),resultat.getString(3),resultat.getString(4), resultat.getString(5), resultat.getString(6));
 					System.out.println("after member creation");
-				} 
+
+				}
 
 			}catch (SQLException e) { e.printStackTrace();} 
+
+
 			try { statement.close();
 			} catch (SQLException e) { e.printStackTrace();}
 		}
-		System.out.println("return member with email = "+member.getEmail());
+		
+		System.out.println("member est :"+member);
+		if(member != null ) System.out.println("return member with email = "+member.getEmail());
 		return member;
 	}
 

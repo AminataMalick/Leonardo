@@ -5,13 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.tag.TagDAO;
-import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductDAO extends DAOManager {
@@ -94,6 +90,7 @@ public class ProductDAO extends DAOManager {
 		Statement statement = null;		
 		Product product = null ;
 		try {
+			System.out.println("dans try de create");
 			long product_id = Product.getCnt() ;
 
 			statement = con.createStatement();
@@ -102,6 +99,9 @@ public class ProductDAO extends DAOManager {
 
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
+			System.out.println("FIN create");
+			
+			
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
