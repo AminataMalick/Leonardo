@@ -11,7 +11,7 @@ public class UserDAO extends DAOManager{
 	/**
 	 * Attribut de la classe UserDAO representant un compteur pour générer un identifiant automatiquement
 	 */
-	private static long cnt = 10;
+	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant
 	 * @return retourne le compteur incrémenter d'une unité
@@ -31,12 +31,12 @@ public class UserDAO extends DAOManager{
 			long id_User = 0;
 			try {
 				statement = con.createStatement();
-				/* Récupération du Member */
+				/* Récupération de l'identifiant max User */
 				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_User) FROM User");
 
 				/* Récupération des données du résultat de la requête de lecture */
 				if ( resultat.next() ) {
-					/* Récupération du membre */
+					/* Récupération du user */
 					id_User= resultat.getLong(1);
 				}
 			}catch (SQLException e) { 

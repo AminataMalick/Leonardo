@@ -46,6 +46,23 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
 	}
+	
+	/**
+	 * Constructeur Member avec 7 paramètres
+	 * @param id
+	 * @param first_name
+	 * @param last_name
+	 * @param email
+	 * @param password
+	 * @param token
+	 * @param chats
+	 */
+	public Member(long id,String first_name, String last_name, String email, String password, String token, ArrayList<Chat> chats ) {
+		super(id, first_name, last_name, email, password,token, chats);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
 
 	/**
 	 * Constructeur Member avec 4 paramètres sans l'identifiant, permettant ainsi de l'autogénérer selon le dernier identifiant présent dans la base
@@ -69,6 +86,21 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * @param last_name nomdu membre
 	 * @param email email du membre
 	 * @param password mot de passe du membre
+	 */
+	public Member(long id, String first_name, String last_name, String email, String password, ArrayList<Chat> chats ) {
+		super(id, first_name, last_name, email, password, chats);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param first_name
+	 * @param last_name
+	 * @param email
+	 * @param password
 	 */
 	public Member(long id, String first_name, String last_name, String email, String password ) {
 		super(id, first_name, last_name, email, password);

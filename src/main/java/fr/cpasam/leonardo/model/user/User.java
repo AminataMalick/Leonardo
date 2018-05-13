@@ -25,6 +25,15 @@ public abstract class User {
 		this.pwd = pwd;
 		this.chats = new ArrayList<>();
 	}
+	
+	public User(long id, String firstName, String lastName, String email, String pwd, List<Chat> chats) {
+		this.id=id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.pwd = pwd;
+		this.chats = chats ;
+	}
 
 	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
 		this.id=id;
@@ -34,6 +43,16 @@ public abstract class User {
 		this.pwd = pwd;
 		this.token=token;
 		this.chats = new ArrayList<>();
+	}
+	
+	public User(long id, String firstName, String lastName, String email, String pwd, String token, List<Chat> chats) {
+		this.id=id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.pwd = pwd;
+		this.token=token;
+		this.chats = chats;
 	}
 	
 	public User(long id, String firstName, String lastName, String email, String pwd) {

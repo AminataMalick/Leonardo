@@ -197,8 +197,8 @@ public class ShopChatDAO extends DAOManager {
 	 * @param user_id
 	 * @return ArrayList<ShopChat>
 	 */
-	public static ArrayList<ShopChat> getByMember(long user_id) {
-		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
+	public static ArrayList<Chat> getByMember(long user_id) {
+		ArrayList<Chat> shopChats = new ArrayList<Chat>();	
 
 		Statement statement = null;		
 

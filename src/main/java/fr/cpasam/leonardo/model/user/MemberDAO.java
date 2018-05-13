@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.model.chat.Chat;
+import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -16,7 +18,7 @@ public class MemberDAO extends DAOManager {
 	/**
 	 * Attribut de la classe MemberDAO representant un compteur pour générer un identifiant automatiquement
 	 */
-	private static long cnt = 10;
+	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant
 	 * @return retourne le compteur incrémenter d'une unité
@@ -36,7 +38,7 @@ public class MemberDAO extends DAOManager {
 			long id_Member = 0;
 			try {
 				statement = con.createStatement();
-				/* Récupération du Member */
+				/* Récupération de l'identifiant max Member */
 				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Member) FROM Member");
 
 				/* Récupération des données du résultat de la requête de lecture */
@@ -66,13 +68,17 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static List<Member> all() {
 		List<Member> members = new ArrayList<Member>();
+		ArrayList<Chat> chats = new ArrayList<Chat>();
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User");
 
 			while (rset.next()) {
-				Member member = new Member(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
+				long member_id = rset.getInt(1);
+				chats = ShopChatDAO.getByMember(member_id);
+				
+				Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
 				members.add(member);
 			}
 
@@ -132,6 +138,8 @@ public class MemberDAO extends DAOManager {
 		Statement stmt = null;
 		Member member = null ;
 		long idUser = 0 ;
+		ArrayList<Chat> chats = new ArrayList<Chat>();
+
 		try {
 			// on vérifie si l'email n'est pas déjà associé à un autre membre
 			member = mailToMember(email) ;
@@ -146,8 +154,11 @@ public class MemberDAO extends DAOManager {
 			}
 			int deleted =stmt.executeUpdate("UPDATE User SET firstName_User = '"+firstName+"',lastName_User ='"+lastName+"', email_User='"+email+"', pwd_User='"+pwd+"' WHERE id_User ="+idUser+"");
 			if (deleted <= 0){ return null ;}
-
-			member = new Member(id,firstName,lastName,email, pwd);
+			
+			// Récupération des chats associés au membre
+			chats = ShopChatDAO.getByMember(id);
+			
+			member = new Member(id,firstName,lastName,email, pwd, chats);
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -166,12 +177,17 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static Member get(long member_id) {
 		Statement stmt = null;
+		ArrayList<Chat> chats = new ArrayList<Chat>();
+
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE id_Member="+member_id);
 
 			while (rset.next()) {
-				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
+				// Récupération des chats associés au membre
+				chats = ShopChatDAO.getByMember(member_id);
+				
+				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
 				return member ;
 			}
 
@@ -223,12 +239,18 @@ public class MemberDAO extends DAOManager {
 	public static Member mailToMember(String email) {
 		Statement stmt = null;
 		Member member = null ;
+		ArrayList<Chat> chats = new ArrayList<Chat>();
+
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE email_User='"+email+"'");
 
 			while (rset.next()) {
-				member = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
+				long member_id = rset.getLong(1) ;
+				// Récupération des chats associés au membre
+				chats = ShopChatDAO.getByMember(member_id);
+				
+				member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
 			}
 		}
 		catch (SQLException e) {
