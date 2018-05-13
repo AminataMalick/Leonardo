@@ -23,7 +23,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	private Geoloc geoloc;
 	private List<Shop> shops ;
 	private List<Recommandation> recommandations;
-
+	private long id_member;
 
 	public Member() {}
 	
@@ -79,6 +79,25 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public Member(long id,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
 		super(id, first_name, last_name, email, password,token, chats);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
+	
+	/**
+	 * Constructeur avec 8 params
+	 * @param id_user
+	 * @param id_member
+	 * @param first_name
+	 * @param last_name
+	 * @param email
+	 * @param password
+	 * @param token
+	 * @param chats
+	 */
+	public Member(long id_user,long id_member,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
+		super(id_user, first_name, last_name, email, password,token, chats);
+		this.id_member = id_member;
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
@@ -176,42 +195,6 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public void setRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 
-	/**
-	 * Retourne l'identifiant du membre
-	 * @param member membre dont on veut l'identifiant
-	 * @return
-	 */
-	public static long getID(Member member) {return member.id;}
-	/**
-	 * Retourne le prénom du membre
-	 * @param member
-	 * @return
-	 */
-	public static String getFirstname(Member member) {return member.firstName;}
-	/**
-	 * Retourne le nom du membre
-	 * @param member
-	 * @return
-	 */
-	public static String getLastname(Member member) {return member.lastName;}
-	/**
-	 * Retourne l'email du membre
-	 * @param member
-	 * @return
-	 */
-	public static String getEmail(Member member) {return member.email;}
-	/**
-	 * Retourne le mot de passe du membre
-	 * @param member
-	 * @return
-	 */
-	public static String getPassword(Member member) {return member.pwd;}
-	/**
-	 * Retourne le token du membre
-	 * @param member
-	 * @return
-	 */
-	public static String getToken(Member member) {return member.token;}
 	
 	
 }

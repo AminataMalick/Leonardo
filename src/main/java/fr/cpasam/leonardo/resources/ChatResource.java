@@ -59,18 +59,24 @@ public class ChatResource {
 
 		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
 
+
 		Member m;
 		try {
+			System.out.println("In da try");
 			m = MemberDAO.get(user_id);
-		} catch (ChatNotFoundException | UserNotFoundException e1) {
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
 
-		Shop s = ShopDAO.get(shop_id);
 
-		Chat c;
-		try {
+			System.out.println("Member created :"+m);
+			Shop s = ShopDAO.get(shop_id);
+
+			System.out.println("Shop created :"+s);
+			Chat c;
+
 			c = m.openChat(s);
+
+			System.out.println("Chat opened");
+			return Response.ok(c).build();
+
 		} catch (ChatNotFoundException | UserNotFoundException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -78,7 +84,6 @@ public class ChatResource {
 
 
 
-		return Response.ok(c).build();
 
 	}
 

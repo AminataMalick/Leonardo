@@ -187,20 +187,26 @@ public class MemberDAO extends DAOManager {
 	 * @throws UserNotFoundException 
 	 * @throws ChatNotFoundException 
 	 */
-	public static Member get(long member_id) throws ChatNotFoundException, UserNotFoundException {
+	public static Member get(long user_id) throws ChatNotFoundException, UserNotFoundException {
+		System.out.println("get member :"+user_id);
+		
 		Statement stmt = null;
 		List<Chat> chats = new ArrayList<>();
-
 		try {
+			System.out.println("In da try");
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE id_Member="+member_id);
-
-			while (rset.next()) {
-				// Récupération des chats associés au membre
-				chats = ShopChatDAO.getByMember(member_id);
+			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE id_User="+user_id);
+			
+			System.out.println("stmt passed");
+			if(rset.next()) {
 				
-				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
-
+				System.out.println("In da while");
+				// Récupération des chats associés au membre
+				chats = ShopChatDAO.getByMember(rset.getLong("id_Member"));
+				
+				System.out.println("chat created :"+chats);
+				Member member = new Member(rset.getLong("id_User"), rset.getString("firstName_User"), rset.getString("lastName_User"), rset.getString("email_User"),rset.getString("pwd_User"), rset.getString("token_User"), chats);
+				System.out.println("member created :"+member);
 				return member ;
 			}
 
@@ -218,21 +224,22 @@ public class MemberDAO extends DAOManager {
 	 */
 
 
-	public static boolean delete(long member_id) {
+	public static boolean delete(long user_id) {
 		Statement stmt = null;
-		long idUser = 0 ;
+		long member_id = 0 ;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT id_User FROM User natural join Member WHERE id_Member ="+member_id);
+			ResultSet rset = stmt.executeQuery("SELECT * FROM User natural join Member WHERE id_User ="+user_id);
 			while(rset.next()) {
-				idUser = rset.getLong(1);
+				member_id = rset.getLong("id_member");
+				
 			}
 			int deleted =stmt.executeUpdate("DELETE FROM ShopMember WHERE id_Member="+member_id);
 			deleted += stmt.executeUpdate("DELETE FROM Message WHERE id_Member="+member_id);
 			deleted += stmt.executeUpdate("DELETE FROM Shop WHERE id_Member="+member_id);
-			deleted += stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+idUser);
+			deleted += stmt.executeUpdate("DELETE FROM Admin WHERE id_User="+user_id);
 			deleted += stmt.executeUpdate("DELETE FROM Member WHERE id_Member="+member_id);
-			deleted += stmt.executeUpdate("DELETE FROM User WHERE id_User="+idUser);
+			deleted += stmt.executeUpdate("DELETE FROM User WHERE id_User="+user_id);
 
 			if (deleted <0) {return false ;}
 
