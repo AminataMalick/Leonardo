@@ -2,10 +2,6 @@ package fr.cpasam.leonardo.model.tag;
 
 public class Tag {
 
-	private static long cnt = 400;
-	public static long getCnt() {
-		return cnt++;
-	}
 	
 	protected long id;
 	protected String keyword;

@@ -6,11 +6,6 @@ import fr.cpasam.leonardo.model.shop.RetailPoint;
 import fr.cpasam.leonardo.model.user.Member;
 
 public class Geoloc {
-
-	private static long cnt = 1;
-	public static long getCnt() {
-		return cnt++;
-	}
 	
 	protected long id;
 	protected long lat;

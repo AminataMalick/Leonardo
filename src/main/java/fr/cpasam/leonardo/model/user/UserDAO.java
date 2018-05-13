@@ -8,6 +8,9 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class UserDAO extends DAOManager{
 
+	/**
+	 * Attribut de la classe UserDAO representant un compteur pour générer un identifiant automatiquement
+	 */
 	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant
