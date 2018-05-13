@@ -26,6 +26,7 @@ import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
+import fr.cpasam.leonardo.utilities.NotificationsMail;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -165,7 +166,8 @@ public class ChatResource {
 	@Path("{id}/message")
 	public Response sendMessage(@PathParam("id") long chat_id, JsonObject json) {
 		System.out.println("Sending message ... ");
-
+		Member sendTo = null;
+		
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 		
@@ -189,18 +191,31 @@ public class ChatResource {
 
 
 		Member member = chat.getMember();
-		
-		if((member.getId() != user_id)) member = chat.getShop().getMember(user_id);  
+		sendTo = chat.getShop().getOwner();
+		if((member.getId() != user_id)) {
+			sendTo = chat.getMember();
+			member = chat.getShop().getMember(user_id);  
+			
+		}
 		
 	
 		if ( member == null) return Response.status(Response.Status.FORBIDDEN).build();
 		
 		String content = json.get("content").getAsString();
 		
-		System.out.println("Member : "+member.getFirstName()+" on chat : "+chat.id()+"\n \""+content+"\"");
 		TextMessage<Member> message = TextMessageDAO.create(member,chat,content);
 		
 		if(message == null ) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		
+		String econtent = "Bonjour, vous avez recu un nouveau message de "
+		+message.getEmiter().getFirstName()
+		+" "+message.getEmiter().getLastName()
+		+"\n \""+message.getContent()+"\"";
+		
+//		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, sendTo.getEmail());
+		
+		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, "pbelabbes@gmail.com");
+		
 		return Response.ok(message).build();
 	}
 
