@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cpasam.leonardo.model.chat.Chat;
+import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat._ChatManager;
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
@@ -78,21 +79,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 	
-	/**
-	 * 
-	 * Constructeur Member avec 5 paramètres
-	 * @param id identifiant du membre
-	 * @param first_name prénom du membre
-	 * @param last_name nomdu membre
-	 * @param email email du membre
-	 * @param password mot de passe du membre
-	 */
-	public Member(long id, String first_name, String last_name, String email, String password, ArrayList<Chat> chats ) {
-		super(id, first_name, last_name, email, password, chats);
-		this.geoloc = null;
-		this.shops = new ArrayList<Shop>();
-		this.recommandations = new ArrayList<Recommandation>();
-	}
+
 	
 	/**
 	 * 

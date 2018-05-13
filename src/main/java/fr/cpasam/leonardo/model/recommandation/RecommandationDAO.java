@@ -8,10 +8,8 @@ import java.util.List;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.model.user.Admin;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
-import fr.cpasam.leonardo.model.user.User;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class RecommandationDAO extends DAOManager  {
