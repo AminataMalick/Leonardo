@@ -41,9 +41,11 @@ public class AuthUtil {
 		if(!Validator.checkFields(fields)) throw new IncompleteDataException();
 		User user = exists(mail);
 		if(user == null) throw new UserNotFoundException();
-		String newPwd = encryptPassword(user.getPwd());
-//		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
-		if(!BCrypt.checkpw(pwd, newPwd)) throw new WrongPasswordException();
+		// Les lignes suivantes doivent rester telles quelles pour permettre les tests lors de la démo
+//		String newPwd = encryptPassword(user.getPwd());
+		if(!BCrypt.checkpw(pwd, user.getPwd())) throw new WrongPasswordException();
+//		if(!BCrypt.checkpw(pwd, newPwd)) throw new WrongPasswordException();
+		// Fin de zone de test
 		String token = generateToken(user);
 		if(token == null) {System.out.println("NULL");throw new TokenCreationException();}
 		user.setToken(token);
