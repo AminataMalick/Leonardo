@@ -50,6 +50,23 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 	
+	
+	/**
+	 * Constructeur Member avec 6 paramètres
+	 * @param id
+	 * @param first_name
+	 * @param last_name
+	 * @param email
+	 * @param password
+	 * @param chats
+	 */
+	public Member(long id,String first_name, String last_name, String email, String password, List<Chat> chats ) {
+		super(id, first_name, last_name, email, password,chats);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
+	
 	/**
 	 * Constructeur Member avec 7 paramètres
 	 * @param id
@@ -84,7 +101,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 
 	
 	/**
-	 * 
+	 * Constructeur Member avec 5 paramètres
 	 * @param id
 	 * @param first_name
 	 * @param last_name
