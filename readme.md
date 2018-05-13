@@ -109,6 +109,8 @@ Pour compiler et lancer le serveur, effectuez la commande ci-après :
 Le serveur est maintenant en marche et attend les requêtes.
 
 ## Licence 
+Leonardo est licencié sous une licence GNU GPL.
+
 Aucune partie de cette publication ne peut être reproduite ou transmise sous quelque forme ou à quelque fin que ce soit sans l'autorisation expresse de la société CPASAM.
 
 La permission est par la présente accordée à toute personne obtenant une copie de ce logiciel et des fichiers de documentation associés (le «Logiciel»), de traiter le Logiciel sans restriction, y compris sans limitation les droits d'utilisation, de copie, de modification, de fusion , publier, distribuer, sous-licencier et / ou vendre des copies du Logiciel et permettre aux personnes auxquelles le Logiciel est fourni de le faire, sous réserve des conditions suivantes:
