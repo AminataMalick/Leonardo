@@ -59,7 +59,12 @@ public class ChatResource {
 
 		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
 
-		Member m = MemberDAO.get(user_id);
+		Member m;
+		try {
+			m = MemberDAO.get(user_id);
+		} catch (ChatNotFoundException | UserNotFoundException e1) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 		Shop s = ShopDAO.get(shop_id);
 
@@ -90,7 +95,7 @@ public class ChatResource {
 
 		
 		// Vérifier que l'utilisateur est bien connecté 
-		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
+		if(MemberDAO.get(user_id) == null || token == "") {return Response.status(Response.Status.UNAUTHORIZED).build();
 
 		// Vérifier le jeton CSRF
 

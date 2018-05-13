@@ -43,8 +43,10 @@ public class ShopChatDAO extends DAOManager {
 	/**
 	 * Retourne tous les ShopsChats
 	 * @return ArrayList<ShopChat>
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static ArrayList<ShopChat> all() {
+	public static ArrayList<ShopChat> all() throws ChatNotFoundException, UserNotFoundException {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 		Statement statement = null;		
 
