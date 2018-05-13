@@ -9,7 +9,7 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Shop {
 	
-	private static long cnt = 106;
+	private static long cnt = 400;
 	public static long getCnt() {
 		return cnt++;
 	}
