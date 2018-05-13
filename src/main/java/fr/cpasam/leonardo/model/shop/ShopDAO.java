@@ -246,7 +246,6 @@ public class ShopDAO extends DAOManager {
 		Statement statement2 = null;	
 
 		List<Product> products = new ArrayList<Product>();	
-		ArrayList<Tag> tags = new ArrayList<Tag>();						
 
 		try {
 			Product product = null;
@@ -260,7 +259,7 @@ public class ShopDAO extends DAOManager {
 			/* Récupération de chaque produit et ajout dans l'arrayList Products */
 			while ( resultat.next() ) {
 				long product_id = resultat.getLong(1);
-
+				ArrayList<Tag> tags = new ArrayList<>();
 				/* Récupération des tags lié au produit */
 				ResultSet resultat2 = statement2.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
 				/* Récupération de chaque tag et ajout dans l'arrayList tags */

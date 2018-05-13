@@ -88,13 +88,11 @@ public class ProductDAO extends DAOManager {
 	 **/
 	public static ArrayList<Product> all() {
 		ArrayList<Product> products = new ArrayList<Product>();		
-		ArrayList<Tag> tags = new ArrayList<Tag>() ;
 		Statement statement = null;		
 
 		try {
 			statement = con.createStatement();
 			Product product = null ;
-			long product_id ;
 
 			/* Récupération de tous les produits */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product ");
@@ -106,9 +104,10 @@ public class ProductDAO extends DAOManager {
 				String name = resultat.getString(2);
 				float price = resultat.getFloat(3);
 				long id_shop = resultat.getLong(4);
-				ArrayList<Tag> t= ProductTagDAO.getTagsByProduct(id);
+				ArrayList<Tag> tags = new ArrayList<>();
+				tags= ProductTagDAO.getTagsByProduct(id);
 
-				product= new Product(id, name, id_shop, price, t);
+				product= new Product(id, name, id_shop, price, tags);
 				products.add(product);
 
 			} 
