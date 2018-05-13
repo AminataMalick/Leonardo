@@ -26,6 +26,8 @@ public class TestJDBC extends DAOManager {
 	public static void main(String[] args) throws Exception {
 	//User user = new Member(10,"Hanna","Ri","rihanna@loveuse.com","riri","kjhgff");
 		
+		
+		
 		// Tests de creation de 3 recommandations
 		// RecommandationDAO.create(5, "cool", MemberDAO.get(3),ShopDAO.get(10));
 		// RecommandationDAO.create(4, "bons produits", MemberDAO.get(6),ShopDAO.get(10));
