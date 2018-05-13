@@ -200,7 +200,6 @@ public class MemberDAO extends DAOManager {
 				chats = ShopChatDAO.getByMember(member_id);
 				
 				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
-				//Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
 
 				return member ;
 			}
@@ -267,7 +266,6 @@ public class MemberDAO extends DAOManager {
 				chats = ShopChatDAO.getByMember(member_id);
 				
 				member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
-				//member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
 			}
 		}
