@@ -11,6 +11,10 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class GeolocDAO extends DAOManager {
 	
+
+	/**
+	 * Attribut de la classe GeolocDAO representant un compteur pour générer un identifiant automatiquement
+	 */
 	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant

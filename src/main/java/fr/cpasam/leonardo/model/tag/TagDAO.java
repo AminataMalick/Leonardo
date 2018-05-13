@@ -15,9 +15,9 @@ public class TagDAO extends DAOManager{
 	
 
 	/**
-	 * Attribut de la classe MemberDAO representant un compteur pour générer un identifiant automatiquement
+	 * Attribut de la classe TagDAO representant un compteur pour générer un identifiant automatiquement
 	 */
-	private static long cnt = 10;
+	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant
 	 * @return retourne le compteur incrémenter d'une unité

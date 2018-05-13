@@ -18,7 +18,7 @@ public class RecommandationDAO extends DAOManager  {
 
 
 	/**
-	 * Attribut de la classe MemberDAO representant un compteur pour générer un identifiant automatiquement
+	 * Attribut de la classe RecommandationDAO representant un compteur pour générer un identifiant automatiquement
 	 */
 	private static long cnt = 0;
 	/**
