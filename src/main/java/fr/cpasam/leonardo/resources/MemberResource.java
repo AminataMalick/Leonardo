@@ -127,7 +127,7 @@ public class MemberResource {
 
 	/**
 	 * Creation d'un membre
-	 * @param json requête du membre
+	 * @param json
 	 * @return membre créé
 	 */
 	@POST
@@ -151,7 +151,7 @@ public class MemberResource {
 	/**
 	 * Mise à jour d'un membre
 	 * @param id identifiant du membre à mettre à jour
-	 * @param json requête du membre
+	 * @param json 
 	 * @return retourne le membre mis à jour
 	 */
 	@PUT
@@ -171,9 +171,9 @@ public class MemberResource {
 	}
 	
 	/**
-	 * Affichage d'un membre à partir de son adresse 
-	 * @param mail email du membre recherché
-	 * @return retour le membre associé à l'adresse mail renseignée
+	 * Affiche un membre 
+	 * @param mail
+	 * @return
 	 */
 	@GET
 	@Path("email/{mail}")

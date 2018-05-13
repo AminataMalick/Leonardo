@@ -90,8 +90,6 @@ public class MemberDAO extends DAOManager {
 	
 	
 	
-	
-	
 
 	/**
 	 * Trouver un membre à partir de don ID
