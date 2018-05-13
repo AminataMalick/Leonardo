@@ -8,6 +8,45 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class UserDAO extends DAOManager{
 
+	private static long cnt = 10;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	  
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_User = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération du Member */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_User) FROM User");
+
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du membre */
+					id_User= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_User;
+		}
+	
 
 	/**
 	 * Cherche et renvoi un utilisateur à partir de son identidiant id passé en paramètre de la fonction

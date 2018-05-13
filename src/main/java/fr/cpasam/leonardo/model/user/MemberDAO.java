@@ -96,7 +96,7 @@ public class MemberDAO extends DAOManager {
 	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		Member member = null ;
-		long idUser = User.getCnt();
+		long idUser = UserDAO.getCnt();
 		long idMember = getCnt();
 		try {
 			// vérifier si le membre n'existe pas déja
