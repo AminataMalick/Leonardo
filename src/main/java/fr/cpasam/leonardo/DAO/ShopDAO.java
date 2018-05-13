@@ -177,7 +177,7 @@ public class ShopDAO extends DAOManager {
 
 			/* Récupération valeurs attributs du membre */
 			while ( resultat.next() ) {
-				member= new Member(resultat.getLong(2),resultat.getString(4),resultat.getString(5),resultat.getString(6),resultat.getString(7), null);
+				member= new Member(resultat.getLong(2),resultat.getString(4),resultat.getString(5),resultat.getString(6),resultat.getString(7));
 			} 
 
 			/* Création shop */
@@ -218,7 +218,7 @@ public class ShopDAO extends DAOManager {
 
 			/* Récupération valeurs attributs du membre */
 			while ( resultat0.next() ) {
-				member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7), null);
+				member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7));
 			} 
 
 			/* Récupération des produits liés au shop */
@@ -412,7 +412,7 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération valeurs attributs du membre */
 				while ( resultat0.next() ) {
-					member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7), null);
+					member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7));
 				} 
 
 				shop = new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,member, products);
