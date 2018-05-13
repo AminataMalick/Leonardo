@@ -49,10 +49,15 @@ public class MemberDAO extends DAOManager {
 		Member member = null ;
 		long id = User.getCnt();
 		try {
-			stmt = con.createStatement();
-			int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
-			deleted = stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+id+","+id+",null)");
-			member = new Member(id,firstName,lastName,email, pwd);
+			// vérifier si le membre n'esxiste pas déja
+			member = mailToMember(email) ;
+			// si non, on le créé
+			if (member==null) {
+				stmt = con.createStatement();
+				int deleted =stmt.executeUpdate("INSERT INTO User(id_User, firstName_User, lastName_User, email_User, pwd_User)VALUES("+id+",'"+firstName+"','"+lastName+"','"+email+"','"+ pwd+"')");
+				deleted = stmt.executeUpdate("INSERT INTO Member(id_Member, id_User, id_Geoloc) VALUES("+id+","+id+",null)");
+				member = new Member(id,firstName,lastName,email, pwd);
+			}
 
 		}catch (SQLException e) {
 			e.printStackTrace();
