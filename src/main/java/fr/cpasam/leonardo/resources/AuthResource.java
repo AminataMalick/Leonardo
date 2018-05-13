@@ -74,6 +74,7 @@ public class AuthResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response register(JsonObject json) {
+		System.out.println(json.toString());
 		String firstName = json.get("firstName").getAsString();
 		String lastName = json.get("lastName").getAsString();
 		String mail = json.get("email").getAsString();
