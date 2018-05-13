@@ -14,6 +14,47 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
 
+	
+
+	private static long cnt = 0;
+	/**
+	 * Méthode pour incrémenter l'identifiant
+	 * @return retourne le compteur incrémenter d'une unité
+	 */
+	public static long getCnt() {
+		return cnt++;
+	}
+	
+	// Bloc static 
+	  
+	  static {	
+	  	cnt = getLastId()+1;
+	  }
+	  
+		public static long getLastId() {
+			Statement statement = null;
+			long id_Shop = 0;
+			try {
+				statement = con.createStatement();
+				/* Récupération de l'identifiant max du Shop */
+				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Shop) FROM Shop");
+
+				/* Récupération des données du résultat de la requête de lecture */
+				if ( resultat.next() ) {
+					/* Récupération du shop */
+					id_Shop= resultat.getLong(1);
+				}
+			}catch (SQLException e) { 
+				e.printStackTrace();
+			}
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return id_Shop;
+		}
+	
 	/**
 	 * Retourne le shop lié à l'id donné
 	 * @param shop_id
@@ -125,7 +166,7 @@ public class ShopDAO extends DAOManager {
 		Shop shop = null ;
 		Member member = null ;
 		try {
-			long shop_id = Shop.getCnt() ;
+			long shop_id = getCnt() ;
 			statement = con.createStatement();
 			/* Insertion d'un shop */
 			int res = statement.executeUpdate("INSERT INTO Shop(id_Shop, name_Shop, description_Shop, id_Member)VALUES("+shop_id+",'"+shopName+"','"+description+"',"+member_id+")");
@@ -205,7 +246,6 @@ public class ShopDAO extends DAOManager {
 		Statement statement2 = null;	
 
 		List<Product> products = new ArrayList<Product>();	
-		ArrayList<Tag> tags = new ArrayList<Tag>();						
 
 		try {
 			Product product = null;
@@ -219,7 +259,7 @@ public class ShopDAO extends DAOManager {
 			/* Récupération de chaque produit et ajout dans l'arrayList Products */
 			while ( resultat.next() ) {
 				long product_id = resultat.getLong(1);
-
+				ArrayList<Tag> tags = new ArrayList<>();
 				/* Récupération des tags lié au produit */
 				ResultSet resultat2 = statement2.executeQuery( "SELECT * FROM Tag NATURAL JOIN (SELECT id_Tag FROM ProductTag WHERE id_Product =" +product_id+") R"); 
 				/* Récupération de chaque tag et ajout dans l'arrayList tags */

@@ -9,10 +9,6 @@ import fr.cpasam.leonardo.model.tag.Tag;
 
 
 public class Product {
-	private static long cnt = 100;
-	public static long getCnt() {
-		return cnt++;
-	}
 	
 	
 	long id;

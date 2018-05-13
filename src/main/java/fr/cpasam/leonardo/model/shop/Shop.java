@@ -9,16 +9,13 @@ import fr.cpasam.leonardo.model.user.Member;
 
 public class Shop {
 	
-	private static long cnt = 106;
-	public static long getCnt() {
-		return cnt++;
-	}
+	
 	
 	private long id;
 	protected String name;
 	protected String description;
 	protected List<RetailPoint> retailPoints;
-	private Member member;
+	private Member owner;
 	private List<Product> products ;
 	protected List<Chat> chats;
 
@@ -31,7 +28,7 @@ public class Shop {
 		this.name = name;
 		this.description = description;
 		this.retailPoints = new ArrayList<RetailPoint>();
-		this.member = member;
+		this.owner = member;
 		this.products = products ;
 		this.chats = new ArrayList<Chat>();
 	}
@@ -79,7 +76,7 @@ public class Shop {
 	 * Retourne le membre du shop
 	 * @return member
 	 */
-	public Member getMember() {return member;}
+	public Member getOwner() {return owner;}
 
 	
 	/**

@@ -11,12 +11,33 @@ public class TestProductTagDAO {
 	public static void main(String[] args) {
 		
 		/*
-		// Test addTag
+		// Test estProductTag
 		long product_id = 1;
+		long tag_id = 1 ;
+		boolean b = ProductTagDAO.estProductTag(product_id, tag_id);
+		System.out.println(b);
+		*/
+		
+		/*
+		// Test addTag
+		long product_id = 5;
 		long tag_id = 1;
-		Product product = null ;
-		product = ProductTagDAO.addTag(product_id, tag_id);
-		System.out.println(product);
+		ProductTagDAO.addTag(product_id, tag_id);
+		System.out.println("ok");
+		*/
+		
+		/*
+		// Test addTags
+		ArrayList<Tag> tags = new ArrayList<Tag>() ;
+		Tag tag = TagDAO.getTagByID(1);
+		Tag tag2 = TagDAO.getTagByID(2);
+		Tag tag3 = TagDAO.getTagByID(3);
+		tags.add(tag);
+		tags.add(tag2);
+		tags.add(tag3);
+		long product_id = 100;
+		ProductTagDAO.addTags(product_id, tags);
+		System.out.println("ok");
 		*/
 		
 		/*

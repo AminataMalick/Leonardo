@@ -3,20 +3,14 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.User;
 
 
 public abstract class Chat<T,U>{
 
-	private static long cnt = 10;
-	/**
-	 * Retourne le prochain id disponible
-	 * @return long
-	 */
-	public static long getCnt() {
-		return cnt++;
-	}
+	
 	protected int cntMessage;
 	
 	protected long id ;
@@ -28,6 +22,7 @@ public abstract class Chat<T,U>{
 		// TODO Auto-generated constructor stub
 	}
 
+	 	 
 	/**
 	 * Creation of a new chat
 	 * @param id id in the database
@@ -57,15 +52,17 @@ public abstract class Chat<T,U>{
 		this.messages = messages;
 		this.cntMessage = messages.size();
 	}
-	
+
+
 	/**
 	 * Ajoute un message au chat
 	 * @param Message
 	 */
-	protected void addMessages(Message m) {
+	protected void addMessage(Message m) {
 		
 		this.messages.add(m);
-		this.cnt++;
+		this.cntMessage++;
+
 
 	}
 	
@@ -87,6 +84,9 @@ public abstract class Chat<T,U>{
 		return entity1;
 	}
 	
+	public long id() {
+		return this.id;
+	}
 	
 	
 
