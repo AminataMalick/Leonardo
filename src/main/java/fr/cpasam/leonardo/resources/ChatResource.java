@@ -15,13 +15,18 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
+import fr.cpasam.leonardo.model.chat.TextMessage;
+import fr.cpasam.leonardo.model.chat.TextMessageDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
+import fr.cpasam.leonardo.utilities.NotificationsMail;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -41,13 +46,29 @@ public class ChatResource {
 		Long shop_id = json.get("shop_id").getAsLong();
 		Long user_id = json.get("user_id").getAsLong();
 
+		
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		
+		// Vérifier le jeton CSRF
+
+		//		String token = json.get("token").getAsString();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
 		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
 
 		Member m = MemberDAO.get(user_id);
 
 		Shop s = ShopDAO.get(shop_id);
 
-		Chat c = m.openChat(s);
+		Chat c;
+		try {
+			c = m.openChat(s);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 
 
@@ -55,7 +76,7 @@ public class ChatResource {
 
 	}
 
-	
+
 	/**
 	 * Traitement de la requete de récupération d'un chat via son id
 	 * @param id du chat
@@ -66,34 +87,46 @@ public class ChatResource {
 	@Path("{id}")
 	public Response get(@PathParam("id") long id,@QueryParam("USER") long user_id,@QueryParam("TOKEN") String token ) {
 
+		
 		// Vérifier que l'utilisateur est bien connecté 
 		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
 
 		// Vérifier le jeton CSRF
 
-//		String token = json.get("token").getAsString();
-//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//		String token = json.get("token").getAsString();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
-		ShopChat c = (ShopChat) ShopChatDAO.get(id);
-
+		ShopChat c = null;
+		
+		try {
+			
+			c = (ShopChat) ShopChatDAO.get(id);
+			System.out.println("Get chat ");
+			
+			
 		// L'utilisateur est le membre du chat
 		long idm = c.getMember().getId();
 		boolean isMember = (idm == user_id);
-	
+		
 		// L'utilisateur est membre de la boutique qui chat
 		Member m = c.getShop().getMember(user_id);
 		boolean isShop = (m !=null);
 		
 		// Interdir l'accès à un utilisateur qui n'est pas dans le chat
 		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
+		
 		return Response.ok(c).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
 	 * @param json [user_id et token]
@@ -104,16 +137,97 @@ public class ChatResource {
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(user_id == 0) return Response.status(Response.Status.UNAUTHORIZED).build();
-		
+
 		// Vérifier le jeton CSRF
 
-//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 		//Vérifier que le chat appartient au membre
 
-		ArrayList<ShopChat> chats = ShopChatDAO.getByMember(user_id);
-		
+		ArrayList<ShopChat> chats;
+		try {
+			chats = ShopChatDAO.getByMember(user_id);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
 		return Response.ok(chats).build();
 
 	}
+	
+	/**
+	 * Create a new message in the cat
+	 * @param chat_id id of the chat where the message has to be send
+	 * @param json {user_id,token,content}
+	 * @return
+	 */
+	@POST
+	@Path("{id}/message")
+	public Response sendMessage(@PathParam("id") long chat_id, JsonObject json) {
+		System.out.println("Sending message ... ");
+		Member sendTo = null;
+		
+		// Vérifier que l'utilisateur est bien connecté 
+		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
+		
+		System.out.println("Access granted...");
+
+		// Vérifier le jeton CSRF
+
+		long user_id = json.get("user_id").getAsLong();
+//		String token = json.get("token").getAsString();
+//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+		ShopChat chat;
+		try {
+			chat = ShopChatDAO.get(chat_id);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+		if(chat == null ) return Response.status(Response.Status.NOT_FOUND).build();
+
+
+		Member member = chat.getMember();
+		sendTo = chat.getShop().getOwner();
+		if((member.getId() != user_id)) {
+			sendTo = chat.getMember();
+			member = chat.getShop().getMember(user_id);  
+			
+		}
+		
+	
+		if ( member == null) return Response.status(Response.Status.FORBIDDEN).build();
+		
+		String content = json.get("content").getAsString();
+		
+		TextMessage<Member> message = TextMessageDAO.create(member,chat,content);
+		
+		if(message == null ) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		
+		String econtent = "Bonjour, vous avez recu un nouveau message de "
+		+message.getEmiter().getFirstName()
+		+" "+message.getEmiter().getLastName()
+		+"\n \""+message.getContent()+"\"";
+		
+//		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, sendTo.getEmail());
+		
+		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, "pbelabbes@gmail.com");
+		
+		return Response.ok(message).build();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 }
