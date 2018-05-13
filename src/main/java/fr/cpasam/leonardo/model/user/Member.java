@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
@@ -48,6 +50,23 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 	
+	
+	/**
+	 * Constructeur Member avec 6 paramètres
+	 * @param id
+	 * @param first_name
+	 * @param last_name
+	 * @param email
+	 * @param password
+	 * @param chats
+	 */
+	public Member(long id,String first_name, String last_name, String email, String password, List<Chat> chats ) {
+		super(id, first_name, last_name, email, password,chats);
+		this.geoloc = null;
+		this.shops = new ArrayList<Shop>();
+		this.recommandations = new ArrayList<Recommandation>();
+	}
+	
 	/**
 	 * Constructeur Member avec 7 paramètres
 	 * @param id
@@ -58,13 +77,13 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * @param token
 	 * @param chats
 	 */
-	public Member(long id,String first_name, String last_name, String email, String password, String token, ArrayList<Chat> chats ) {
+	public Member(long id,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
 		super(id, first_name, last_name, email, password,token, chats);
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
 	}
-
+	
 	/**
 	 * Constructeur Member avec 4 paramètres sans l'identifiant, permettant ainsi de l'autogénérer selon le dernier identifiant présent dans la base
 	 * @param first_name prénom du membre
@@ -82,7 +101,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 
 	
 	/**
-	 * 
+	 * Constructeur Member avec 5 paramètres
 	 * @param id
 	 * @param first_name
 	 * @param last_name
@@ -97,12 +116,16 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	}
 
 
+	
+
 	/**
 	 * Créé un nouveau chat pour une boutique
 	 * @param shop
 	 * @return nwChat
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public Chat openChat(Shop shop) {
+	public Chat openChat(Shop shop) throws ChatNotFoundException, UserNotFoundException {
 
 		System.out.println("OpenChat shop_id : "+shop.id()+" user : "+this.id);
 		Chat nwChat = ShopChatDAO.getByMemberAndShop(this.id,shop.id());

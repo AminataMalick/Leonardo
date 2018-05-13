@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.chat;
+package fr.cpasam.leonardo.DAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,16 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.model.chat.Chat;
+import fr.cpasam.leonardo.model.chat.Message;
 import fr.cpasam.leonardo.model.chat.ShopChat;
+import fr.cpasam.leonardo.model.chat.TextMessage;
 
 public class ShopChatDAO extends DAOManager {
 
@@ -43,10 +46,8 @@ public class ShopChatDAO extends DAOManager {
 	/**
 	 * Retourne tous les ShopsChats
 	 * @return ArrayList<ShopChat>
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static ArrayList<ShopChat> all() throws ChatNotFoundException, UserNotFoundException {
+	public static ArrayList<ShopChat> all() {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 		Statement statement = null;		
 

@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.shop;
+package fr.cpasam.leonardo.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.sql.Statement;
 
 import fr.cpasam.leonardo.model.product.Product;
+import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
@@ -16,9 +17,6 @@ public class ShopDAO extends DAOManager {
 
 	
 
-	/**
-	 * Attribut de la classe ShopDAO representant un compteur pour générer un identifiant automatiquement
-	 */
 	private static long cnt = 0;
 	/**
 	 * Méthode pour incrémenter l'identifiant

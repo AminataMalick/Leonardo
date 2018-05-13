@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS ShopMember (
 
 CREATE TABLE IF NOT EXISTS Message (
         id_Message bigint,
-        date_Message date NOT NULL,
+        date_Message datetime NOT NULL,
         content_Message text NOT NULL,
     id_Member bigint,
         id_Chat bigint,

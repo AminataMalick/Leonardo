@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.recommandation;
+package fr.cpasam.leonardo.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,12 +6,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
-import fr.cpasam.leonardo.exceptions.UserNotFoundException;
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
+import fr.cpasam.leonardo.model.recommandation.Recommandation;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class RecommandationDAO extends DAOManager  {
@@ -64,10 +63,8 @@ public class RecommandationDAO extends DAOManager  {
 	 * Affiche une recommandation
 	 * @param recommandationid identifiant de la recommandation que l'on souhaite
 	 * @return retourne la recommandation associée à l'identifiant passé en paramètre de la fonction
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static Recommandation get(long recommandationid) throws ChatNotFoundException, UserNotFoundException {
+	public static Recommandation get(long recommandationid) {
 		Statement statement = null;		
 		Recommandation recommandation = null ;
 		try {
@@ -92,10 +89,8 @@ public class RecommandationDAO extends DAOManager  {
 	 * Affiche toutes les recommandations d'un shop
 	 * @param idShop identifiant du shop dont on veut les recommandations
 	 * @return retourne une liste contenant toutes les recommandations
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static List<Recommandation> all(long idShop) throws ChatNotFoundException, UserNotFoundException {
+	public static List<Recommandation> all(long idShop) {
 		List<Recommandation> recommandations = new ArrayList<Recommandation>();
 		Statement stmt = null;
 		try {

@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.user;
+package fr.cpasam.leonardo.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,11 +6,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.chat.ShopChatDAO;
+import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 
@@ -83,6 +84,8 @@ public class MemberDAO extends DAOManager {
 				long member_id = rset.getInt(1);
 				chats = ShopChatDAO.getByMember(member_id);
 				
+				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
+
 				Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
 				members.add(member);
 			}
@@ -103,10 +106,8 @@ public class MemberDAO extends DAOManager {
 	 * @param email email du membre
 	 * @param pwd mot de passe du membre
 	 * @return retourne le nouveau membre créé
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static Member create(String firstName, String lastName, String email, String pwd) throws ChatNotFoundException, UserNotFoundException {
+	public static Member create(String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		Member member = null ;
 		long idUser = UserDAO.getCnt();
@@ -140,19 +141,17 @@ public class MemberDAO extends DAOManager {
 	 * @param email email du membre
 	 * @param pwd mot de passe du membre
 	 * @return retourne le membre mis à jour
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static Member update(long id, String firstName, String lastName, String email, String pwd) throws ChatNotFoundException, UserNotFoundException {
+	public static Member update(long id, String firstName, String lastName, String email, String pwd) {
 		Statement stmt = null;
 		Member member = null ;
 		long idUser = 0 ;
-		List<Chat> chats = new ArrayList<>();
+		ArrayList<Chat> chats = new ArrayList<Chat>();
 
 		try {
 			// on vérifie si l'email n'est pas déjà associé à un autre membre
 			member = mailToMember(email) ;
-			if (member!=null && member.id!=id) {
+			if (member!=null && member.getId()!=id) {
 				System.out.println("email déjà associé à un membre");
 				return null ;
 			}
@@ -165,9 +164,10 @@ public class MemberDAO extends DAOManager {
 			if (deleted <= 0){ return null ;}
 			
 			// Récupération des chats associés au membre
-			chats = ShopChatDAO.getByMember(id);
+			//chats = ShopChatDAO.getByMember(id);
 			
-			member = new Member(id,firstName,lastName,email, pwd, chats);
+			//member = new Member(id,firstName,lastName,email, pwd, chats);
+			member = new Member(id,firstName,lastName,email, pwd);
 
 			
 		}catch (SQLException e) {
@@ -184,12 +184,10 @@ public class MemberDAO extends DAOManager {
 	 * Trouver un membre à partir de son ID
 	 * @param memberID identifiant du membre que l'on cherche
 	 * @return retourne le membre lié à l'identifiant passé en paramètre de la fonction ou null s'il n'existe pas
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static Member get(long member_id) throws ChatNotFoundException, UserNotFoundException {
+	public static Member get(long member_id) {
 		Statement stmt = null;
-		List<Chat> chats = new ArrayList<>();
+		ArrayList<Chat> chats = new ArrayList<Chat>();
 
 		try {
 			stmt = con.createStatement();
@@ -197,9 +195,10 @@ public class MemberDAO extends DAOManager {
 
 			while (rset.next()) {
 				// Récupération des chats associés au membre
-				chats = ShopChatDAO.getByMember(member_id);
+				//chats = ShopChatDAO.getByMember(member_id);
 				
-				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
+				//Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
+				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
 
 				return member ;
 			}
@@ -248,13 +247,11 @@ public class MemberDAO extends DAOManager {
 	 * Cherche un membre à partir d'une adresse mail
 	 * @param email email du membre 
 	 * @return retourne le membre associé à l'adresse mail passée en paramètre s'il existe, sinon null
-	 * @throws UserNotFoundException 
-	 * @throws ChatNotFoundException 
 	 */
-	public static Member mailToMember(String email) throws ChatNotFoundException, UserNotFoundException {
+	public static Member mailToMember(String email) {
 		Statement stmt = null;
 		Member member = null ;
-		List<Chat> chats = new ArrayList<>();
+		ArrayList<Chat> chats = new ArrayList<Chat>();
 
 		try {
 			stmt = con.createStatement();
@@ -263,9 +260,10 @@ public class MemberDAO extends DAOManager {
 			while (rset.next()) {
 				long member_id = rset.getLong(1) ;
 				// Récupération des chats associés au membre
-				chats = ShopChatDAO.getByMember(member_id);
+				//chats = ShopChatDAO.getByMember(member_id);
 				
-				member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
+				//member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
+				member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
 			}
 		}

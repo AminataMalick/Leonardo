@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.errors.TextError;
+import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberDeletionException;
 import fr.cpasam.leonardo.exceptions.MemberUpdateException;
@@ -55,6 +56,8 @@ public class MemberResource {
 			return Response.status(Response.Status.UNAUTHORIZED).entity(new TextError("Wrong CSRF token, you must be logged in.")).build();
 		} catch (MemberUpdateException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while updating the member.")).build();
+		} catch (ChatNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Chat not found")).build();
 		}
 		return Response.ok(member).build();
 	}
@@ -82,6 +85,10 @@ public class MemberResource {
 			return Response.status(Response.Status.UNAUTHORIZED).entity(new TextError("Wrong CSRF token, you must be logged in.")).build();
 		} catch (MemberDeletionException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error while deleting the member.")).build();
+		} catch (NumberFormatException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Error number format")).build();
+		} catch (ChatNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new TextError("Chat not found")).build();
 		}
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
@@ -93,11 +100,14 @@ public class MemberResource {
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Member> all() {
+	public Response all() {
 
 		System.out.println("member/all");
 		
-		List<Member> members= MemberDAO.all();
+		List<Member> members;
+		try {
+			members = MemberDAO.all();
+		
 		
 		System.out.println("Get Member");
 		String test = "";
@@ -106,7 +116,10 @@ public class MemberResource {
 		}
 		System.out.println("members : "+test);
 		
-		return members;
+		return Response.ok(members).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 	}
 
 	/**
@@ -117,11 +130,16 @@ public class MemberResource {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Member get(@PathParam("id") long id) {
+	public Response get(@PathParam("id") long id) {
 		
-		Member m = MemberDAO.get(id);
-		System.out.println("Member : "+ m.getFirstName() +" "+m.getLastName());
-		return m;
+		Member m = null;
+		try {
+			m = MemberDAO.get(id);
+			return Response.ok(m).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
+		
 	}
 
 	
@@ -140,13 +158,19 @@ public class MemberResource {
 
 		
 
-		Member m = MemberDAO.create(
-				json.get("firstName").getAsString(), 
-				json.get("lastName").getAsString(),   
-				json.get("email").getAsString(),
-				json.get("pwd").getAsString());
+		Member m;
+		try {
+			m = MemberDAO.create(
+					json.get("firstName").getAsString(), 
+					json.get("lastName").getAsString(),   
+					json.get("email").getAsString(),
+					json.get("pwd").getAsString());
+			return Response.ok(m).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 
-		return Response.ok(m).build();
+		
 	}
 
 	/**
@@ -160,13 +184,23 @@ public class MemberResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
-		if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
+		try {
+			if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
+		} catch (ChatNotFoundException | UserNotFoundException e1) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 		
-		Member m = MemberDAO.update(id, 	
-				json.get("firstName").getAsString(), 
-				json.get("lastName").getAsString(),   
-				json.get("email").getAsString(),
-				json.get("pwd").getAsString());
+		Member m;
+		try {
+			m = MemberDAO.update(id, 	
+					json.get("firstName").getAsString(), 
+					json.get("lastName").getAsString(),   
+					json.get("email").getAsString(),
+					json.get("pwd").getAsString());
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 		
 		return Response.ok(m).build();
 	}
@@ -179,9 +213,14 @@ public class MemberResource {
 	@GET
 	@Path("email/{mail}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Member mailToMember(@PathParam("mail") String mail) {
-		Member member = MemberDAO.mailToMember(mail);
-		return member;
+	public Response mailToMember(@PathParam("mail") String mail) {
+		Member member;
+		try {
+			member = MemberDAO.mailToMember(mail);
+			return Response.ok(member).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
 	}
 	
 }
