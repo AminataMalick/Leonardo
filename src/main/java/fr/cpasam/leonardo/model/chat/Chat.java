@@ -3,6 +3,7 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.User;
 
@@ -66,7 +67,8 @@ public abstract class Chat<T,U>{
 		this.messages = messages;
 		this.cntMessage = messages.size();
 	}
-	
+
+
 	/**
 	 * Ajoute un message au chat
 	 * @param Message

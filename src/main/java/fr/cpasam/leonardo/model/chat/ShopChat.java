@@ -1,7 +1,10 @@
 package fr.cpasam.leonardo.model.chat;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -21,7 +24,12 @@ public class ShopChat extends Chat<Member, Shop> {
 	}
 	
 
-	public static ShopChat getChatByUsers(Long memberID, Long shopId) {
+	public ShopChat(long chat_id, Member member, Shop shop, List<Message> messages) {
+		super(chat_id, member, shop,messages);
+	}
+
+
+	public static ShopChat getChatByUsers(Long memberID, Long shopId) throws ChatNotFoundException, UserNotFoundException {
 		
 		
 		// Faire une requête pour rechercher si un chat existe entre user1 et le user2

@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.chat;
+package fr.cpasam.leonardo.model.chat;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,10 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.chat.ShopChatDAO;
-import fr.cpasam.leonardo.model.chat.TextMessage;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
@@ -41,8 +37,7 @@ public class TextMessageDAO extends DAOManager{
 			long id_Message = getCnt();
 
 			LocalDateTime dateTime = LocalDateTime.now();
-			DateTimeFormatter dTF = DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm:ss");
-			String date_Message = dTF.format(dateTime);
+			String date_Message = Message.dTF.format(dateTime);
 			System.out.println(date_Message);		
 			String content_Message = content;
 			
@@ -62,7 +57,7 @@ public class TextMessageDAO extends DAOManager{
 					+id_Chat +")");
 
 			/* Création shopChat */
-			message = new TextMessage<Member>(chat,member,content,dateTime);
+			message = new TextMessage<Member>(member,content,dateTime);
 
 
 		}catch (SQLException e) { e.printStackTrace();} 

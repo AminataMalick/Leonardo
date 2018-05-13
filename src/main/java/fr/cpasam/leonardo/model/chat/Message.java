@@ -1,6 +1,7 @@
 package fr.cpasam.leonardo.model.chat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -10,20 +11,20 @@ public abstract class Message<T> {
 	protected T emiter;
 	protected LocalDateTime date;
 	
+	public final static DateTimeFormatter dTF = DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm:ss");
+	
 	public Message() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	/**
 	 * Create new entity in db
-	 * @param chat
 	 * @param emiter
 	 */
-	public Message(Chat chat, T emiter, LocalDateTime date){
-		this.id = chat.getNbMessage()+1;
+	public Message(T emiter, LocalDateTime date){
+
 		this.emiter=emiter;
-		this.date = date;
-		chat.addMessage(this);
+		this.date = date;;
 
 	}
 	

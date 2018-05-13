@@ -12,8 +12,8 @@ public class TextMessage<T> extends Message<T> {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TextMessage(Chat chat, T emiter, String content, LocalDateTime date) {
-		super(chat, emiter,date);
+	public TextMessage(T emiter, String content, LocalDateTime date) {
+		super( emiter,date);
 		this.content = content;
 	}
 

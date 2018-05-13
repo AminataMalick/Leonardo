@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat._ChatManager;
@@ -55,8 +57,10 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * Créé un nouveau chat pour une boutique
 	 * @param shop
 	 * @return nwChat
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public Chat openChat(Shop shop) {
+	public Chat openChat(Shop shop) throws ChatNotFoundException, UserNotFoundException {
 
 		System.out.println("OpenChat shop_id : "+shop.id()+" user : "+this.id);
 		Chat nwChat = ShopChatDAO.getByMemberAndShop(this.id,shop.id());

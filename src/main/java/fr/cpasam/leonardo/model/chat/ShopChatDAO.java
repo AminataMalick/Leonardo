@@ -1,23 +1,27 @@
 package fr.cpasam.leonardo.model.chat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
+import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 
 public class ShopChatDAO extends DAOManager {
 
-
+	
 	/**
 	 * Retourne tous les ShopsChats
 	 * @return ArrayList<ShopChat>
@@ -94,8 +98,10 @@ public class ShopChatDAO extends DAOManager {
 	 * @param memberID
 	 * @param shopId
 	 * @return 
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static ShopChat getByMemberAndShop(long member_id, long shop_id) {
+	public static ShopChat getByMemberAndShop(long member_id, long shop_id) throws ChatNotFoundException, UserNotFoundException {
 		Statement statement = null;		
 
 		ShopChat shopChat = null ;
@@ -118,14 +124,13 @@ public class ShopChatDAO extends DAOManager {
 			
 			/* Récupération des données du résultat de la requête de lecture */
 			if ( cont) {
-				System.out.println("In da if before new ShopChat");
+				
 
-				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				long chat_id = resultat.getLong("id_chat");
+				shopChat= new ShopChat(chat_id, member, shop, getMessagesByChat(chat_id));
 
-				System.out.println("In da if after new ShopChat");
 			}
 
-			if(shopChat != null ) System.out.println("ShopChat : "+shopChat.id);
 
 		}catch (SQLException e) { e.printStackTrace();} 
 
@@ -140,8 +145,10 @@ public class ShopChatDAO extends DAOManager {
 	 * Retourne le ShopChat lié a l'idée donné
 	 * @param shopchat_id
 	 * @return ShopChat
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static ShopChat get(long shopchat_id) {
+	public static ShopChat get(long shopchat_id) throws ChatNotFoundException, UserNotFoundException {
 		Statement statement = null;		
 
 		ShopChat shopChat = null ;
@@ -150,7 +157,7 @@ public class ShopChatDAO extends DAOManager {
 
 		try {
 			statement = con.createStatement();
-
+			System.out.println("ShopChat get");
 			/* Récupération du ShopChat */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM ShopChat WHERE id_Chat = "+shopchat_id);
 
@@ -159,12 +166,14 @@ public class ShopChatDAO extends DAOManager {
 				/* Récupération du membre */
 				long member_id = resultat.getLong(3);
 				member = MemberDAO.get(member_id);
-
+				
 				/* Récupération du shop */
 				long shop_id = resultat.getLong(2);
 				shop = ShopDAO.get(shop_id);
 
-				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				long chat_id = resultat.getLong("id_chat");
+				shopChat= new ShopChat(chat_id, member, shop,getMessagesByChat(chat_id));
+				
 			}
 
 		}catch (SQLException e) { e.printStackTrace();} 
@@ -178,8 +187,10 @@ public class ShopChatDAO extends DAOManager {
 	 * Retourne la liste des ShopChat lié au membre donné
 	 * @param user_id
 	 * @return ArrayList<ShopChat>
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static ArrayList<ShopChat> getByMember(long user_id) {
+	public static ArrayList<ShopChat> getByMember(long user_id) throws ChatNotFoundException, UserNotFoundException {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 
 		Statement statement = null;		
@@ -203,7 +214,8 @@ public class ShopChatDAO extends DAOManager {
 				long shop_id = resultat.getLong(2);
 				shop = ShopDAO.get(shop_id);
 
-				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				long chat_id = resultat.getLong("id_chat");
+				shopChat= new ShopChat(chat_id, member, shop, getMessagesByChat(chat_id) );
 				shopChats.add(shopChat);
 			}
 
@@ -218,8 +230,10 @@ public class ShopChatDAO extends DAOManager {
 	 * Retourne la liste des ShopChats lié à un shop donné
 	 * @param shop_id
 	 * @return ArrayList<ShopChat>
+	 * @throws UserNotFoundException 
+	 * @throws ChatNotFoundException 
 	 */
-	public static ArrayList<ShopChat> getByShop(long shop_id) {
+	public static ArrayList<ShopChat> getByShop(long shop_id) throws ChatNotFoundException, UserNotFoundException {
 		ArrayList<ShopChat> shopChats = new ArrayList<ShopChat>();	
 
 		Statement statement = null;		
@@ -243,7 +257,8 @@ public class ShopChatDAO extends DAOManager {
 				/* Récupération du shop */
 				shop = ShopDAO.get(shop_id);
 
-				shopChat= new ShopChat(resultat.getLong(1), member, shop);
+				long chat_id = resultat.getLong("id_chat");
+				shopChat= new ShopChat(chat_id, member, shop, getMessagesByChat(chat_id) );
 				shopChats.add(shopChat);
 			}
 
@@ -272,6 +287,10 @@ public class ShopChatDAO extends DAOManager {
 
 	}
 
+	/**
+	 * 
+	 * @return the last id in the ShopChat table
+	 */
 	public static long getLastId() {
 		Statement statement = null;
 		long chat_id = 0;
@@ -284,8 +303,6 @@ public class ShopChatDAO extends DAOManager {
 			if ( resultat.next() ) {
 				/* Récupération du membre */
 				chat_id= resultat.getLong(1);
-
-
 			}
 		}catch (SQLException e) { 
 			e.printStackTrace();
@@ -298,7 +315,56 @@ public class ShopChatDAO extends DAOManager {
 		return chat_id;
 	}
 
+	/**
+	 * return all messages of a chat
+	 * @param chat_id 
+	 * @return List of message
+	 * @throws ChatNotFoundException 
+	 * @throws UserNotFoundException
+	 */
+	public static List<Message> getMessagesByChat(long chat_id) throws ChatNotFoundException, UserNotFoundException{
+		List<Message> messages = new ArrayList<>();	
 
+		Statement statement = null;		
+
+		
+		TextMessage message = null;
+		
+		try {
+			statement = con.createStatement();
+
+			/* Récupération du ShopChat */
+			ResultSet resultat = statement.executeQuery( "SELECT * FROM Message WHERE id_chat = "+chat_id);
+
+			/* Récupération des données du résultat de la requête de lecture */
+			while ( resultat.next() ) {
+				
+				/* Récupération du membre */
+				Member emiter = MemberDAO.get(resultat.getLong("id_Member"));
+				
+				if(emiter == null) throw new UserNotFoundException();
+				
+				/* Récupération du contenue du message */
+				String content = resultat.getString("content_Message");
+				
+				
+				/* Récupération de la date */ 
+				
+				String dateS = resultat.getString("date_Message");
+				System.out.println(dateS);
+				LocalDateTime date = LocalDateTime.parse(dateS,Message.dTF);
+				System.out.println("before new TextMessage");
+				message = new TextMessage<Member>(emiter, content, date);
+				System.out.println("After new TextMessage");
+
+				messages.add(message);
+			}
+
+		}catch (SQLException e) { e.printStackTrace();} 
+		try { statement.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return messages;
+	}
 
 
 

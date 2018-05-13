@@ -15,11 +15,13 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
-import fr.cpasam.leonardo.chat.TextMessageDAO;
+import fr.cpasam.leonardo.errors.ChatNotFoundException;
+import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat.TextMessage;
+import fr.cpasam.leonardo.model.chat.TextMessageDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
@@ -59,7 +61,13 @@ public class ChatResource {
 
 		Shop s = ShopDAO.get(shop_id);
 
-		Chat c = m.openChat(s);
+		Chat c;
+		try {
+			c = m.openChat(s);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 
 
@@ -78,6 +86,7 @@ public class ChatResource {
 	@Path("{id}")
 	public Response get(@PathParam("id") long id,@QueryParam("USER") long user_id,@QueryParam("TOKEN") String token ) {
 
+		
 		// Vérifier que l'utilisateur est bien connecté 
 		if(MemberDAO.get(user_id) == null || token == "") return Response.status(Response.Status.UNAUTHORIZED).build();
 
@@ -88,19 +97,30 @@ public class ChatResource {
 
 		//Vérifier que le chat appartient au membre
 
-		ShopChat c = (ShopChat) ShopChatDAO.get(id);
-
+		ShopChat c = null;
+		
+		try {
+			
+			c = (ShopChat) ShopChatDAO.get(id);
+			System.out.println("Get chat ");
+			
+			
 		// L'utilisateur est le membre du chat
 		long idm = c.getMember().getId();
 		boolean isMember = (idm == user_id);
-
+		
 		// L'utilisateur est membre de la boutique qui chat
 		Member m = c.getShop().getMember(user_id);
 		boolean isShop = (m !=null);
-
+		
 		// Interdir l'accès à un utilisateur qui n'est pas dans le chat
 		if( !isMember && !isShop) return Response.status(Response.Status.FORBIDDEN).build();
+		
 		return Response.ok(c).build();
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 
 
@@ -123,7 +143,13 @@ public class ChatResource {
 
 		//Vérifier que le chat appartient au membre
 
-		ArrayList<ShopChat> chats = ShopChatDAO.getByMember(user_id);
+		ArrayList<ShopChat> chats;
+		try {
+			chats = ShopChatDAO.getByMember(user_id);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 		return Response.ok(chats).build();
 
@@ -151,7 +177,13 @@ public class ChatResource {
 //		String token = json.get("token").getAsString();
 //		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
-		ShopChat chat = ShopChatDAO.get(chat_id);
+		ShopChat chat;
+		try {
+			chat = ShopChatDAO.get(chat_id);
+		} catch (ChatNotFoundException | UserNotFoundException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 
 		if(chat == null ) return Response.status(Response.Status.NOT_FOUND).build();
 
