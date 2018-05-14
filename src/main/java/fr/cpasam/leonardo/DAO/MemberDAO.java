@@ -5,12 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
-import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -29,42 +25,46 @@ public class MemberDAO extends DAOManager {
 	public static long getCnt() {
 		return cnt++;
 	}
-	
+
 	// Bloc static 
-	  
-	  static {	
-	  	cnt = getLastId()+1;
-	  }
-	  
-		public static long getLastId() {
-			Statement statement = null;
-			long id_Member = 0;
-			try {
-				statement = con.createStatement();
-				/* Récupération de l'identifiant max Member */
-				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Member) FROM Member");
 
-				/* Récupération des données du résultat de la requête de lecture */
-				if ( resultat.next() ) {
-					/* Récupération du membre */
-					id_Member= resultat.getLong(1);
-				}
-			}catch (SQLException e) { 
-				e.printStackTrace();
+	static {	
+		cnt = getLastId()+1;
+	}
+
+	/**
+	 * Cherche l'identifiant maximum dans la table afin d'incrémenter celui-ci d'une unité et de  générer un nouvel identifiant automatiquement 
+	 * @return retourne l'identifiant maximum de Member
+	 */
+	public static long getLastId() {
+		Statement statement = null;
+		long id_Member = 0;
+		try {
+			statement = con.createStatement();
+			/* Récupération de l'identifiant max Member */
+			ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Member) FROM Member");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			if ( resultat.next() ) {
+				/* Récupération du membre */
+				id_Member= resultat.getLong(1);
 			}
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return id_Member;
+		}catch (SQLException e) { 
+			e.printStackTrace();
 		}
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id_Member;
+	}
 
-	
-	  
-	  
-	  
-	
+
+
+
+
+
 	/**
 	 * Affichage de tous les membres sous forme de liste
 	 * @return retourne une liste composée de tous les membres
@@ -73,18 +73,12 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static List<Member> all() throws ChatNotFoundException, UserNotFoundException {
 		List<Member> members = new ArrayList<Member>();
-		List<Chat> chats = new ArrayList<>();
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT id_User, id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User");
 
 			while (rset.next()) {
-				// Récupération des chats d'un membre
-				long member_id = rset.getLong(1);
-				//chats = ShopChatDAO.getByMember(member_id);
-				
-				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
 				Member member = new Member(rset.getLong("id_User"),
 						rset.getLong("id_Member"),
@@ -131,7 +125,7 @@ public class MemberDAO extends DAOManager {
 				}
 				member = new Member(idUser,idMember, firstName, lastName, email, pwd, "");
 			}
-	}catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}try { stmt.close();
 		} catch (SQLException e) { e.printStackTrace();}
@@ -152,13 +146,10 @@ public class MemberDAO extends DAOManager {
 		Statement stmt = null;
 		Member member = null ;
 		long idUser = 0 ;
-		ArrayList<Chat> chats = new ArrayList<Chat>();
-
 		try {
 			// on vérifie si l'email n'est pas déjà associé à un autre membre
 			member = mailToMember(email) ;
 			if (member!=null && member.getId()!=id) {
-				System.out.println("email déjà associé à un membre");
 				return null ;
 			}
 			stmt = con.createStatement();
@@ -168,22 +159,13 @@ public class MemberDAO extends DAOManager {
 			}
 			int deleted =stmt.executeUpdate("UPDATE User SET firstName_User = '"+firstName+"',lastName_User ='"+lastName+"', email_User='"+email+"', pwd_User='"+pwd+"' WHERE id_User ="+idUser+"");
 			if (deleted <= 0){ return null ;}
-			
-			// Récupération des chats associés au membre
-			//chats = ShopChatDAO.getByMember(id);
-			
-			//member = new Member(id,firstName,lastName,email, pwd, chats);
 			member = new Member(idUser,id,firstName,lastName,email, pwd,"");
-
-			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}try { stmt.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return member ;
 	}
-
-
 
 
 	/**
@@ -193,18 +175,13 @@ public class MemberDAO extends DAOManager {
 	 */
 	public static Member get(long member_id) {
 		Statement stmt = null;
-		ArrayList<Chat> chats = new ArrayList<Chat>();
-
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE id_Member="+member_id);
-
 			while (rset.next()) {
 				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
-
 				return member ;
 			}
-
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}try { stmt.close();
@@ -217,8 +194,6 @@ public class MemberDAO extends DAOManager {
 	 * Supprime un membre à partir de son identifiant
 	 * @param memberID identifiant du membre à supprimer
 	 */
-
-
 	public static boolean delete(long member_id) {
 		Statement stmt = null;
 		long idUser = 0 ;
@@ -253,20 +228,12 @@ public class MemberDAO extends DAOManager {
 	public static Member mailToMember(String email) {
 		Statement stmt = null;
 		Member member = null ;
-		ArrayList<Chat> chats = new ArrayList<Chat>();
-
 		try {
 			stmt = con.createStatement();
 			ResultSet rset = stmt.executeQuery("SELECT id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE email_User='"+email+"'");
-
 			while (rset.next()) {
 				long member_id = rset.getLong(1) ;
-				// Récupération des chats associés au membre
-				//chats = ShopChatDAO.getByMember(member_id);
-				
-				//member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
 				member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
-
 			}
 		}
 		catch (SQLException e) {
@@ -275,6 +242,4 @@ public class MemberDAO extends DAOManager {
 		} catch (SQLException e) { e.printStackTrace();}
 		return member ;
 	}
-
-
 }

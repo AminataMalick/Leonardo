@@ -3,10 +3,6 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.User;
-
 
 public abstract class Chat<T,U>{
 
@@ -18,9 +14,7 @@ public abstract class Chat<T,U>{
 	protected U entity2;
 	private List<Message> messages ;
 	
-	public Chat() {
-		// TODO Auto-generated constructor stub
-	}
+	public Chat() {}
 
 	 	 
 	/**

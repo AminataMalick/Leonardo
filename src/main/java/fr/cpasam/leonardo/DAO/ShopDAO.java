@@ -15,7 +15,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ShopDAO extends DAOManager {
 
-	
+
 
 	private static long cnt = 0;
 	/**
@@ -25,41 +25,45 @@ public class ShopDAO extends DAOManager {
 	public static long getCnt() {
 		return cnt++;
 	}
-	
-	// Bloc static 
-	  
-	  static {	
-	  	cnt = getLastId()+1;
-	  }
-	  
-		public static long getLastId() {
-			Statement statement = null;
-			long id_Shop = 0;
-			try {
-				statement = con.createStatement();
-				/* Récupération de l'identifiant max du Shop */
-				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Shop) FROM Shop");
 
-				/* Récupération des données du résultat de la requête de lecture */
-				if ( resultat.next() ) {
-					/* Récupération du shop */
-					id_Shop= resultat.getLong(1);
-				}
-			}catch (SQLException e) { 
-				e.printStackTrace();
+	// Bloc static 
+
+	static {	
+		cnt = getLastId()+1;
+	}
+
+	/**
+	 * Cherche l'identifiant maximum dans la table afin d'incrémenter celui-ci d'une unité et de  générer un nouvel identifiant automatiquement 
+	 * @return retourne l'identifiant maximum de Shop
+	 */
+	public static long getLastId() {
+		Statement statement = null;
+		long id_Shop = 0;
+		try {
+			statement = con.createStatement();
+			/* Récupération de l'identifiant max du Shop */
+			ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Shop) FROM Shop");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			if ( resultat.next() ) {
+				/* Récupération du shop */
+				id_Shop= resultat.getLong(1);
 			}
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return id_Shop;
+		}catch (SQLException e) { 
+			e.printStackTrace();
 		}
-	
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id_Shop;
+	}
+
 	/**
 	 * Retourne le shop lié à l'id donné
-	 * @param shop_id
-	 * @return shop
+	 * @param shop_id identifiant du shop à chercher
+	 * @return shop retourne le shop passé en paramètre
 	 */
 	public static Shop get(long shop_id) {
 		Statement statement = null;		
@@ -91,9 +95,6 @@ public class ShopDAO extends DAOManager {
 				while ( resultat1.next() ) {
 					member= new Member(resultat1.getLong(2),resultat1.getString(4),resultat1.getString(5),resultat1.getString(6),resultat1.getString(7), resultat1.getString(8));
 				}
-
-
-
 				shop= new Shop(resultat.getLong(1),resultat.getString(2),resultat.getString(3),null,member, products);
 			} 
 		}catch (SQLException e) { e.printStackTrace();} 
@@ -111,27 +112,23 @@ public class ShopDAO extends DAOManager {
 	public static List<Shop> all() {
 		Statement statement = null;		
 		Statement statement2 = null;		
-
 		List<Shop> shops = new ArrayList<Shop>();	
 		List<Product> products = new ArrayList<Product>();						
-
-
 		try {
 			Member member = null ;	
 			Shop shop = null;
 			statement = con.createStatement();
 			statement2 = con.createStatement();
 
-
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Shop ");
+
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
 				long shop_id = resultat.getLong(1);
 
 				/* Récupération des produits liés au shop */
 				products = getProducts(shop_id) ;
-
 				long member_id = resultat.getLong(4);
 
 				/* Exécution d'une requête de lecture */
@@ -170,7 +167,7 @@ public class ShopDAO extends DAOManager {
 			long shop_id = getCnt() ;
 			statement = con.createStatement();
 			/* Insertion d'un shop */
-			int res = statement.executeUpdate("INSERT INTO Shop(id_Shop, name_Shop, description_Shop, id_Member)VALUES("+shop_id+",'"+shopName+"','"+description+"',"+member_id+")");
+			statement.executeUpdate("INSERT INTO Shop(id_Shop, name_Shop, description_Shop, id_Member)VALUES("+shop_id+",'"+shopName+"','"+description+"',"+member_id+")");
 
 			/* Récupération du membre correspondant à l'id donné*/
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Member natural join User WHERE id_Member="+ member_id);
@@ -244,10 +241,7 @@ public class ShopDAO extends DAOManager {
 		} catch (SQLException e) { e.printStackTrace();}
 
 		return shop;
-
 	}
-
-
 	/**
 	 * Retourne la liste des produits lié au shop
 	 * @param shop_id
@@ -256,16 +250,12 @@ public class ShopDAO extends DAOManager {
 	public static List<Product> getProducts(long shop_id) {
 		Statement statement = null;	
 		Statement statement2 = null;	
-
 		List<Product> products = new ArrayList<Product>();	
-
 		try {
 			Product product = null;
 			Tag tag = null ;
 			statement = con.createStatement();
 			statement2 = con.createStatement();
-
-
 			/* Récupération des produits lié au shop donné */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Product WHERE id_Shop =" + shop_id);
 			/* Récupération de chaque produit et ajout dans l'arrayList Products */
@@ -304,7 +294,6 @@ public class ShopDAO extends DAOManager {
 	 * @return member
 	 */
 	public static Member getMember(long member_id, long shop_id) {
-		System.out.println("In getMember with member_id = "+member_id+" and shop_id = "+shop_id);
 		Statement statement = null;		
 		Member member = null ;
 		Member owner = getOwner(shop_id);
@@ -313,34 +302,19 @@ public class ShopDAO extends DAOManager {
 		if(member == null ) {
 
 			try {
-				System.out.println("create statement ...");
 				statement = con.createStatement();
 				/* Exécution d'une requête de lecture */
 
-				System.out.println("execute query...");
 				ResultSet resultat = statement.executeQuery( "select * from User natural join Member where id_Member = (select id_Member from ShopMember where id_Member = "+member_id+" and id_Shop = "+shop_id+")" );
 
 				/* Récupération des données du résultat de la requête de lecture */
-				System.out.println("before while...");
-				System.out.println("resultat "+resultat.isAfterLast());
 				if(resultat.next()) {
-					//int idShop= resultat.getInt(1);
-					System.out.println("before creation of member");
 					member = new Member(resultat.getLong(7),resultat.getString(2),resultat.getString(3),resultat.getString(4), resultat.getString(5), resultat.getString(6));
-					System.out.println("after member creation");
-
 				}
-
 			}catch (SQLException e) { e.printStackTrace();} 
-
-
 			try { statement.close();
 			} catch (SQLException e) { e.printStackTrace();}
-		}
-		
-		System.out.println("member est :"+member);
-		if(member != null ) System.out.println("return member with email = "+member.getEmail());
-		return member;
+		}return member;
 	}
 
 
@@ -363,7 +337,6 @@ public class ShopDAO extends DAOManager {
 				//int idShop= resultat.getInt(1);
 				member = new Member(resultat.getLong(7),resultat.getString(2),resultat.getString(3),resultat.getString(4), resultat.getString(5), resultat.getString(6));
 			} 
-
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
@@ -383,13 +356,10 @@ public class ShopDAO extends DAOManager {
 			statement.executeUpdate("DELETE FROM Product WHERE id_Shop="+shop_id);
 			statement.executeUpdate("DELETE FROM ShopRetail WHERE id_Shop="+shop_id);
 			statement.executeUpdate("DELETE FROM Shop WHERE id_Shop="+shop_id);
-
 		}catch (SQLException e) { e.printStackTrace();}
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return ;
-
-
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package bd;
+package fr.cpasam.leonardo.bd;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

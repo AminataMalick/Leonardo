@@ -4,12 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class TagDAO extends DAOManager{
@@ -33,6 +29,10 @@ public class TagDAO extends DAOManager{
 	  	cnt = getLastId()+1;
 	  }
 	  
+	  	/**
+	  	 * Retourne le dernier id du tag créé
+	  	 * @return
+	  	 */
 		public static long getLastId() {
 			Statement statement = null;
 			long id_Tag = 0;
@@ -74,7 +74,7 @@ public class TagDAO extends DAOManager{
 			statement = con.createStatement();
 			
 			/* Insertion d'un tag*/
-			int res = statement.executeUpdate("INSERT INTO Tag(id_Tag, keyword)VALUES("+tag_id+",'"+keyword+"')");
+			statement.executeUpdate("INSERT INTO Tag(id_Tag, keyword)VALUES("+tag_id+",'"+keyword+"')");
 
 			/* Création du tag */
 			tag = new Tag(tag_id, keyword);

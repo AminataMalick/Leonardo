@@ -23,38 +23,41 @@ public class ProductDAO extends DAOManager {
 	public static long getCnt() {
 		return cnt++;
 	}
-	
-	// Bloc static 
-	
-	  static {	
-	  	cnt = getLastId()+1;
-	  }
-	  
-		public static long getLastId() {
-			Statement statement = null;
-			long id_Product = 0;
-			try {
-				statement = con.createStatement();
-				/* Récupération de l'identifiant max du Produit */
-				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Product) FROM Product");
 
-				/* Récupération des données du résultat de la requête de lecture */
-				if ( resultat.next() ) {
-					/* Récupération du produit */
-					id_Product= resultat.getLong(1);
-				}
-			}catch (SQLException e) { 
-				e.printStackTrace();
+	// Bloc static 
+
+	static {	
+		cnt = getLastId()+1;
+	}
+	/**
+	 * Cherche l'identifiant maximum dans la table afin d'incrémenter celui-ci d'une unité et de  générer un nouvel identifiant automatiquement 
+	 * @return retourne l'identifiant maximum de Product
+	 */
+	public static long getLastId() {
+		Statement statement = null;
+		long id_Product = 0;
+		try {
+			statement = con.createStatement();
+			/* Récupération de l'identifiant max du Produit */
+			ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Product) FROM Product");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			if ( resultat.next() ) {
+				/* Récupération du produit */
+				id_Product= resultat.getLong(1);
 			}
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return id_Product;
+		}catch (SQLException e) { 
+			e.printStackTrace();
 		}
-	
-	
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id_Product;
+	}
+
+
 	/**
 	 * Recherche d'un produit à partir de son id
 	 * @param product_id
@@ -122,28 +125,26 @@ public class ProductDAO extends DAOManager {
 
 
 	/**
-	 * Creation d'un produit avec récuperation des donnees du formulaire 
-	 * @param name 
-	 * @param shop_id
-	 * @param unityPrice
-	 * @return Product
+	 * Creation d'un produit à partir des attributs passés en paramètre de la fonction
+	 * @param name nom du produit
+	 * @param shop_id identifiant du shop associé à la vente du produit
+	 * @param unityPrice prix du produit
+	 * @return Product retourne le produit créé
 	 */
 	public static Product create( String name, long shop_id, float unityPrice ) {
 		Statement statement = null;		
 		Product product = null ;
 		try {
-			System.out.println("dans try de create");
 			long product_id = getCnt() ;
 
 			statement = con.createStatement();
 			/* Insertion d'un produit */
-			int res = statement.executeUpdate("INSERT INTO Product(id_Product, name_Product, UnityPrice, id_Shop)VALUES("+product_id+",'"+name+"',"+unityPrice+","+shop_id+")");
+			statement.executeUpdate("INSERT INTO Product(id_Product, name_Product, UnityPrice, id_Shop)VALUES("+product_id+",'"+name+"',"+unityPrice+","+shop_id+")");
 
 			/* Création shop */
 			product= new Product(product_id, name, shop_id, unityPrice, null );
-			System.out.println("FIN create");
-			
-			
+
+
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -153,13 +154,13 @@ public class ProductDAO extends DAOManager {
 
 
 	/**
-	 * 
-	 * @param id
-	 * @param name
-	 * @param provenance
-	 * @param unityPrice
-	 * @param tags
-	 * @return Product
+	 * Mise à jour d'un produit
+	 * @param id identifiant du produit
+	 * @param name nom du produit
+	 * @param provenance provenance du produit
+	 * @param unityPrice prix du produit
+	 * @param tags mots clés à propos du produit
+	 * @return Product retourne le produit mis à jour
 	 */
 	public static Product update(long product_id, String name, long shop_id, float unityPrice) {
 		Statement statement = null;	
@@ -182,7 +183,7 @@ public class ProductDAO extends DAOManager {
 
 		return product;
 	}		
-	
+
 
 
 	/**
@@ -193,7 +194,7 @@ public class ProductDAO extends DAOManager {
 		Statement statement = null;
 		try {
 			statement = con.createStatement();
-			int deleted =statement.executeUpdate("DELETE FROM ProductTag WHERE id_Product="+product_id);
+			statement.executeUpdate("DELETE FROM ProductTag WHERE id_Product="+product_id);
 			statement.executeUpdate("DELETE FROM Product WHERE id_Product="+product_id);
 		}catch (SQLException e) { e.printStackTrace();}
 		try { statement.close();
