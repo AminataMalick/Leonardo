@@ -41,19 +41,10 @@ public class ProductResource {
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Product> all() {
-
-		System.out.println("product/all");
 		
 		List<Product> products = ProductDAO.all();
-		
-		System.out.println("Get Product");
-		String test = "";
-		for (Product p : products) {
-			test+= p.getName()+"\n";
-		}
-		System.out.println("products : "+test);
-		
 		return products;
+		
 	}
 
 
@@ -68,7 +59,6 @@ public class ProductResource {
 	public Product get(@PathParam("id") long id) {
 		
 		Product p = ProductDAO.get(id);
-		System.out.println("Product : "+ p.getName());
 		return p;
 	}
 
@@ -84,13 +74,11 @@ public class ProductResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
 		
-		System.out.println("Product Creation Launched... ");
-
+	
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 		
-		System.out.println("Access granted...");
-
+	
 		// Vérifier le jeton CSRF
 
 		long user_id = json.get("user_id").getAsLong();
@@ -101,8 +89,6 @@ public class ProductResource {
 
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
 
-		if(m != null) System.out.println("email"+ m.getEmail());
-		
 		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
 
 		JsonArray ja = json.get("tags").getAsJsonArray();
@@ -124,7 +110,6 @@ public class ProductResource {
 
 			
 		}
-		System.out.println("TAGS :" +tags);
 
 		long shop_id = json.get("shop_id").getAsLong();
 		long product_id = json.get("id").getAsLong();
@@ -152,7 +137,7 @@ public class ProductResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 
-		System.out.println("Udpate of product : "+id);
+
 		// Vérifier si le produit existe
 
 		if(ProductDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
@@ -160,8 +145,6 @@ public class ProductResource {
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-
-		System.out.println("Access granted...");
 
 		// Vérifier le jeton CSRF
 
@@ -174,36 +157,23 @@ public class ProductResource {
 		Member m = ShopDAO.getMember(user_id, json.get("shop_id").getAsLong());
 		
 		
-		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();
-
-		System.out.println("Bienvenue "+m.getFirstName()+"...");
-		
+		if(m == null) return Response.status(Response.Status.FORBIDDEN).build();		
 		
 		JsonArray ja = json.get("tags").getAsJsonArray();
 
-		System.out.println("tags retrieved...");
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		
-		System.out.println("Init tags array ...");
 		for(JsonElement e : ja) {
 			// Récupérer le tag
 
 			String keyword = e.getAsJsonObject().get("keyword").getAsString();
-			
-			System.out.println("Try to retrieve "+keyword);
-			
+				
 			Tag t = TagDAO.getTagByName(keyword);
 			
 			
 			//Si le tag n'existe pas, le créer
 
-			if(t == null) {
-				System.out.println("The tag "+keyword+" doesn't exist");
-				System.out.println("Creation of "+keyword+" in progress...");
-				t = TagDAO.create(keyword);
-				
-				System.out.println("Creation successful");
-			}
+			if(t == null) t = TagDAO.create(keyword);
 
 			//ajouter le tag a la liste
 
@@ -211,14 +181,11 @@ public class ProductResource {
 		}
 
 		long shop_id = json.get("shop_id").getAsLong();
-		System.out.println("updating the product ...");
 		Product p = ProductDAO.update(id, 
 									  json.get("name").getAsString(), 
 									  shop_id, 
 									  json.get("price").getAsFloat());
 
-		System.out.println("The product "+p.getName()+" has been updated...");
-		
 		return Response.ok(p).build();
 	}
 
