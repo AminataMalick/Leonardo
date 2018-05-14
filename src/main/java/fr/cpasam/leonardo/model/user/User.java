@@ -1,8 +1,5 @@
 package fr.cpasam.leonardo.model.user;
 
-import java.util.ArrayList;
-import java.util.List;
-import fr.cpasam.leonardo.model.chat.Chat;
 
 public abstract class User {
 
@@ -14,6 +11,13 @@ public abstract class User {
 	protected String token;
 
 	
+	/**
+	 * Constructeur 4 paramètres
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param pwd
+	 */
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -21,6 +25,15 @@ public abstract class User {
 		this.pwd = pwd;
 		}
 	
+	/**
+	 * Constructeur 6 paramètres
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param pwd
+	 * @param token
+	 */
 	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
 		this.id=id;
 		this.firstName = firstName;

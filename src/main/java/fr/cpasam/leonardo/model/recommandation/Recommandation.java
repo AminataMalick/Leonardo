@@ -16,10 +16,16 @@ public class Recommandation {
 	private Member member;
 	private Shop shop;
 
-	public Recommandation() {
-		// TODO Auto-generated constructor stub
-	}
+	public Recommandation() {}
 	
+	/**
+	 * Constructeur 5 paramètres
+	 * @param id
+	 * @param grade
+	 * @param comment
+	 * @param member
+	 * @param shop
+	 */
 	public Recommandation(long id,int grade, String comment, Member member, Shop shop) {
 		this.id = id;
 		this.shop = shop;
@@ -27,6 +33,7 @@ public class Recommandation {
 		this.comment = comment;
 		this.member = member;
 	}
+	
 	
 	public String toString() { 
 		return("id : " + this.id + " shop : " + this.shop + " grade : " + this.grade + " comment : " + this.comment + " member : " + this.member);	

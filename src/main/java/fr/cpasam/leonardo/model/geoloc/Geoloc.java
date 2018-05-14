@@ -13,10 +13,16 @@ public class Geoloc {
 	List<Member> members ;
 	List<RetailPoint> retailpoints ;
 
-	public Geoloc() {
-		// TODO Auto-generated constructor stub
-	}
+	public Geoloc() {}
 	
+	/**
+	 * Constructeur 5 paramètres
+	 * @param id
+	 * @param lat
+	 * @param longit
+	 * @param members
+	 * @param retailpoints
+	 */
 	public Geoloc(long id, long lat, long longit, List<Member> members, List<RetailPoint> retailpoints) {
 		this.id = id;
 		this.lat = lat;

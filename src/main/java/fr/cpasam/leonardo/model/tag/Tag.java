@@ -6,10 +6,13 @@ public class Tag {
 	protected long id;
 	protected String keyword;
 	
-	public Tag() {
-		// TODO Auto-generated constructor stub
-	}
+	public Tag() {}
 	
+	/**
+	 * Constructeur 2 paramètres
+	 * @param id
+	 * @param keyword
+	 */
 	public Tag(long id,String keyword) {
 		this.id=id;
 		this.keyword=keyword;
