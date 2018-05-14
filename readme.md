@@ -97,11 +97,11 @@ database.password = <userPWD>
 ```
 
 ### Mordifications à apporter :
-MySQL est utilisée dans la version fournie en démonstration et configurée dans le fichier ci-dessus avec pour < userName > votre nom d'utilisateur et < userPWD > votre mot de passe. 
+* MySQL est utilisée dans la version fournie en démonstration et configurée dans le fichier ci-dessus avec pour < userName > votre nom d'utilisateur et < userPWD > votre mot de passe. 
 
-Il faut aussi supprimmer le 'exemple.' avant BD.Properties 
+* Il faut aussi supprimmer le 'exemple.' avant BD.Properties 
 
-Il existe des drivers JDBC pour toutes les bases de données connues, il est donc facile d'adapter Leonardo à une autre base de données en modifiant 'jdbc.driver'.
+* Il existe des drivers JDBC pour toutes les bases de données connues, il est donc facile d'adapter Leonardo à une autre base de données en modifiant 'jdbc.driver'.
 
 **Prérequis :** Java 1.7 ou version ultérieure.  
 
