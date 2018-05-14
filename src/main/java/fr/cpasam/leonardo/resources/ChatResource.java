@@ -1,10 +1,8 @@
 package fr.cpasam.leonardo.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,19 +26,20 @@ import fr.cpasam.leonardo.model.chat.TextMessage;
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.NotificationsMail;
-import fr.cpasam.leonardo.utilities.Validator;
 
 
-/**
- * Traitement de la requete d'ouverture d'un chat
- * @param json [shop_id et user_id]
- * @return le chat créé
- */
+
+
 @Path("chat/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
 
+	/**
+	 * Open a chat between a shop and a member
+	 * @param json { shop_id: Numeric, user_id : Numeric }
+	 * @return UNAUTHORIZED, NOT_FOUND or OK with the chat object in json
+	 */
 	@POST
 	public Response openChat(JsonObject json) {
 
@@ -55,26 +54,18 @@ public class ChatResource {
 		// Vérifier le jeton CSRF
 
 		//		String token = json.get("token").getAsString();
-		//		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-
-		System.out.println("Open Chat with : shop n°"+shop_id+" and user n°"+user_id);
+		//	if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 
 
 		Member m;
 		try {
-			System.out.println("In da try");
 			m = MemberDAO.get(user_id);
 
 
-			System.out.println("Member created :"+m);
 			Shop s = ShopDAO.get(shop_id);
 
-			System.out.println("Shop created :"+s);
-			Chat c;
+			Chat c = m.openChat(s);
 
-			c = m.openChat(s);
-
-			System.out.println("Chat opened :"+c);
 			return Response.ok(c).build();
 
 		} catch (ChatNotFoundException | UserNotFoundException e) {
@@ -89,10 +80,11 @@ public class ChatResource {
 
 
 	/**
-	 * Traitement de la requete de récupération d'un chat via son id
-	 * @param id du chat
-	 * @param json [user_id et token pour vérifier la connexion]
-	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe / 403 : chat n'appartient pas au membre]
+	 * 
+	 * @param id id of the chat that has to be retrieved
+	 * @param user_id to check if he can access to the chat
+	 * @param token to check CSRF
+	 * @return
 	 */
 	@GET
 	@Path("{id}")
@@ -111,12 +103,7 @@ public class ChatResource {
 
 			//Vérifier que le chat appartient au membre
 
-			ShopChat c = null;
-
-
-
-			c = (ShopChat) ShopChatDAO.get(id);
-			System.out.println("Get chat ");
+			ShopChat c = (ShopChat) ShopChatDAO.get(id);
 
 
 			// L'utilisateur est le membre du chat
@@ -140,14 +127,14 @@ public class ChatResource {
 
 
 
-
 	/**
-	 * Traitement de la requete pour récupérer les chats correspondant au membre donné
-	 * @param json [user_id et token]
-	 * @return le chat correspondant si tout c'est bien passé sinon des message d'erreur [401 : utilisateur non connecté / 406 : mauvais mot de passe]
+	 * Return all the chats that belongs to a member
+	 * @param user_id 
+	 * @param token to check CSRF
+	 * @return
 	 */
 	@GET
-	public Response get(JsonObject json,@QueryParam("USER") long user_id, @QueryParam("TOKEN") String token) {
+	public Response get(@QueryParam("USER") long user_id, @QueryParam("TOKEN") String token) {
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(user_id == 0) return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -171,21 +158,19 @@ public class ChatResource {
 	}
 
 	/**
-	 * Create a new message in the cat
+	 * Create a new message in the chat and send a email the other end of the chat
 	 * @param chat_id id of the chat where the message has to be send
 	 * @param json {user_id,token,content}
-	 * @return
+	 * @return the message object in json
 	 */
 	@POST
 	@Path("{id}/message")
 	public Response sendMessage(@PathParam("id") long chat_id, JsonObject json) {
-		System.out.println("Sending message ... ");
 		Member sendTo = null;
 
 		// Vérifier que l'utilisateur est bien connecté 
 		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
 
-		System.out.println("Access granted...");
 
 		// Vérifier le jeton CSRF
 
@@ -230,16 +215,5 @@ public class ChatResource {
 
 		return Response.ok(message).build();
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 }

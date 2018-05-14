@@ -29,7 +29,7 @@ public class AuthResource {
 	
 	/**
 	 * Effectue la connexion d'un utilisateur
-	 * @param json la requête envoyée par le client, demandant la connexion d'un utilisateur
+	 * @param json la requête envoyée par le client, demandant la connexion d'un utilisateur { email : String, password : String }
 	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
 	 */
 	@POST
@@ -66,7 +66,7 @@ public class AuthResource {
 	
 	/**
 	 * Enregistre un nouveau membre dans la base de données et effectue sa connexion
-	 * @param json la requête du client demandant une inscription
+	 * @param json la requête du client demandant une inscription { firstName : String, lastName : String, email : String, password : String }
 	 * @return une requête en json indiquant un message d'erreur si un problème est survenu ou le token généré si la requête a été traitée avec succès
 	 */
 	@POST
@@ -74,7 +74,6 @@ public class AuthResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response register(JsonObject json) {
-		System.out.println(json.toString());
 		String firstName = json.get("firstName").getAsString();
 		String lastName = json.get("lastName").getAsString();
 		String mail = json.get("email").getAsString();
@@ -100,7 +99,7 @@ public class AuthResource {
 	
 	/**
 	 * Déconnecte un utilisateur de l'application
-	 * @param json la requête envoyée par le client demandant sa déconnexion
+	 * @param json la requête envoyée par le client demandant sa déconnexion { id:Numeric, token:String }
 	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
 	@POST
