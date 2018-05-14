@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import bd.DatabaseAccessProperties;
-import bd.SQLWarningsExceptions;
+import fr.cpasam.leonardo.bd.DatabaseAccessProperties;
+import fr.cpasam.leonardo.bd.SQLWarningsExceptions;
 
 public class Connexionsgbd {
 

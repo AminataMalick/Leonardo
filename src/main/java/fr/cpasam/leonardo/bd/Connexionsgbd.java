@@ -1,4 +1,4 @@
-package bd;
+package fr.cpasam.leonardo.bd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,7 +45,6 @@ public class Connexionsgbd {
 	 * @return connexion : Connection
 	 */
 	public static Connection getInstance() {
-		System.out.println("Connexion à la base de données en cours ...");
 		Connection rConn = null;
 		if (conn == null) {
 			try {
@@ -56,16 +55,8 @@ public class Connexionsgbd {
 				dbUrl = dap.getDatabaseUrl();
 				username = dap.getUsername();
 				password = dap.getPassword();
-				
-				System.out.println("Driver : "+ jdbcDriver+" url: "+dbUrl+" username : "+username+" pass : "+password);
-				// Load the database driver
-				
-					loadDriver(jdbcDriver);
-				
-				// Get a connection to the database
-				//			System.out.println(username + password);
-
-
+								
+				loadDriver(jdbcDriver);
 
 				rConn = newConnection(dbUrl, username, password);
 
