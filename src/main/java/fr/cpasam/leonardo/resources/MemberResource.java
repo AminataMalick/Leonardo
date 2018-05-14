@@ -27,10 +27,10 @@ import fr.cpasam.leonardo.utilities.AuthUtil;
 
 @Path("member/")
 public class MemberResource {
-	
+
 	/**
 	 * Traitement de la requête de modification des informations d'un membre
-	 * @param json la requête du membre
+	 * @param json la requête du membre {id : Numeric, token : String, firstName : String, lastName: String, email:String, password:String}
 	 * @return une une requête en json indiquant un message d'erreur si un problème est survenu ou le nouveau membre si la requête a été traitée avec succès
 	 */
 	@PUT
@@ -45,7 +45,7 @@ public class MemberResource {
 		String lastName = json.get("lastName").getAsString();
 		String mail = json.get("email").getAsString();
 		String pwd = json.get("password").getAsString();
-		
+
 		try {
 			member = AuthUtil.modify(id, firstName, lastName, mail, pwd, token);
 		} catch (IncompleteDataException e) {
@@ -61,10 +61,10 @@ public class MemberResource {
 		}
 		return Response.ok(member).build();
 	}
-	
+
 	/**
 	 * Traitement de la demande de suppression du compte d'un membre
-	 * @param json la requête du membre
+	 * @param json la requête du membre { id:Numeric, token : String }
 	 * @return le code http 200 ok si tout s'est bien passé, ou un code d'erreur sinon
 	 */
 	@POST
@@ -74,7 +74,7 @@ public class MemberResource {
 	public Response deleteAccount(JsonObject json) {
 		Long id = json.get("id").getAsLong();
 		String token = json.get("token").getAsString();
-		
+
 		try {
 			AuthUtil.deleteAccount(id, token);
 		} catch (IncompleteDataException e) {
@@ -92,7 +92,7 @@ public class MemberResource {
 		}
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
-	
+
 	/**
 	 * Affiche tous les membres de la base
 	 * @return retourne une liste avec tous les membres
@@ -102,21 +102,11 @@ public class MemberResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response all() {
 
-		System.out.println("member/all");
-		
 		List<Member> members;
 		try {
 			members = MemberDAO.all();
-		
-		
-		System.out.println("Get Member");
-		String test = "";
-		for (Member m : members) {
-			test+= m.getFirstName()+" "+m.getLastName()+"\n";
-		}
-		System.out.println("members : "+test);
-		
-		return Response.ok(members).build();
+
+			return Response.ok(members).build();
 		} catch (ChatNotFoundException | UserNotFoundException e) {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
@@ -131,44 +121,39 @@ public class MemberResource {
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") long id) {
-		
+
 		Member m = null;
 		m = MemberDAO.get(id);
 		return Response.ok(m).build();
-		
+
 	}
 
-	
+
 
 	/**
 	 * Creation d'un membre
-	 * @param json
-	 * @return membre créé
+	 * @param json { firstName : String, lastName : String, email : String, pwd : String }
+	 * @return membre en json
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(JsonObject json) { 
-		
-		System.out.println("Member Creation Launched... ");
 
-		
-
-		Member m;
-		m = MemberDAO.create(
+		Member m = MemberDAO.create(
 				json.get("firstName").getAsString(), 
 				json.get("lastName").getAsString(),   
 				json.get("email").getAsString(),
 				json.get("pwd").getAsString());
 		return Response.ok(m).build();
 
-		
+
 	}
 
 	/**
 	 * Mise à jour d'un membre
 	 * @param id identifiant du membre à mettre à jour
-	 * @param json 
+	 * @param json { firstName : String, lastName : String, email : String, pwd : String }
 	 * @return retourne le membre mis à jour
 	 */
 	@PUT
@@ -177,17 +162,17 @@ public class MemberResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
 		if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
-		
+
 		Member m;
 		m = MemberDAO.update(id, 	
 				json.get("firstName").getAsString(), 
 				json.get("lastName").getAsString(),   
 				json.get("email").getAsString(),
 				json.get("pwd").getAsString());
-		
+
 		return Response.ok(m).build();
 	}
-	
+
 	/**
 	 * Affiche un membre 
 	 * @param mail
@@ -201,5 +186,5 @@ public class MemberResource {
 		member = MemberDAO.mailToMember(mail);
 		return Response.ok(member).build();
 	}
-	
+
 }
