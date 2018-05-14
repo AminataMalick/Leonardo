@@ -114,3 +114,9 @@ local.properties
 
 # End of https://www.gitignore.io/api/eclipse
 hibernate.cfg.xml
+
+**.**~
+.idea/
+
+# Database Configuration File
+BD.properties
