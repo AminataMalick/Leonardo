@@ -226,9 +226,7 @@ public class ChatResource {
 				+" "+message.getEmiter().getLastName()
 				+"\n \""+message.getContent()+"\"";
 
-		//		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, sendTo.getEmail());
-
-		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, "pbelabbes@gmail.com");
+		NotificationsMail.sendMail("Nouveau Message de "+message.getEmiter().getFirstName(), econtent, sendTo.getEmail());
 
 		return Response.ok(message).build();
 	}
