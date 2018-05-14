@@ -77,12 +77,12 @@ public class MemberDAO extends DAOManager {
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User");
+			ResultSet rset = stmt.executeQuery("SELECT id_User, id_Member, firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User");
 
 			while (rset.next()) {
 				// Récupération des chats d'un membre
 				long member_id = rset.getLong(1);
-				chats = ShopChatDAO.getByMember(member_id);
+				//chats = ShopChatDAO.getByMember(member_id);
 				
 				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
