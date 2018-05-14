@@ -96,7 +96,7 @@ database.password = <userPWD>
 
 ```
 
-### Mordifications à apporter :
+### Modifications à apporter :
 * MySQL est utilisée dans la version fournie en démonstration et configurée dans le fichier ci-dessus avec pour < userName > votre nom d'utilisateur et < userPWD > votre mot de passe. 
 
 * Il faut aussi supprimmer le 'exemple.' avant BD.Properties 
