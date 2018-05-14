@@ -3,7 +3,6 @@ package fr.cpasam.leonardo.DAO;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
