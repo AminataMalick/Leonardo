@@ -11,13 +11,9 @@ import javax.swing.JOptionPane;
 
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
-import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Admin;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
-import fr.cpasam.leonardo.model.user.UserDAO;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class TestJDBC extends DAOManager {

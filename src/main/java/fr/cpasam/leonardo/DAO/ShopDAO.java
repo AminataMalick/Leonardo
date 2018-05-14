@@ -177,7 +177,13 @@ public class ShopDAO extends DAOManager {
 
 			/* Récupération valeurs attributs du membre */
 			while ( resultat.next() ) {
-				member= new Member(resultat.getLong(2),resultat.getString(4),resultat.getString(5),resultat.getString(6),resultat.getString(7));
+				member= new Member(resultat.getLong("id_User"),
+						resultat.getLong("id_Member"),
+						resultat.getString("firstName_User"),
+						resultat.getString("lastName_User"),
+						resultat.getString("email_User"),
+						resultat.getString("pwd_User"),
+						resultat.getString("token_User"));
 			} 
 
 			/* Création shop */
@@ -218,8 +224,13 @@ public class ShopDAO extends DAOManager {
 
 			/* Récupération valeurs attributs du membre */
 			while ( resultat0.next() ) {
-				member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7));
-			} 
+				member= new Member(resultat0.getLong("id_User"),
+						resultat0.getLong("id_Member"),
+						resultat0.getString("firstName_User"),
+						resultat0.getString("lastName_User"),
+						resultat0.getString("email_User"),
+						resultat0.getString("pwd_User"),
+						resultat0.getString("token_User"));	} 
 
 			/* Récupération des produits liés au shop */
 			products = getProducts(shop_id) ;
@@ -412,8 +423,13 @@ public class ShopDAO extends DAOManager {
 
 				/* Récupération valeurs attributs du membre */
 				while ( resultat0.next() ) {
-					member= new Member(resultat0.getLong(2),resultat0.getString(4),resultat0.getString(5),resultat0.getString(6),resultat0.getString(7));
-				} 
+					member= new Member(resultat0.getLong("id_User"),
+							resultat0.getLong("id_Member"),
+							resultat0.getString("firstName_User"),
+							resultat0.getString("lastName_User"),
+							resultat0.getString("email_User"),
+							resultat0.getString("pwd_User"),
+							resultat0.getString("token_User"));	} 
 
 				shop = new Shop(shop_id,resultat.getString(2),resultat.getString(3),null,member, products);
 				shops.add(shop);

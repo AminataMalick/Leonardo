@@ -11,30 +11,16 @@ public abstract class User {
 	protected String lastName;
 	protected String email;
 	protected String pwd;
-	protected List<Chat> chats;
 	protected String token;
 
-	public User() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	public User(String firstName, String lastName, String email, String pwd) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.pwd = pwd;
-		this.chats = new ArrayList<>();
-	}
+		}
 	
-	public User(long id, String firstName, String lastName, String email, String pwd, List<Chat> chats) {
-		this.id=id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.pwd = pwd;
-		this.chats = chats ;
-	}
-
 	public User(long id, String firstName, String lastName, String email, String pwd, String token) {
 		this.id=id;
 		this.firstName = firstName;
@@ -42,27 +28,8 @@ public abstract class User {
 		this.email = email;
 		this.pwd = pwd;
 		this.token=token;
-		this.chats = new ArrayList<>();
 	}
 	
-	public User(long id, String firstName, String lastName, String email, String pwd, String token, List<Chat> chats) {
-		this.id=id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.pwd = pwd;
-		this.token=token;
-		this.chats = chats;
-	}
-	
-	public User(long id, String firstName, String lastName, String email, String pwd) {
-		this.id=id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.pwd = pwd;
-		this.chats = new ArrayList<>();
-	}
 	
 	/**
 	 * Retourne l'id d'un utilisateur
@@ -129,12 +96,6 @@ public abstract class User {
 	 */
 	public void setToken(String token) {this.token = token;}
 	
-	public void addChat(Chat nwChat) {
-
-		if (!(this.chats.contains(nwChat))) {
-			this.chats.add(nwChat);
-		}
-	}
 	
 	/**
 	 * Renvoie la représentation textuelle d'un utilisateur
@@ -143,7 +104,7 @@ public abstract class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", pwd="
-				+ pwd + ", chats=" + chats + ", token=" + token + "]";
+				+ pwd + ", token=" + token + "]";
 	}
 	
 }

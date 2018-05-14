@@ -19,15 +19,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.DAO.RecommandationDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
+import fr.cpasam.leonardo.DAO.TagDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.product.ProductDAO;
-import fr.cpasam.leonardo.model.recommandation.RecommandationDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -179,13 +178,9 @@ public class ShopRessource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response recommandations(@PathParam("id") long id) {
 		
-		try {
-			return Response
-					.ok(RecommandationDAO.all(id))
-					.build();
-		} catch (ChatNotFoundException | UserNotFoundException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		return Response
+				.ok(RecommandationDAO.all(id))
+				.build();
 	}
 
 

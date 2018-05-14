@@ -86,7 +86,13 @@ public class MemberDAO extends DAOManager {
 				
 				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
 
-				Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6), chats);
+				Member member = new Member(rset.getLong("id_User"),
+						rset.getLong("id_Member"),
+						rset.getString("firstName_User"),
+						rset.getString("lastName_User"),
+						rset.getString("email_User"),
+						rset.getString("pwd_User"),
+						rset.getString("token_User"));
 				members.add(member);
 			}
 
@@ -123,7 +129,7 @@ public class MemberDAO extends DAOManager {
 				if (deleted <=0) {
 					return null;
 				}
-				member = new Member(idMember,firstName,lastName,email, pwd);
+				member = new Member(idUser,idMember, firstName, lastName, email, pwd, "");
 			}
 	}catch (SQLException e) {
 			e.printStackTrace();
@@ -167,7 +173,7 @@ public class MemberDAO extends DAOManager {
 			//chats = ShopChatDAO.getByMember(id);
 			
 			//member = new Member(id,firstName,lastName,email, pwd, chats);
-			member = new Member(id,firstName,lastName,email, pwd);
+			member = new Member(idUser,id,firstName,lastName,email, pwd,"");
 
 			
 		}catch (SQLException e) {
@@ -194,10 +200,6 @@ public class MemberDAO extends DAOManager {
 			ResultSet rset = stmt.executeQuery("SELECT firstName_User, lastName_User, email_User,pwd_User,token_User FROM Member natural join User WHERE id_Member="+member_id);
 
 			while (rset.next()) {
-				// Récupération des chats associés au membre
-				//chats = ShopChatDAO.getByMember(member_id);
-				
-				//Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5), chats);
 				Member member = new Member(member_id,rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
 
 				return member ;

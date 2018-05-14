@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.tag;
+package fr.cpasam.leonardo.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import java.util.List;
 
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.shop.Shop;
+import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 

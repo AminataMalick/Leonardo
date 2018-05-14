@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import fr.cpasam.leonardo.DAO.ShopChatDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat._ChatManager;
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
@@ -25,7 +25,6 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	private List<Recommandation> recommandations;
 	private long id_member;
 
-	public Member() {}
 	
 	/**
 	 * Méthode toString() pour décrire un objet Member
@@ -52,39 +51,6 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	
 	
 	/**
-	 * Constructeur Member avec 6 paramètres
-	 * @param id
-	 * @param first_name
-	 * @param last_name
-	 * @param email
-	 * @param password
-	 * @param chats
-	 */
-	public Member(long id,String first_name, String last_name, String email, String password, List<Chat> chats ) {
-		super(id, first_name, last_name, email, password,chats);
-		this.geoloc = null;
-		this.shops = new ArrayList<Shop>();
-		this.recommandations = new ArrayList<Recommandation>();
-	}
-	
-	/**
-	 * Constructeur Member avec 7 paramètres
-	 * @param id
-	 * @param first_name
-	 * @param last_name
-	 * @param email
-	 * @param password
-	 * @param token
-	 * @param chats
-	 */
-	public Member(long id,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
-		super(id, first_name, last_name, email, password,token, chats);
-		this.geoloc = null;
-		this.shops = new ArrayList<Shop>();
-		this.recommandations = new ArrayList<Recommandation>();
-	}
-	
-	/**
 	 * Constructeur avec 8 params
 	 * @param id_user
 	 * @param id_member
@@ -95,46 +61,14 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 * @param token
 	 * @param chats
 	 */
-	public Member(long id_user,long id_member,String first_name, String last_name, String email, String password, String token, List<Chat> chats ) {
-		super(id_user, first_name, last_name, email, password,token, chats);
+	public Member(long id_user,long id_member,String first_name, String last_name, String email, String password, String token) {
+		super(id_user, first_name, last_name, email, password,token);
 		this.id_member = id_member;
 		this.geoloc = null;
 		this.shops = new ArrayList<Shop>();
 		this.recommandations = new ArrayList<Recommandation>();
 	}
 	
-	/**
-	 * Constructeur Member avec 4 paramètres sans l'identifiant, permettant ainsi de l'autogénérer selon le dernier identifiant présent dans la base
-	 * @param first_name prénom du membre
-	 * @param last_name nom du membre
-	 * @param email email du membre
-	 * @param password mot de passe du membre
-	 */
-	public Member(String first_name, String last_name, String email, String password ) {
-		super(first_name, last_name, email, password);
-		this.geoloc = null;
-		this.shops = new ArrayList<Shop>();
-		this.recommandations = new ArrayList<Recommandation>();
-	}
-	
-
-	
-	/**
-	 * Constructeur Member avec 5 paramètres
-	 * @param id
-	 * @param first_name
-	 * @param last_name
-	 * @param email
-	 * @param password
-	 */
-	public Member(long id, String first_name, String last_name, String email, String password ) {
-		super(id, first_name, last_name, email, password);
-		this.geoloc = null;
-		this.shops = new ArrayList<Shop>();
-		this.recommandations = new ArrayList<Recommandation>();
-	}
-
-
 	
 
 	/**
@@ -154,11 +88,7 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 			System.out.println("Chat creation in progress ...");
 			nwChat = ShopChatDAO.create(this, shop);
 		}
-		System.out.println("Before adding to chat list in member : "+this.chats);
-		this.addChat(nwChat);
 
-		System.out.println("Before adding to chat list in member");
-		shop.addChat(nwChat);
 		return nwChat;
 	}
 
@@ -195,6 +125,6 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public void setRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 
-	
+	public long getMemberId() {return this.id_member;}
 	
 }

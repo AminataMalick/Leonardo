@@ -2,10 +2,10 @@ package fr.cpasam.leonardo.productTagDAO;
 
 import java.util.ArrayList;
 
+import fr.cpasam.leonardo.DAO.ProductTagDAO;
+import fr.cpasam.leonardo.DAO.TagDAO;
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.tag.TagDAO;
 
 public class TestProductTagDAO {
 	public static void main(String[] args) {

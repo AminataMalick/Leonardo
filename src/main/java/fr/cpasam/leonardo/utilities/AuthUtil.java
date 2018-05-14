@@ -7,6 +7,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.UserDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.MemberCreationException;
@@ -19,9 +21,7 @@ import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongPasswordException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
-import fr.cpasam.leonardo.model.user.UserDAO;
 
 
 public class AuthUtil {

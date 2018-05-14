@@ -99,11 +99,16 @@ public class UserDAO extends DAOManager{
 		User user = null ;
 		try {
 			stmt = con.createStatement();
-			ResultSet rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User  FROM Member natural join User WHERE email_User='"+email+"'");
+			ResultSet rset = stmt.executeQuery("SELECT * FROM Member natural join User WHERE email_User='"+email+"'");
 						
 				while (rset.next()) {
-					 user = new Member(rset.getLong(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5));
-
+					user= new Member(rset.getLong("id_User"),
+							rset.getLong("id_Member"),
+							rset.getString("firstName_User"),
+							rset.getString("lastName_User"),
+							rset.getString("email_User"),
+							rset.getString("pwd_User"),
+							rset.getString("token_User"));
 				}
 				rset = stmt.executeQuery("SELECT id_User, firstName_User,lastName_User,email_User,pwd_User  FROM Admin natural join User WHERE email_User='"+email+"'");
 				while (rset.next()) {

@@ -3,11 +3,8 @@ package fr.cpasam.leonardo.ShopChatDAO;
 import java.util.ArrayList;
 
 import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 
 public class TestShopChatDAO {
 

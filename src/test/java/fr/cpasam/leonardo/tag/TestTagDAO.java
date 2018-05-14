@@ -2,8 +2,8 @@ package fr.cpasam.leonardo.tag;
 
 import java.util.ArrayList;
 
+import fr.cpasam.leonardo.DAO.TagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.tag.TagDAO;
 
 public class TestTagDAO {
 	public static void main(String[] args) {

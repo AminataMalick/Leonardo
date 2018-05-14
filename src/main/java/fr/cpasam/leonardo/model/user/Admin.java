@@ -3,7 +3,6 @@ package fr.cpasam.leonardo.model.user;
 
 public class Admin extends User {
 	
-	public Admin() {}
 	
 	/**
 	 * 
@@ -14,7 +13,7 @@ public class Admin extends User {
 	 * @param pwd mot de passe de l'administrateur
 	 */
 	public Admin(long id, String firstName, String lastName, String email, String pwd) {
-		super(id, firstName, lastName, email, pwd);
+		super(id, firstName, lastName, email, pwd,"");
 	}
 	
 	/**

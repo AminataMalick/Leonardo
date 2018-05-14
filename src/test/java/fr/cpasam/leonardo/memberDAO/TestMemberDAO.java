@@ -1,6 +1,5 @@
 package fr.cpasam.leonardo.memberDAO;
 
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import java.util.List;
 import fr.cpasam.leonardo.model.user.Member;
 

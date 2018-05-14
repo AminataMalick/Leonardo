@@ -1,4 +1,4 @@
-package fr.cpasam.leonardo.model.tag;
+package fr.cpasam.leonardo.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.product.ProductDAO;
+import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductTagDAO extends DAOManager{

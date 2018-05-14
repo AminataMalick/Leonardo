@@ -2,8 +2,8 @@ package fr.cpasam.leonardo.productDAO;
 
 import java.util.ArrayList;
 
+import fr.cpasam.leonardo.DAO.ProductDAO;
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.product.ProductDAO;
 
 public class TestProductDAO {
 

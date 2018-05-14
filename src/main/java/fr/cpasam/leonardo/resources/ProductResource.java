@@ -20,12 +20,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.DAO.ProductDAO;
+import fr.cpasam.leonardo.DAO.ProductTagDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
+import fr.cpasam.leonardo.DAO.TagDAO;
 import fr.cpasam.leonardo.model.product.Product;
-import fr.cpasam.leonardo.model.product.ProductDAO;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
-import fr.cpasam.leonardo.model.tag.ProductTagDAO;
 import fr.cpasam.leonardo.model.tag.Tag;
-import fr.cpasam.leonardo.model.tag.TagDAO;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.Validator;
 

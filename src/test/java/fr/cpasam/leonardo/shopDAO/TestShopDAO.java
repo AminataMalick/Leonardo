@@ -3,9 +3,9 @@ package fr.cpasam.leonardo.shopDAO;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.DAO.ShopDAO;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
 
 public class TestShopDAO {

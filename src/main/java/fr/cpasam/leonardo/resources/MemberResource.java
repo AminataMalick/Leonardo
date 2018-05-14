@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.DAO.MemberDAO;
 import fr.cpasam.leonardo.errors.TextError;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
@@ -22,7 +23,6 @@ import fr.cpasam.leonardo.exceptions.MemberUpdateException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.AuthUtil;
 
 @Path("member/")
@@ -38,7 +38,7 @@ public class MemberResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modify(JsonObject json) {
-		Member member = new Member();
+		Member member = null;
 		String token = json.get("token").getAsString();
 		long id = json.get("id").getAsLong();
 		String firstName = json.get("firstName").getAsString();
@@ -133,12 +133,8 @@ public class MemberResource {
 	public Response get(@PathParam("id") long id) {
 		
 		Member m = null;
-		try {
-			m = MemberDAO.get(id);
-			return Response.ok(m).build();
-		} catch (ChatNotFoundException | UserNotFoundException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		m = MemberDAO.get(id);
+		return Response.ok(m).build();
 		
 	}
 
@@ -159,16 +155,12 @@ public class MemberResource {
 		
 
 		Member m;
-		try {
-			m = MemberDAO.create(
-					json.get("firstName").getAsString(), 
-					json.get("lastName").getAsString(),   
-					json.get("email").getAsString(),
-					json.get("pwd").getAsString());
-			return Response.ok(m).build();
-		} catch (ChatNotFoundException | UserNotFoundException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		m = MemberDAO.create(
+				json.get("firstName").getAsString(), 
+				json.get("lastName").getAsString(),   
+				json.get("email").getAsString(),
+				json.get("pwd").getAsString());
+		return Response.ok(m).build();
 
 		
 	}
@@ -184,23 +176,14 @@ public class MemberResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
-		try {
-			if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
-		} catch (ChatNotFoundException | UserNotFoundException e1) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		if(MemberDAO.get(id) == null) return Response.status(Response.Status.NOT_FOUND).build();
 		
 		Member m;
-		try {
-			m = MemberDAO.update(id, 	
-					json.get("firstName").getAsString(), 
-					json.get("lastName").getAsString(),   
-					json.get("email").getAsString(),
-					json.get("pwd").getAsString());
-		} catch (ChatNotFoundException | UserNotFoundException e) {
-			e.printStackTrace();
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		m = MemberDAO.update(id, 	
+				json.get("firstName").getAsString(), 
+				json.get("lastName").getAsString(),   
+				json.get("email").getAsString(),
+				json.get("pwd").getAsString());
 		
 		return Response.ok(m).build();
 	}
@@ -215,12 +198,8 @@ public class MemberResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response mailToMember(@PathParam("mail") String mail) {
 		Member member;
-		try {
-			member = MemberDAO.mailToMember(mail);
-			return Response.ok(member).build();
-		} catch (ChatNotFoundException | UserNotFoundException e) {
-			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-		}
+		member = MemberDAO.mailToMember(mail);
+		return Response.ok(member).build();
 	}
 	
 }

@@ -1,12 +1,12 @@
 package fr.cpasam.leonardo.utilities;
 
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.UserDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.IncompleteDataException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.exceptions.WrongTokenException;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
-import fr.cpasam.leonardo.model.user.UserDAO;
 
 public class Validator {
 

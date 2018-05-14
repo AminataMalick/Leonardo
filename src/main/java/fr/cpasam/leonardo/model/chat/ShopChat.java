@@ -3,12 +3,13 @@ package fr.cpasam.leonardo.model.chat;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.ShopChatDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.model.user.User;
 
 public class ShopChat extends Chat<Member, Shop> {
@@ -45,11 +46,6 @@ public class ShopChat extends Chat<Member, Shop> {
 		
 		ShopChat nwChat = ShopChatDAO.create(m,s);
 				
-		// Ajouter le chat au membre et à la boutique
-		
-		m.addChat(nwChat);
-		s.addChat(nwChat);
-		
 		// Retourner le chat
 		return nwChat;
 	}	

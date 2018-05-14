@@ -16,17 +16,17 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonObject;
 
+import fr.cpasam.leonardo.DAO.MemberDAO;
+import fr.cpasam.leonardo.DAO.ShopChatDAO;
+import fr.cpasam.leonardo.DAO.ShopDAO;
+import fr.cpasam.leonardo.DAO.TextMessageDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.chat.ShopChat;
-import fr.cpasam.leonardo.model.chat.ShopChatDAO;
 import fr.cpasam.leonardo.model.chat.TextMessage;
-import fr.cpasam.leonardo.model.chat.TextMessageDAO;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.shop.ShopDAO;
 import fr.cpasam.leonardo.model.user.Member;
-import fr.cpasam.leonardo.model.user.MemberDAO;
 import fr.cpasam.leonardo.utilities.NotificationsMail;
 import fr.cpasam.leonardo.utilities.Validator;
 
@@ -74,7 +74,7 @@ public class ChatResource {
 
 			c = m.openChat(s);
 
-			System.out.println("Chat opened");
+			System.out.println("Chat opened :"+c);
 			return Response.ok(c).build();
 
 		} catch (ChatNotFoundException | UserNotFoundException e) {

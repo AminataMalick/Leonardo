@@ -3,6 +3,7 @@ package fr.cpasam.leonardo.model.shop;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cpasam.leonardo.DAO.ShopDAO;
 import fr.cpasam.leonardo.model.chat.Chat;
 import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.user.Member;
