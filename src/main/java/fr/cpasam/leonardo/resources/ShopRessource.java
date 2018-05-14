@@ -1,7 +1,6 @@
 package fr.cpasam.leonardo.resources;
 
 
-import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,18 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fr.cpasam.leonardo.DAO.RecommandationDAO;
 import fr.cpasam.leonardo.DAO.ShopDAO;
-import fr.cpasam.leonardo.DAO.TagDAO;
-import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
-import fr.cpasam.leonardo.exceptions.UserNotFoundException;
-import fr.cpasam.leonardo.model.product.Product;
 import fr.cpasam.leonardo.model.shop.Shop;
-import fr.cpasam.leonardo.model.tag.Tag;
 import fr.cpasam.leonardo.utilities.Validator;
 
 
@@ -62,33 +54,13 @@ public class ShopRessource {
 		return Response.ok(ShopDAO.get(id)).build();
 	}
 
+	
+
 	/**
-	 * 
-	 * @param json la requête du user
-	 * @return 
+	 * Create a shop
+	 * @param json {user_id:Numeric, name:String, description : String }
+	 * @return
 	 */
-	@GET
-	@Path("?USER")
-	public Response getByMember(JsonObject json) {
-
-		// Vérifier que l'utilisateur est bien connecté 
-		if(!json.has("user_id")) return Response.status(Response.Status.UNAUTHORIZED).build();
-
-
-		// Vérifier le jeton CSRF
-
-		long user_id = json.get("user_id").getAsLong();
-		String token = json.get("token").getAsString();
-		if(!Validator.checkCSRF(user_id, token)) return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-
-		// Récupérer les shop de l'utilisateur
-		
-		ArrayList<Shop> shops = ShopDAO.getByMember(user_id);
-
-
-		return Response.ok(shops).build();
-	}
-
 	@POST
 	public Response create(JsonObject json) { 
 
@@ -114,7 +86,12 @@ public class ShopRessource {
 
 
 	
-
+	/**
+	 * Update of a shop
+	 * @param id
+	 * @param json {user_id:Numeric, name:String, description : String }
+	 * @return
+	 */
 	@PUT
 	@Path("{id}")
 	public Response update(@PathParam("id") long id,  JsonObject json) { 
@@ -147,6 +124,12 @@ public class ShopRessource {
 	}
 
 
+	/**
+	 * Delete a shop
+	 * @param id
+	 * @param json { user_id : Numeric, token : String }
+	 * @return
+	 */
 	@DELETE
 	@Path("{id}")
 	public Response delete(@PathParam("id") long id, JsonObject json) {
@@ -161,8 +144,7 @@ public class ShopRessource {
 
 
 		//Vérifier que le shop appartient bien au user
-		long shop_id = json.get("shop_id").getAsLong();
-		if(ShopDAO.getOwner(shop_id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
+		if(ShopDAO.getOwner(id).getId() != user_id ) return Response.status(Response.Status.FORBIDDEN).build();
 
 		//Suppression shop
 		ShopDAO.delete(id) ;
@@ -173,6 +155,11 @@ public class ShopRessource {
 	}
 	
 	
+	/**
+	 * Return a recommandation
+	 * @param id shop id 
+	 * @return
+	 */
 	@GET
 	@Path("{id}/recommandation")
 	@Produces(MediaType.APPLICATION_JSON)
