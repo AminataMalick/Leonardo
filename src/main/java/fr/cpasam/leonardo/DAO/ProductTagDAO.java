@@ -11,7 +11,7 @@ import fr.cpasam.leonardo.utilities.DAOManager;
 
 public class ProductTagDAO extends DAOManager{
 
-	
+
 	/**
 	 * Test si un l'association entre un produit et un tag existe déjà
 	 * @param product_id
@@ -25,20 +25,19 @@ public class ProductTagDAO extends DAOManager{
 			statement = con.createStatement();
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM ProductTag WHERE id_Product="+product_id+" and id_Tag="+tag_id);
-	
-			System.out.println(resultat);
+
 			/* Récupération des données du résultat de la requête de lecture */
 			if (!resultat.next()) {
 				b = false ;
 			}
-			
+
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
 		} catch (SQLException e) { e.printStackTrace();}
 		return b;
 	}
-	
-	
+
+
 	/**
 	 * Ajoute un tag à un produit
 	 * @param product_id
@@ -55,17 +54,16 @@ public class ProductTagDAO extends DAOManager{
 			statement = con.createStatement();
 			/* Insertion d'un tag*/
 			long tag_id = tag.getId();
-			
+
 			if (!estProductTag(product_id, tag_id)) {
 				statement.executeUpdate("INSERT INTO ProductTag(id_Product, id_Tag)VALUES("+product_id+","+tag_id+")");
 			}
 			/* Récupération du produit */
 			product = ProductDAO.get(product_id);
-	
-			System.out.println("TAG : "+tag);
+
 			/* Récupération des infos du tag et ajout de celui */
 			product.addTag(tag);
-			
+
 
 		}catch (SQLException e) { e.printStackTrace();} 
 		try { statement.close();
@@ -75,37 +73,31 @@ public class ProductTagDAO extends DAOManager{
 
 	/**
 	 * Ajoute une liste de tag à un produit
-	 * @param product_id
-	 * @param tags
-	 * @return Product
+	 * @param product_id identifiant du produit
+	 * @param tags liste des tags associée au produit
 	 */
 	public static void addTags(long product_id, ArrayList<Tag> tags) {
-
 		for (Tag tag : tags) {
 			addTag(product_id, tag);
 		}
-
-		
-		return  ;
-
 	}
 
 
 	/**
 	 * Retourne la liste de tags lié au produit donné
-	 * @param id
-	 * @return ArrayList<Tag>
+	 * @param id identifiant du tag
+	 * @return ArrayList<Tag> retourne une liste de tags associée à un produit
 	 */
 	public static ArrayList<Tag> getTagsByProduct(long product_id) {
 
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		Statement statement = null;		
-		
+
 		try {
 			statement = con.createStatement();
 			/* Exécution d'une requête de lecture */
 			ResultSet resultat = statement.executeQuery( "SELECT * FROM Tag Natural Join ProductTag WHERE id_product="+product_id);
-		
+
 			/* Récupération des données du résultat de la requête de lecture */
 			while ( resultat.next() ) {
 				Tag pt = new Tag(resultat.getLong(1), resultat.getString(2));
@@ -119,8 +111,8 @@ public class ProductTagDAO extends DAOManager{
 
 	/**
 	 * Retourne le ProductTag lié au keyword donné
-	 * @param keyword
-	 * @return ProductTag
+	 * @param keyword mot clé à chercher
+	 * @return ProductTag retourne une liste de produits associée au mot clé passé en paramètre
 	 */
 	public static ArrayList<Product> getProductsByTag(long tag_id) {
 
@@ -148,12 +140,15 @@ public class ProductTagDAO extends DAOManager{
 		return products;
 	}
 
-
+	/**
+	 * Supprime un tag à partir de son identifiant
+	 * @param tag_id identifiant du tag à supprimer
+	 */
 	public static void delete(long tag_id) {
 		Statement statement = null;
 		try {
 			statement = con.createStatement();
-			int deleted = statement.executeUpdate("DELETE FROM ProductTag WHERE id_Tag="+tag_id);
+			statement.executeUpdate("DELETE FROM ProductTag WHERE id_Tag="+tag_id);
 
 		}catch (SQLException e) { e.printStackTrace();}
 		try { statement.close();

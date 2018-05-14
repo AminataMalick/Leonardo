@@ -27,38 +27,41 @@ public class RecommandationDAO extends DAOManager  {
 	public static long getCnt() {
 		return cnt++;
 	}
-	
+
 	// Bloc static 
-	  
-	  static {	
-	  	cnt = getLastId()+1;
-	  }
-	  
-		public static long getLastId() {
-			Statement statement = null;
-			long id_Recommandation = 0;
-			try {
-				statement = con.createStatement();
-				/* Récupération de l'identifiant de la recommandation */
-				ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Recommandation) FROM Recommandation");
 
-				/* Récupération des données du résultat de la requête de lecture */
-				if ( resultat.next() ) {
-					/* Récupération de la recommandation */
-					id_Recommandation= resultat.getLong(1);
-				}
-			}catch (SQLException e) { 
-				e.printStackTrace();
+	static {	
+		cnt = getLastId()+1;
+	}
+	/**
+	 * Cherche l'identifiant maximum dans la table afin d'incrémenter celui-ci d'une unité et de  générer un nouvel identifiant automatiquement 
+	 * @return retourne l'identifiant maximum de Recommandation
+	 */
+	public static long getLastId() {
+		Statement statement = null;
+		long id_Recommandation = 0;
+		try {
+			statement = con.createStatement();
+			/* Récupération de l'identifiant de la recommandation */
+			ResultSet resultat = statement.executeQuery( "SELECT MAX(id_Recommandation) FROM Recommandation");
+
+			/* Récupération des données du résultat de la requête de lecture */
+			if ( resultat.next() ) {
+				/* Récupération de la recommandation */
+				id_Recommandation= resultat.getLong(1);
 			}
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return id_Recommandation;
+		}catch (SQLException e) { 
+			e.printStackTrace();
 		}
+		try {
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id_Recommandation;
+	}
 
-	
+
 	/**
 	 * Affiche une recommandation
 	 * @param recommandationid identifiant de la recommandation que l'on souhaite
@@ -159,25 +162,25 @@ public class RecommandationDAO extends DAOManager  {
 		} catch (SQLException e) { e.printStackTrace();}
 		return recommandation ; 
 	}
-	
+
 	/**
 	 * Supprime une recommandation sur un shop
 	 * @param idRecommandation identifiant de la recommandation
 	 * @return retourne un booléen si la suppression s'est bien déroulée
 	 */
 	public static boolean delete(long idRecommandation) {
-			Statement stmt = null;
-			try {
-				stmt = con.createStatement();
-				int deleted =stmt.executeUpdate("DELETE FROM Recommandation WHERE id_Recommandation="+idRecommandation);
-				if (deleted <=0) {return false ;}
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+			int deleted =stmt.executeUpdate("DELETE FROM Recommandation WHERE id_Recommandation="+idRecommandation);
+			if (deleted <=0) {return false ;}
 
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}try { stmt.close();
-			} catch (SQLException e) { e.printStackTrace();}
-			return true;
-		}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}try { stmt.close();
+		} catch (SQLException e) { e.printStackTrace();}
+		return true;
+	}
 
-	
+
 }
