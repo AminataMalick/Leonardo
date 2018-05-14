@@ -81,7 +81,7 @@ public class MemberDAO extends DAOManager {
 
 			while (rset.next()) {
 				// Récupération des chats d'un membre
-				long member_id = rset.getInt(1);
+				long member_id = rset.getLong(1);
 				chats = ShopChatDAO.getByMember(member_id);
 				
 				// Member member = new Member(member_id,rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5),rset.getString(6));
