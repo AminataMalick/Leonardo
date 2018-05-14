@@ -79,7 +79,7 @@ Pour insérer les dépendances listées ci-dessus, copiez la partie de code ci-d
 	</dependencies>
 ```
 
-**'BD.properties' :** Fichier se trouvant à la racine du projet.
+**'exemple.BD.properties' :** Fichier se trouvant à la racine du projet.
 ```
 ################################################	
 # Database access properties	
@@ -96,7 +96,11 @@ database.password = <userPWD>
 
 ```
 
-MySQL est utilisée dans la version fournie en démonstration et configurée dans le fichier ci-dessus avec pour < userName > votre nom d'utilisateur et < userPWD > votre mot de passe.
+### Mordifications à apporter :
+MySQL est utilisée dans la version fournie en démonstration et configurée dans le fichier ci-dessus avec pour < userName > votre nom d'utilisateur et < userPWD > votre mot de passe. 
+
+Il faut aussi supprimmer le 'exemple.' avant BD.Properties 
+
 Il existe des drivers JDBC pour toutes les bases de données connues, il est donc facile d'adapter Leonardo à une autre base de données en modifiant 'jdbc.driver'.
 
 **Prérequis :** Java 1.7 ou version ultérieure.  
