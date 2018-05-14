@@ -1,17 +1,13 @@
 package fr.cpasam.leonardo.DAO;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import fr.cpasam.leonardo.model.chat.Message;
 import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat.TextMessage;
-import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.user.Member;
 import fr.cpasam.leonardo.utilities.DAOManager;
 
@@ -72,6 +68,10 @@ public class TextMessageDAO extends DAOManager{
 	}
 
 
+	/**
+	 * Retourne le dernier id rentré
+	 * @return
+	 */
 	private static long getLastId() {
 		Statement statement = null;
 		long message_id = 0;

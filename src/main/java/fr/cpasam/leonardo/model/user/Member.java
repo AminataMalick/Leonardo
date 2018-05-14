@@ -9,7 +9,6 @@ import fr.cpasam.leonardo.DAO.ShopChatDAO;
 import fr.cpasam.leonardo.exceptions.ChatNotFoundException;
 import fr.cpasam.leonardo.exceptions.UserNotFoundException;
 import fr.cpasam.leonardo.model.chat.Chat;
-import fr.cpasam.leonardo.model.chat.ShopChat;
 import fr.cpasam.leonardo.model.chat._ChatManager;
 import fr.cpasam.leonardo.model.geoloc.Geoloc;
 import fr.cpasam.leonardo.model.recommandation.Recommandation;
@@ -125,6 +124,10 @@ public class Member extends User implements _ChatManager<Member, Shop>{
 	 */
 	public void setRecommandations(List<Recommandation> recommandations) {this.recommandations = recommandations;}
 
+	/**
+	 * Retourne l'id du membre
+	 * @return long
+	 */
 	public long getMemberId() {return this.id_member;}
 	
 }

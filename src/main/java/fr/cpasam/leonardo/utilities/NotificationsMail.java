@@ -3,7 +3,6 @@ package fr.cpasam.leonardo.utilities;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,13 +20,9 @@ public class NotificationsMail {
 	 * @param text
 	 * @param destinataire
 	 */
-	
 	public static void sendMail (String subject, String text, String destinataire) {
 		
 	final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-	// A changer
-	// leonardo.cpasam@gmail.com // opopop38400
-	// celine.potte38@gmail.com // cepotte159
 	final String username = "leonardo.cpasam@gmail.com";
     final String password = "opopop38400";
     

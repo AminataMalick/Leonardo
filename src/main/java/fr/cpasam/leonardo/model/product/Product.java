@@ -2,8 +2,6 @@ package fr.cpasam.leonardo.model.product;
 
 import java.util.ArrayList;
 
-import com.google.gson.annotations.Expose;
-
 import fr.cpasam.leonardo.model.shop.Shop;
 import fr.cpasam.leonardo.model.tag.Tag;
 
@@ -13,12 +11,20 @@ public class Product {
 	
 	long id;
 	String name ;
-	Long provenance ; // shop_id
+	Long provenance ;
 	float unityPrice ;
 	protected ArrayList<Tag> tags;
 
 	public Product() {}
 	
+	/**
+	 * Constructeur 5 paramètres
+	 * @param id
+	 * @param name
+	 * @param id_shop
+	 * @param unityPrice
+	 * @param tags
+	 */
 	public Product(long id, String name, long id_shop, float unityPrice, ArrayList<Tag> tags) {
 		this.id = id;
 		this.name = name;
@@ -80,7 +86,10 @@ public class Product {
 	 */
 	public void setTags(ArrayList<Tag> tags) {this.tags = tags;}
 	
-	
+	/**
+	 * Ajoute un tag au produit
+	 * @param tag
+	 */
 	public void addTag (Tag tag) {
 		this.tags.add(tag);
 	}

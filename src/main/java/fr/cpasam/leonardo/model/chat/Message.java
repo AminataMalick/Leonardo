@@ -2,7 +2,6 @@ package fr.cpasam.leonardo.model.chat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 
 public abstract class Message<T> {
@@ -13,9 +12,7 @@ public abstract class Message<T> {
 	
 	public final static DateTimeFormatter dTF = DateTimeFormatter.ofPattern("uuuu-MM-dd kk:mm:ss");
 	
-	public Message() {
-		// TODO Auto-generated constructor stub
-	}
+	public Message() {}
 	
 	/**
 	 * Create new entity in db

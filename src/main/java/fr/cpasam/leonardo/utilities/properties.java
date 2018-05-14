@@ -1,7 +1,6 @@
 package fr.cpasam.leonardo.utilities;
 
 import java.sql.*;
-//import java.sql.DriverManager;
 
 class properties {
 	   private static Connection con = null;
